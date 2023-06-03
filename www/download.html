@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lexbor: Download</title>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link rel="apple-touch-icon" sizes="120x120" href="/img/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+	<link rel="manifest" href="/img/site.webmanifest">
+	<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#da532c">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="stylesheet" href="/new/lexbor/docs/www/css/bootstrap-grid.min.css">
+	<link rel="stylesheet" href="/new/lexbor/docs/www/css/style.css?time=1555781069.5373728">
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head>
+
+<body>
+	<div class="page">
+		<div class="head">
+			<div class="head-content">
+				
+				<div class="head-left"><a href="/new/lexbor/docs/www">lexbor</a></div>
+				
+				<div class="head-right">
+					<ul>
+						<li><a href="/new/lexbor/docs/www/download.html">Download</a></li>
+						<li><a href="/new/lexbor/docs/www/docs/lexbor.html">Documentation</a></li>
+						<li><a href="/new/lexbor/docs/www/support.html">Support</a></li>
+						<li><a href="/new/lexbor/docs/www/license.html">License</a></li>
+						<li><a href="/new/lexbor/docs/www/roadmap.html">Roadmap</a></li>
+						<li><a href="/new/lexbor/docs/www/about.html">About Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-content">
+				</ul>
+			</div>
+		</div>
+		<div class="body">
+				<div class="split ">
+					<div class="left">
+						<div class="left-content markdown-refs">
+							<ul class="nav-level-2">
+<li><a href="#binary_packages">Binary packages</a>
+<ul class="nav-level-3">
+<li><a href="#centos">CentOS</a>
+<li><a href="#debian">Debian</a>
+<li><a href="#fedora">Fedora</a>
+<li><a href="#rhel">RHEL</a>
+<li><a href="#ubuntu">Ubuntu</a>
+</ul>
+<li><a href="#source_code">Source code</a>
+</ul>
+						</div>
+					</div>
+					<div class="right">
+						<div class="right-content">
+							<div class="markdown-body"><h2>Binary packages<a class="anchor" aria-hidden="true" id="binary_packages" href="#binary_packages">#</a></h2><p>Binaries are available for:</p>
+<ul>
+<li>CentOS 6, 7</li>
+<li>Debian 8, 9</li>
+<li>Fedora 28, 29</li>
+<li>RHEL 6, 7</li>
+<li>Ubuntu 16.04, 18.04, 18.10, 19.04</li>
+</ul>
+<h3>CentOS<a class="anchor" aria-hidden="true" id="centos" href="#centos">#</a></h3><ol>
+<li><p>To configure Lexbor repository, create the following file named <code>/etc/yum.repos.d/lexbor.repo</code>:</p>
+
+<pre class="code"><code>[lexbor]
+name=lexbor repo
+baseurl=https://packages.lexbor.com/centos/$releasever/$basearch/
+gpgcheck=0
+enabled=1</code></pre>
+</li>
+<li><p>Install Lexbor base package and additional packages you would like to use.</p>
+
+<pre class="code"><code>yum install liblexbor
+yum install liblexbor-devel</code></pre>
+</li>
+</ol>
+<h3>Debian<a class="anchor" aria-hidden="true" id="debian" href="#debian">#</a></h3><ol>
+<li><p>Download Lexbor <a href="https://lexbor.com/keys/lexbor_signing.key">signing key</a> used for our repositories and packages and add it to apt’s keyring:</p>
+
+<pre class="code"><code>curl -O https://lexbor.com/keys/lexbor_signing.key
+apt-key add lexbor_signing.key</code></pre>
+</li>
+<li><p>To configure Lexbor repository, create the following file named <code>/etc/apt/sources.list.d/lexbor.list</code>:</p>
+<p>Debian 8:</p>
+
+<pre class="code"><code>deb https://packages.lexbor.com/debian/ jessie liblexbor
+deb-src https://packages.lexbor.com/debian/ jessie liblexbor</code></pre>
+<p>Debian 9:</p>
+
+<pre class="code"><code>deb https://packages.lexbor.com/debian/ stretch liblexbor
+deb-src https://packages.lexbor.com/debian/ stretch liblexbor</code></pre>
+</li>
+<li><p>Install Lexbor base package and additional packages you would like to use.</p>
+
+<pre class="code"><code>apt update
+apt install liblexbor
+apt install liblexbor-dev</code></pre>
+</li>
+</ol>
+<h3>Fedora<a class="anchor" aria-hidden="true" id="fedora" href="#fedora">#</a></h3><ol>
+<li><p>To configure Lexbor repository, create the following file named <code>/etc/yum.repos.d/lexbor.repo</code>:</p>
+
+<pre class="code"><code>[unit]
+name=lexbor repo
+baseurl=https://packages.lexbor.com/fedora/$releasever/$basearch/
+gpgcheck=0
+enabled=1</code></pre>
+</li>
+<li><p>Install Lexbor base package and additional packages you would like to use.</p>
+
+<pre class="code"><code>yum install liblexbor
+yum install liblexbor-dev</code></pre>
+</li>
+</ol>
+<h3>RHEL<a class="anchor" aria-hidden="true" id="rhel" href="#rhel">#</a></h3><ol>
+<li><p>To configure Lexbor repository, create the following file named <code>/etc/yum.repos.d/lexbor.repo</code>:</p>
+
+<pre class="code"><code>[unit]
+name=lexbor repo
+baseurl=https://packages.lexbor.com/rhel/$releasever/$basearch/
+gpgcheck=0
+enabled=1</code></pre>
+</li>
+<li><p>Install Lexbor base package and additional packages you would like to use.</p>
+
+<pre class="code"><code>yum install liblexbor
+yum install liblexbor-dev</code></pre>
+</li>
+</ol>
+<h3>Ubuntu<a class="anchor" aria-hidden="true" id="ubuntu" href="#ubuntu">#</a></h3><ol>
+<li><p>Download Lexbor <a href="https://lexbor.com/keys/lexbor_signing.key">signing key</a> used for our repositories and packages and add it to apt’s keyring:</p>
+
+<pre class="code"><code>curl -O https://lexbor.com/keys/lexbor_signing.key
+apt-key add lexbor_signing.key</code></pre>
+</li>
+<li><p>To configure Lexbor repository, create the following file named <code>/etc/apt/sources.list.d/lexbor.list</code>:</p>
+<p>Ubuntu 16.04:</p>
+
+<pre class="code"><code>deb https://packages.lexbor.com/ubuntu/ xenial liblexbor
+deb-src https://packages.lexbor.com/ubuntu/ xenial liblexbor</code></pre>
+<p>Ubuntu 18.04:</p>
+
+<pre class="code"><code>deb https://packages.lexbor.com/ubuntu/ bionic liblexbor
+deb-src https://packages.lexbor.com/ubuntu/ bionic liblexbor</code></pre>
+<p>Ubuntu 18.10:</p>
+
+<pre class="code"><code>deb https://packages.lexbor.com/ubuntu/ cosmic liblexbor
+deb-src https://packages.lexbor.com/ubuntu/ cosmic liblexbor</code></pre>
+<p>Ubuntu 19.04:</p>
+
+<pre class="code"><code>deb https://packages.lexbor.com/ubuntu/ disco liblexbor
+deb-src https://packages.lexbor.com/ubuntu/ disco liblexbor</code></pre>
+</li>
+<li><p>Install Lexbor base package and additional packages you would like to use.</p>
+
+<pre class="code"><code>apt update
+apt install liblexbor
+apt install liblexbor-dev</code></pre>
+</li>
+</ol>
+<h2>Source code<a class="anchor" aria-hidden="true" id="source_code" href="#source_code">#</a></h2><p>The source code of the library is provided on <a href="https://github.com/lexbor/lexbor">our GitHub account</a>.</p>
+</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="footer">
+		<div class="footer-content">
+			<span class="copy">© 2018-2019 Alexander Borisov</span>
+		</div>
+	</div>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-130050727-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-130050727-1');
+	</script>
+</body>
+</html>

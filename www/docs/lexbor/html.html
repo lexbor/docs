@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lexbor: HTML Module</title>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link rel="apple-touch-icon" sizes="120x120" href="/img/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+	<link rel="manifest" href="/img/site.webmanifest">
+	<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#da532c">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="stylesheet" href="/new/lexbor/docs/www/css/bootstrap-grid.min.css">
+	<link rel="stylesheet" href="/new/lexbor/docs/www/css/style.css?time=1555781069.9285371">
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head>
+
+<body>
+	<div class="page">
+		<div class="head">
+			<div class="head-content">
+				
+				<div class="head-left"><a href="/new/lexbor/docs/www">lexbor</a></div>
+				
+				<div class="head-right">
+					<ul>
+						<li><a href="/new/lexbor/docs/www/download.html">Download</a></li>
+						<li><a href="/new/lexbor/docs/www/docs/lexbor.html">Documentation</a></li>
+						<li><a href="/new/lexbor/docs/www/support.html">Support</a></li>
+						<li><a href="/new/lexbor/docs/www/license.html">License</a></li>
+						<li><a href="/new/lexbor/docs/www/roadmap.html">Roadmap</a></li>
+						<li><a href="/new/lexbor/docs/www/about.html">About Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-content">
+				<ul><li><a href="/new/lexbor/docs/www/docs/lexbor.html">lexbor</a></li><li class="nav-spliter">/</li><li>HTML</li></ul>
+			</div>
+		</div>
+		<div class="body">
+				<div class="split html-module">
+					<div class="left">
+						<div class="left-content markdown-refs">
+							<ul class="nav-level-1">
+<li><a href="#html">HTML</a>
+<ul class="nav-level-2">
+<li><a href="#parsing">Parsing</a>
+<li><a href="#document">Document</a>
+<li><a href="#parser">Parser</a>
+<li><a href="#interfaces">Interfaces</a>
+<li><a href="#interface_types">Interface Types</a>
+</ul>
+						</div>
+					</div>
+					<div class="right">
+						<div class="right-content">
+							<div class="markdown-body"><h1>HTML<a class="anchor" aria-hidden="true" id="html" href="#html">#</a></h1><p>This is documentation for <code>HTML</code> module for <a href="/">Lexbor library</a>. Module created by <a href="https://html.spec.whatwg.org/multipage/">whatwg specification</a>.</p>
+<h2>Parsing<a class="anchor" aria-hidden="true" id="parsing" href="#parsing">#</a></h2><p>There are two ways to parse HTML pages:</p>
+<ol>
+<li>Through the <code>Document</code> Object</li>
+<li>Through the <code>Parser</code> object</li>
+</ol>
+<p>Both approaches have same functionality regarding page parsing: parsing a fragment, chunks parsing.<br>
+In both cases, the result of parsing is the DOM tree ready for use.</p>
+<h4>Parsing through the Document object<a class="anchor" aria-hidden="true" id="parsing_through_the_document_object" href="#parsing_through_the_document_object">#</a></h4><p>In this approach, we first create a Document object, and then call the parsing function:</p>
+
+<pre class="code highlight"><code><span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>;
+
+<span class="deftype"><span class="std">const</span> lxb_char_t</span> <span class="var">html[]</span> = <span class="text">"&lt;div>V&lt;/div>"</span>;
+<span class="deftype"><span class="type">size_t</span></span> <span class="var">html_len</span> = <span class="ffname"><span class="std">sizeof</span></span>(<span class="var">html</span>) - <span class="number">1</span>;
+
+document = <span class="ffname">lxb_html_document_create</span>();
+
+<span class="ffname">lxb_html_document_parse</span>(<span class="var">document</span>, <span class="var">html</span>, <span class="var">html_len</span>);
+
+<span class="comment">/* Work with Document */</code></pre>
+<p>Inside the <code>lxb_html_document_parse</code> function, a <code>Parser</code> object will be created and destroyed immediately after processing the data.</p>
+<p>This approach is simpler and suitable for cases when you do not have a large number of HTML pages for parsing.</p>
+<h4>Parsing through the Parser object<a class="anchor" aria-hidden="true" id="parsing_through_the_parser_object" href="#parsing_through_the_parser_object">#</a></h4><p>In this approach, we create a <code>Parser</code> object that create a <code>Document</code> object for each HTML page.<br>
+This approach is more advantageous in that the <code>Parser</code> object will be created only once.</p>
+
+<pre class="code highlight"><code><span class="deftype">lxb_html_parser_t </span>*<span class="var">parser</span>;
+<span class="deftype">lxb_html_document_t </span>*<span class="var">document_one</span>, *document_two;
+
+<span class="deftype"><span class="std">const</span> lxb_char_t</span> <span class="var">html[]</span> = <span class="text">"&lt;div>V&lt;/div>"</span>;
+<span class="deftype"><span class="type">size_t</span></span> <span class="var">html_len</span> = <span class="ffname"><span class="std">sizeof</span></span>(<span class="var">html</span>) - <span class="number">1</span>;
+
+parser = <span class="ffname">lxb_html_parser_create</span>();
+<span class="ffname">lxb_html_parser_init</span>(<span class="var">parser</span>);
+
+document_one = <span class="ffname">lxb_html_parse</span>(<span class="var">parser</span>, <span class="var">html</span>, <span class="var">html_len</span>);
+document_two = <span class="ffname">lxb_html_parse</span>(<span class="var">parser</span>, <span class="var">html</span>, <span class="var">html_len</span>);
+
+<span class="comment">/* Work with document_one */</span>
+
+<span class="ffname">lxb_html_parser_destroy</span>(<span class="var">parser</span>, <span class="var"><span class="std-bn">true</span></span>);
+
+<span class="comment">/* Work with document_two */</code></pre>
+<p>This approach is suitable for processing a large number of HTML pages.</p>
+<h2>Document<a class="anchor" aria-hidden="true" id="document" href="#document">#</a></h2><p>Documentation in under construction.</p>
+<h2>Parser<a class="anchor" aria-hidden="true" id="parser" href="#parser">#</a></h2><h2>Interfaces<a class="anchor" aria-hidden="true" id="interfaces" href="#interfaces">#</a></h2><p>Each element in the DOM tree has its own interface. One interface can be in different elements.<br>
+All elements in the DOM tree are inherited from the <code>DOM Node</code> interface.</p>
+<p>An attentive reader will notice that there is no inheritance in <code>C</code>.<br>
+In our case, inheritance means that one interface is present in another at beginning of the structure.</p>
+<p>Consider the example of <code>lxb_html_head_element_t</code> (<code>HTMLHeadElement</code>):</p>
+
+<pre class="code highlight"><code><span class="deftype"><span class="std">typedef</span> struct lxb_html_head_element</span> <span class="var">lxb_html_head_element_t</span>;
+<span class="deftype"><span class="std">typedef</span> struct lxb_html_element</span> <span class="var">lxb_html_element_t</span>;
+<span class="deftype"><span class="std">typedef</span> struct lxb_dom_element</span> <span class="var">lxb_dom_element_t</span>;
+<span class="deftype"><span class="std">typedef</span> struct lxb_dom_node</span> <span class="var">lxb_dom_node_t</span>;
+
+
+<span class="std">struct</span> lxb_html_head_element {
+    <span class="deftype">lxb_html_element_t</span> <span class="var">element</span>;
+};
+
+<span class="std">struct</span> lxb_html_element {
+    <span class="deftype">lxb_dom_element_t</span> <span class="var">element</span>;
+};
+
+<span class="std">struct</span> lxb_dom_element {
+    <span class="deftype">lxb_dom_node_t</span> <span class="var">node</span>;
+};
+
+<span class="std">struct</span> lxb_dom_node {
+    <span class="comment">/* ... */</span>
+};</code></pre>
+<p>In order not to have to write long chains to the desired interface, the project introduce typecasting for all interfaces.</p>
+<ol>
+<li>Without cast:</li>
+</ol>
+
+<pre class="code highlight"><code><span class="deftype">lxb_tag_id_t</span> <span class="var">tag_id</span> = head->element.element.node.<span class="mpath">tag_id</span>;
+<span class="deftype">lxb_ns_id_t</span> <span class="var">ns_id</span> = head->element.element.node.<span class="mpath">ns_id</span>;</code></pre>
+<ol>
+<li>With cast:</li>
+</ol>
+
+<pre class="code highlight"><code><span class="deftype">lxb_dom_node_t </span>*<span class="var">node</span> = <span class="ffname">lxb_dom_interface_node</span>(<span class="var">head</span>);
+
+<span class="deftype">lxb_tag_id_t</span> <span class="var">tag_id</span> = node-><span class="mpath">tag_id</span>;
+<span class="deftype">lxb_ns_id_t</span> <span class="var">ns_id</span> = node-><span class="mpath">ns_id</span>;</code></pre>
+<ol>
+<li>With cast without var on stack:</li>
+</ol>
+
+<pre class="code highlight"><code><span class="deftype">lxb_tag_id_t</span> <span class="var">tag_id</span> = <span class="ffname">lxb_dom_interface_node</span>(<span class="var">head</span>)->tag_id;
+<span class="deftype">lxb_ns_id_t</span> <span class="var">ns_id</span> = <span class="ffname">lxb_dom_interface_node</span>(<span class="var">head</span>)->ns_id;</code></pre>
+<p>As a result, from the above example with <code>lxb_html_head_element_t</code> we can access the following interfaces:</p>
+
+<pre class="code highlight"><code><span class="defftype"><span class="std-type">void</span></span>
+<span class="deffname">something_function_for_example</span>(<span class="deftype">lxb_html_head_element_t </span>*<span class="var">head</span>)
+{
+    <span class="deftype">lxb_html_element_t </span>*<span class="var">html_element</span> = <span class="ffname">lxb_html_interface_element</span>(<span class="var">head</span>);
+    <span class="deftype">lxb_dom_element_t </span>*<span class="var">dom_element</span> = <span class="ffname">lxb_dom_interface_element</span>(<span class="var">head</span>);
+    <span class="deftype">lxb_dom_node_t </span>*<span class="var">dom_node</span> = <span class="ffname">lxb_dom_interface_node</span>(<span class="var">head</span>);
+
+    <span class="comment">/* ... */</span>
+}</code></pre>
+<p>The following is a list of all HTML interfaces.</p>
+<h2>Interface Types<a class="anchor" aria-hidden="true" id="interface_types" href="#interface_types">#</a></h2><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header">HTMLDocument</td><td><a href="#lxb_html_document_t">lxb_html_document_t</a></td></tr>
+<tr>
+<td>HTMLAnchorElement</td><td><a href="#lxb_html_anchor_element_t">lxb_html_anchor_element_t</a></td></tr>
+<tr>
+<td>HTMLAreaElement</td><td><a href="#lxb_html_area_element_t">lxb_html_area_element_t</a></td></tr>
+<tr>
+<td>HTMLAudioElement</td><td><a href="#lxb_html_audio_element_t">lxb_html_audio_element_t</a></td></tr>
+<tr>
+<td>HTMLBRElement</td><td><a href="#lxb_html_br_element_t">lxb_html_br_element_t</a></td></tr>
+<tr>
+<td>HTMLBaseElement</td><td><a href="#lxb_html_base_element_t">lxb_html_base_element_t</a></td></tr>
+<tr>
+<td>HTMLBodyElement</td><td><a href="#lxb_html_body_element_t">lxb_html_body_element_t</a></td></tr>
+<tr>
+<td>HTMLButtonElement</td><td><a href="#lxb_html_button_element_t">lxb_html_button_element_t</a></td></tr>
+<tr>
+<td>HTMLCanvasElement</td><td><a href="#lxb_html_canvas_element_t">lxb_html_canvas_element_t</a></td></tr>
+<tr>
+<td>HTMLDListElement</td><td><a href="#lxb_html_d_list_element_t">lxb_html_d_list_element_t</a></td></tr>
+<tr>
+<td>HTMLDataElement</td><td><a href="#lxb_html_data_element_t">lxb_html_data_element_t</a></td></tr>
+<tr>
+<td>HTMLDataListElement</td><td><a href="#lxb_html_data_list_element_t">lxb_html_data_list_element_t</a></td></tr>
+<tr>
+<td>HTMLDetailsElement</td><td><a href="#lxb_html_details_element_t">lxb_html_details_element_t</a></td></tr>
+<tr>
+<td>HTMLDialogElement</td><td><a href="#lxb_html_dialog_element_t">lxb_html_dialog_element_t</a></td></tr>
+<tr>
+<td>HTMLDirectoryElement</td><td><a href="#lxb_html_directory_element_t">lxb_html_directory_element_t</a></td></tr>
+<tr>
+<td>HTMLDivElement</td><td><a href="#lxb_html_div_element_t">lxb_html_div_element_t</a></td></tr>
+<tr>
+<td>HTMLElement</td><td><a href="#lxb_html_element_t">lxb_html_element_t</a></td></tr>
+<tr>
+<td>HTMLEmbedElement</td><td><a href="#lxb_html_embed_element_t">lxb_html_embed_element_t</a></td></tr>
+<tr>
+<td>HTMLFieldSetElement</td><td><a href="#lxb_html_field_set_element_t">lxb_html_field_set_element_t</a></td></tr>
+<tr>
+<td>HTMLFontElement</td><td><a href="#lxb_html_font_element_t">lxb_html_font_element_t</a></td></tr>
+<tr>
+<td>HTMLFormElement</td><td><a href="#lxb_html_form_element_t">lxb_html_form_element_t</a></td></tr>
+<tr>
+<td>HTMLFrameElement</td><td><a href="#lxb_html_frame_element_t">lxb_html_frame_element_t</a></td></tr>
+<tr>
+<td>HTMLFrameSetElement</td><td><a href="#lxb_html_frame_set_element_t">lxb_html_frame_set_element_t</a></td></tr>
+<tr>
+<td>HTMLHRElement</td><td><a href="#lxb_html_hr_element_t">lxb_html_hr_element_t</a></td></tr>
+<tr>
+<td>HTMLHeadElement</td><td><a href="#lxb_html_head_element_t">lxb_html_head_element_t</a></td></tr>
+<tr>
+<td>HTMLHeadingElement</td><td><a href="#lxb_html_heading_element_t">lxb_html_heading_element_t</a></td></tr>
+<tr>
+<td>HTMLHtmlElement</td><td><a href="#lxb_html_html_element_t">lxb_html_html_element_t</a></td></tr>
+<tr>
+<td>HTMLIFrameElement</td><td><a href="#lxb_html_iframe_element_t">lxb_html_iframe_element_t</a></td></tr>
+<tr>
+<td>HTMLImageElement</td><td><a href="#lxb_html_image_element_t">lxb_html_image_element_t</a></td></tr>
+<tr>
+<td>HTMLInputElement</td><td><a href="#lxb_html_input_element_t">lxb_html_input_element_t</a></td></tr>
+<tr>
+<td>HTMLLIElement</td><td><a href="#lxb_html_li_element_t">lxb_html_li_element_t</a></td></tr>
+<tr>
+<td>HTMLLabelElement</td><td><a href="#lxb_html_label_element_t">lxb_html_label_element_t</a></td></tr>
+<tr>
+<td>HTMLLegendElement</td><td><a href="#lxb_html_legend_element_t">lxb_html_legend_element_t</a></td></tr>
+<tr>
+<td>HTMLLinkElement</td><td><a href="#lxb_html_link_element_t">lxb_html_link_element_t</a></td></tr>
+<tr>
+<td>HTMLMapElement</td><td><a href="#lxb_html_map_element_t">lxb_html_map_element_t</a></td></tr>
+<tr>
+<td>HTMLMarqueeElement</td><td><a href="#lxb_html_marquee_element_t">lxb_html_marquee_element_t</a></td></tr>
+<tr>
+<td>HTMLMediaElement</td><td><a href="#lxb_html_media_element_t">lxb_html_media_element_t</a></td></tr>
+<tr>
+<td>HTMLMenuElement</td><td><a href="#lxb_html_menu_element_t">lxb_html_menu_element_t</a></td></tr>
+<tr>
+<td>HTMLMetaElement</td><td><a href="#lxb_html_meta_element_t">lxb_html_meta_element_t</a></td></tr>
+<tr>
+<td>HTMLMeterElement</td><td><a href="#lxb_html_meter_element_t">lxb_html_meter_element_t</a></td></tr>
+<tr>
+<td>HTMLModElement</td><td><a href="#lxb_html_mod_element_t">lxb_html_mod_element_t</a></td></tr>
+<tr>
+<td>HTMLOListElement</td><td><a href="#lxb_html_o_list_element_t">lxb_html_o_list_element_t</a></td></tr>
+<tr>
+<td>HTMLObjectElement</td><td><a href="#lxb_html_object_element_t">lxb_html_object_element_t</a></td></tr>
+<tr>
+<td>HTMLOptGroupElement</td><td><a href="#lxb_html_opt_group_element_t">lxb_html_opt_group_element_t</a></td></tr>
+<tr>
+<td>HTMLOptionElement</td><td><a href="#lxb_html_option_element_t">lxb_html_option_element_t</a></td></tr>
+<tr>
+<td>HTMLOutputElement</td><td><a href="#lxb_html_output_element_t">lxb_html_output_element_t</a></td></tr>
+<tr>
+<td>HTMLParagraphElement</td><td><a href="#lxb_html_paragraph_element_t">lxb_html_paragraph_element_t</a></td></tr>
+<tr>
+<td>HTMLParamElement</td><td><a href="#lxb_html_param_element_t">lxb_html_param_element_t</a></td></tr>
+<tr>
+<td>HTMLPictureElement</td><td><a href="#lxb_html_picture_element_t">lxb_html_picture_element_t</a></td></tr>
+<tr>
+<td>HTMLPreElement</td><td><a href="#lxb_html_pre_element_t">lxb_html_pre_element_t</a></td></tr>
+<tr>
+<td>HTMLProgressElement</td><td><a href="#lxb_html_progress_element_t">lxb_html_progress_element_t</a></td></tr>
+<tr>
+<td>HTMLQuoteElement</td><td><a href="#lxb_html_quote_element_t">lxb_html_quote_element_t</a></td></tr>
+<tr>
+<td>HTMLScriptElement</td><td><a href="#lxb_html_script_element_t">lxb_html_script_element_t</a></td></tr>
+<tr>
+<td>HTMLSelectElement</td><td><a href="#lxb_html_select_element_t">lxb_html_select_element_t</a></td></tr>
+<tr>
+<td>HTMLSlotElement</td><td><a href="#lxb_html_slot_element_t">lxb_html_slot_element_t</a></td></tr>
+<tr>
+<td>HTMLSourceElement</td><td><a href="#lxb_html_source_element_t">lxb_html_source_element_t</a></td></tr>
+<tr>
+<td>HTMLSpanElement</td><td><a href="#lxb_html_span_element_t">lxb_html_span_element_t</a></td></tr>
+<tr>
+<td>HTMLStyleElement</td><td><a href="#lxb_html_style_element_t">lxb_html_style_element_t</a></td></tr>
+<tr>
+<td>HTMLTableCaptionElement</td><td><a href="#lxb_html_table_caption_element_t">lxb_html_table_caption_element_t</a></td></tr>
+<tr>
+<td>HTMLTableCellElement</td><td><a href="#lxb_html_table_cell_element_t">lxb_html_table_cell_element_t</a></td></tr>
+<tr>
+<td>HTMLTableColElement</td><td><a href="#lxb_html_table_col_element_t">lxb_html_table_col_element_t</a></td></tr>
+<tr>
+<td>HTMLTableElement</td><td><a href="#lxb_html_table_element_t">lxb_html_table_element_t</a></td></tr>
+<tr>
+<td>HTMLTableRowElement</td><td><a href="#lxb_html_table_row_element_t">lxb_html_table_row_element_t</a></td></tr>
+<tr>
+<td>HTMLTableSectionElement</td><td><a href="#lxb_html_table_section_element_t">lxb_html_table_section_element_t</a></td></tr>
+<tr>
+<td>HTMLTemplateElement</td><td><a href="#lxb_html_template_element_t">lxb_html_template_element_t</a></td></tr>
+<tr>
+<td>HTMLTextAreaElement</td><td><a href="#lxb_html_text_area_element_t">lxb_html_text_area_element_t</a></td></tr>
+<tr>
+<td>HTMLTimeElement</td><td><a href="#lxb_html_time_element_t">lxb_html_time_element_t</a></td></tr>
+<tr>
+<td>HTMLTitleElement</td><td><a href="#lxb_html_title_element_t">lxb_html_title_element_t</a></td></tr>
+<tr>
+<td>HTMLTrackElement</td><td><a href="#lxb_html_track_element_t">lxb_html_track_element_t</a></td></tr>
+<tr>
+<td>HTMLUListElement</td><td><a href="#lxb_html_u_list_element_t">lxb_html_u_list_element_t</a></td></tr>
+<tr>
+<td>HTMLUnknownElement</td><td><a href="#lxb_html_unknown_element_t">lxb_html_unknown_element_t</a></td></tr>
+<tr>
+<td>HTMLVideoElement</td><td><a href="#lxb_html_video_element_t">lxb_html_video_element_t</a></td></tr>
+<tr>
+<td>Window</td><td><a href="#lxb_html_window_t">lxb_html_window_t</a></td></tr>
+</tbody>
+</table>
+<h3>lxb_html_document_t<a class="anchor" aria-hidden="true" id="lxb_html_document_t" href="#lxb_html_document_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/document.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLDocument</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_document_t</td></tr>
+</tbody>
+</table>
+<h4>Functions<a class="anchor" aria-hidden="true" id="functions" href="#functions">#</a></h4><table>
+<thead><tr>
+<th class="function-list-return">Return value</th><th class="function-list-name">Name</th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right">lxb_html_document_t&nbsp;*</td><td><a href="#lxb_html_document_create">lxb_html_document_create</a>(void)</td></tr>
+<tr>
+<td style="text-align: right">void</td><td><a href="#lxb_html_document_clean">lxb_html_document_clean</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">lxb_html_document_t&nbsp;*</td><td><a href="#lxb_html_document_destroy">lxb_html_document_destroy</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_html_document_parse">lxb_html_document_parse</a>(lxb_html_document_t *document, const lxb_char_t *html, size_t size)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_html_document_parse_chunk_begin">lxb_html_document_parse_chunk_begin</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_html_document_parse_chunk">lxb_html_document_parse_chunk</a>(lxb_html_document_t *document, const lxb_char_t *html, size_t size)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_html_document_parse_chunk_end">lxb_html_document_parse_chunk_end</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_node_t&nbsp;*</td><td><a href="#lxb_html_document_parse_fragment">lxb_html_document_parse_fragment</a>(lxb_html_document_t *document, lxb_dom_element_t *element, const lxb_char_t *html, size_t size)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_html_document_parse_fragment_chunk_begin">lxb_html_document_parse_fragment_chunk_begin</a>(lxb_html_document_t *document, lxb_dom_element_t *element)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_html_document_parse_fragment_chunk">lxb_html_document_parse_fragment_chunk</a>(lxb_html_document_t *document, const lxb_char_t *html, size_t size)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_node_t&nbsp;*</td><td><a href="#lxb_html_document_parse_fragment_chunk_end">lxb_html_document_parse_fragment_chunk_end</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">const lxb_char_t&nbsp;*</td><td><a href="#lxb_html_document_title">lxb_html_document_title</a>(lxb_html_document_t *document, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_html_document_title_set">lxb_html_document_title_set</a>(lxb_html_document_t *document, const lxb_char_t *title, size_t len)</td></tr>
+<tr>
+<td style="text-align: right">const lxb_char_t&nbsp;*</td><td><a href="#lxb_html_document_title_raw">lxb_html_document_title_raw</a>(lxb_html_document_t *document, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_html_head_element_t&nbsp;*</td><td><a href="#lxb_html_document_head_element">lxb_html_document_head_element</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">lxb_html_body_element_t&nbsp;*</td><td><a href="#lxb_html_document_body_element">lxb_html_document_body_element</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_document_t&nbsp;*</td><td><a href="#lxb_html_document_original_ref">lxb_html_document_original_ref</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">bool</td><td><a href="#lxb_html_document_is_original">lxb_html_document_is_original</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">lexbor_mraw_t&nbsp;*</td><td><a href="#lxb_html_document_mraw">lxb_html_document_mraw</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">lexbor_mraw_t&nbsp;*</td><td><a href="#lxb_html_document_mraw_text">lxb_html_document_mraw_text</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">lxb_tag_heap_t&nbsp;*</td><td><a href="#lxb_html_document_tag_heap">lxb_html_document_tag_heap</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">lxb_ns_heap_t&nbsp;*</td><td><a href="#lxb_html_document_ns_heap">lxb_html_document_ns_heap</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">lxb_html_document_opt_t</td><td><a href="#lxb_html_document_opt">lxb_html_document_opt</a>(lxb_html_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right">void</td><td><a href="#lxb_html_document_opt_set">lxb_html_document_opt_set</a>(lxb_html_document_t *document, lxb_html_document_opt_t opt)</td></tr>
+<tr>
+<td style="text-align: right">void&nbsp;*</td><td><a href="#lxb_html_document_create_struct">lxb_html_document_create_struct</a>(lxb_html_document_t *document, size_t struct_size)</td></tr>
+<tr>
+<td style="text-align: right">void&nbsp;*</td><td><a href="#lxb_html_document_destroy_struct">lxb_html_document_destroy_struct</a>(lxb_html_document_t *document, void *data)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_element_t&nbsp;*</td><td><a href="#lxb_html_document_create_element">lxb_html_document_create_element</a>(lxb_html_document_t *document, const lxb_char_t *local_name, size_t lname_len, void *reserved_for_opt)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_element_t&nbsp;*</td><td><a href="#lxb_html_document_destroy_element">lxb_html_document_destroy_element</a>(lxb_dom_element_t *element)</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_create<a class="anchor" aria-hidden="true" id="lxb_html_document_create" href="#lxb_html_document_create">#</a></h4><p>This function create and initialize Document <code>lxb_html_document_t</code> object.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_html_document_t *</span>
+<span class="deffname">lxb_html_document_create</span>(<span class="var"><span class="std-type">void</span></span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Return</td><td>lxb_html_document_t *</td><td>Pointer to object if successful, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<p>For destroy this object use <a href="#lxb_html_document_destroy">lxb_html_document_destroy</a> function.</p>
+<h4>lxb_html_document_clean<a class="anchor" aria-hidden="true" id="lxb_html_document_clean" href="#lxb_html_document_clean">#</a></h4><p>This function clears the <code>lxb_html_document_t</code> object.<br>
+The memory of all nodes, structures, text, and other things related for this object will be erased.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std-type">void</span></span>
+<span class="deffname">lxb_html_document_clean</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Not <code>NULL</code>. Pointer to document.</td></tr>
+<tr>
+<td>Return</td><td>void</td><td>Returns nothing.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_destroy<a class="anchor" aria-hidden="true" id="lxb_html_document_destroy" href="#lxb_html_document_destroy">#</a></h4><p>This function destroy the <code>lxb_html_document_t</code> object.<br>
+All memory used for nodes, interfaces, text will be freed.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_html_document_t *</span>
+<span class="deffname">lxb_html_document_destroy</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Can be <code>NULL</code>. If <code>NULL</code>, then <code>NULL</code> will be returned.</td></tr>
+<tr>
+<td>Return</td><td>lxb_html_document_t *</td><td>Always returns <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_parse<a class="anchor" aria-hidden="true" id="lxb_html_document_parse" href="#lxb_html_document_parse">#</a></h4><p>This function for parsing and build HTML Tree for current Document.</p>
+<p>Note:<br>
+If this function is called with an already esists HTML tree in Document object, then current HTML tree will be erased and create new. The memory of all nodes, structures, text, and other things related to the exist Document will be erased.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_html_document_parse</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>,
+                        <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">html</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">size</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>html</td><td>Not <code>NULL</code>. The function will not create a copy of incoming data.</td></tr>
+<tr>
+<td>In</td><td>size</td><td>Data length.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_parse_chunk_begin<a class="anchor" aria-hidden="true" id="lxb_html_document_parse_chunk_begin" href="#lxb_html_document_parse_chunk_begin">#</a></h4><p>This is prepare function for chunks parsing.<br>
+Called once before parsing chunks.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_html_document_parse_chunk_begin</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<p>Usage example:</p>
+
+<pre class="code highlight"><code><span class="ffname">lxb_html_document_parse_chunk_begin</span>(<span class="var">document</span>);
+
+<span class="ffname">lxb_html_document_parse_chunk</span>(<span class="var">document</span>, <span class="var">chunk_one</span>, <span class="var">chunk_one_size</span>);
+<span class="ffname">lxb_html_document_parse_chunk</span>(<span class="var">document</span>, <span class="var">chunk_two</span>, <span class="var">chunk_two_size</span>);
+<span class="comment">/* Or loop <span class="std">for</span> lxb_html_document_parse_chunk */</span>
+
+<span class="ffname">lxb_html_document_parse_chunk_end</span>(<span class="var">document</span>);</code></pre>
+<h4>lxb_html_document_parse_chunk<a class="anchor" aria-hidden="true" id="lxb_html_document_parse_chunk" href="#lxb_html_document_parse_chunk">#</a></h4><p>This function for parsing chunks.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_html_document_parse_chunk</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>,
+                              <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">html</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">size</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>html</td><td>Not <code>NULL</code>. Data for parsing.</td></tr>
+<tr>
+<td>In</td><td>size</td><td>Data length.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<p>Incoming data will be copied to buffer. At the moment when the buffer will not be needed, the parser freed created buffer.</p>
+<p>For example, we have two chunks:</p>
+
+<pre class="code"><code>&lt;div clas</code></pre>
+
+<pre class="code"><code>s="entry"&gt;text</code></pre>
+<p>For the first chunk, a buffer will be created, and the parser will freed it only after it receives the end of the <code>div</code> element.</p>
+<p>Another example:</p>
+
+<pre class="code"><code>&lt;div class="entry"&gt;text</code></pre>
+
+<pre class="code"><code> for best example&lt;/div&gt;</code></pre>
+<p>For the chunks above, the buffer will be created and destroyed immediately after each chunk parsed.</p>
+<p>It is possible to disable copying of incoming data. But remember that you will have to store all the data until the end of the parsing.<br>
+Before begin parsing chunks:</p>
+
+<pre class="code highlight"><code><span class="ffname">lxb_html_document_opt_set</span>(<span class="var">document</span>, <span class="var">LXB_HTML_DOCUMENT_PARSE_WO_COPY</span>);
+
+<span class="ffname">lxb_html_document_parse_chunk_begin</span>(<span class="var">document</span>);
+<span class="ffname">lxb_html_document_parse_chunk</span>(<span class="var">document</span>, <span class="var">chunk_one</span>, <span class="var">chunk_one_size</span>);
+<span class="comment">/* ... */</code></pre>
+<h4>lxb_html_document_parse_chunk_end<a class="anchor" aria-hidden="true" id="lxb_html_document_parse_chunk_end" href="#lxb_html_document_parse_chunk_end">#</a></h4><p>This function inform the parser about end of parsing. After that the tree mark as complete.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_html_document_parse_chunk_end</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_parse_fragment<a class="anchor" aria-hidden="true" id="lxb_html_document_parse_fragment" href="#lxb_html_document_parse_fragment">#</a></h4><p>This function for parsing and build HTML fragment tree.<br>
+This function does not affect the current HTML tree. Function creates an additional tree using the current document and returns the root element.<br>
+In other words, this is the implementation <code>innerHTML</code>.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_dom_node_t *</span>
+<span class="deffname">lxb_html_document_parse_fragment</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>,
+                                 <span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>,
+                                 <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">html</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">size</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>element</td><td>Pointer to element. Not <code>NULL</code>. Based on this element a tree will be built.</td></tr>
+<tr>
+<td>In</td><td>html</td><td>Not <code>NULL</code>. The function will not create a copy of incoming data.</td></tr>
+<tr>
+<td>In</td><td>size</td><td>Data length.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_node_t *</td><td>If successful: pointer to the root node of fragment tree, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_parse_fragment_chunk_begin<a class="anchor" aria-hidden="true" id="lxb_html_document_parse_fragment_chunk_begin" href="#lxb_html_document_parse_fragment_chunk_begin">#</a></h4><p>This is prepare function for chunks parsing.<br>
+Called once before parsing chunks.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_html_document_parse_fragment_chunk_begin</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>,
+                                             <span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>element</td><td>Pointer to element. Not <code>NULL</code>. Based on this element a tree will be built.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<p>Usage example:</p>
+
+<pre class="code highlight"><code><span class="ffname">lxb_html_document_parse_fragment_chunk_begin</span>(<span class="var">document</span>, <span class="var">element</span>);
+
+<span class="ffname">lxb_html_document_parse_fragment_chunk</span>(<span class="var">document</span>, <span class="var">chunk_one</span>, <span class="var">chunk_one_size</span>);
+<span class="ffname">lxb_html_document_parse_fragment_chunk</span>(<span class="var">document</span>, <span class="var">chunk_two</span>, <span class="var">chunk_two_size</span>);
+<span class="comment">/* Or loop <span class="std">for</span> lxb_html_document_parse_fragment_chunk */</span>
+
+root_node = <span class="ffname">lxb_html_document_parse_fragment_chunk_end</span>(<span class="var">document</span>);</code></pre>
+<h4>lxb_html_document_parse_fragment_chunk<a class="anchor" aria-hidden="true" id="lxb_html_document_parse_fragment_chunk" href="#lxb_html_document_parse_fragment_chunk">#</a></h4><p>This function for parsing chunks.<br>
+The logic of this function is similar to <a href="#lxb_html_document_parse_chunk">lxb_html_document_parse_chunk</a> function, please see it.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_html_document_parse_fragment_chunk</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>,
+                                       <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">html</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">size</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>html</td><td>Not <code>NULL</code>. Data for parsing.</td></tr>
+<tr>
+<td>In</td><td>size</td><td>Data length.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_parse_fragment_chunk_end<a class="anchor" aria-hidden="true" id="lxb_html_document_parse_fragment_chunk_end" href="#lxb_html_document_parse_fragment_chunk_end">#</a></h4><p>This function inform the parser about end of parsing.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_dom_node_t *</span>
+<span class="deffname">lxb_html_document_parse_fragment_chunk_end</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_node_t *</td><td>If successful: pointer to the root node of fragment tree, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_title<a class="anchor" aria-hidden="true" id="lxb_html_document_title" href="#lxb_html_document_title">#</a></h4><p>This function returns the document's title, as given by the title element.<br>
+Returned data will be strip and collapse. All consecutive ASCII whitespace characters will be merged into one. At the beginning and end, all ASCII whitespace characters will be truncated.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_html_document_title</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length. Can be <code>NULL</code>. Length of title.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>If title element was be found in tree: pointer to the title data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<p>For example:</p>
+
+<pre class="code"><code>&lt;title&gt;  Oh, title  
+
+
+    my    title.   &lt;/title&gt;</code></pre>
+<p>Function returns:</p>
+
+<pre class="code highlight"><code>Oh, title my title.</code></pre>
+<h4>lxb_html_document_title_set<a class="anchor" aria-hidden="true" id="lxb_html_document_title_set" href="#lxb_html_document_title_set">#</a></h4><p>This function update the document title. If there is no appropriate element to update, the new element will be created.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_html_document_title_set</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>,
+                            <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">title</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>title</td><td>Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>len</td><td>Length of title.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_title_raw<a class="anchor" aria-hidden="true" id="lxb_html_document_title_raw" href="#lxb_html_document_title_raw">#</a></h4><p>This function returns the document's title as it is.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_html_document_title_raw</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length. Can be <code>NULL</code>. Length of title.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>If title element was be found in tree: pointer to the title data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_head_element<a class="anchor" aria-hidden="true" id="lxb_html_document_head_element" href="#lxb_html_document_head_element">#</a></h4><p>This function returns a head element from HTML Tree.<br>
+Head element always present in HTML Tree.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_html_head_element_t *</span>
+<span class="deffname">lxb_html_document_head_element</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_html_head_element_t *</td><td>Head element if exist, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_body_element<a class="anchor" aria-hidden="true" id="lxb_html_document_body_element" href="#lxb_html_document_body_element">#</a></h4><p>This function returns a body element from HTML Tree.<br>
+Body element always present in HTML Tree.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_html_body_element_t *</span>
+<span class="deffname">lxb_html_document_body_element</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_html_body_element_t *</td><td>Body element if exist, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_original_ref<a class="anchor" aria-hidden="true" id="lxb_html_document_original_ref" href="#lxb_html_document_original_ref">#</a></h4><p>A document can be created based on an existing document. This function returns original/base document object.<br>
+If the current document is original then it will be returned.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_dom_document_t *</span>
+<span class="deffname">lxb_html_document_original_ref</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_document_t *</td><td></td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_is_original<a class="anchor" aria-hidden="true" id="lxb_html_document_is_original" href="#lxb_html_document_is_original">#</a></h4><p>This function checks document for original.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std-type">bool</span></span>
+<span class="deffname">lxb_html_document_is_original</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>bool</td><td><code>true</code> if document is original, otherwise <code>false</code></td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_mraw<a class="anchor" aria-hidden="true" id="lxb_html_document_mraw" href="#lxb_html_document_mraw">#</a></h4><p>This function returns <code>mraw</code> object for work with objects memory.<br>
+Through the <code>mraw</code> object, memory is allocated for all nodes and structures.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lexbor_mraw_t *</span>
+<span class="deffname">lxb_html_document_mraw</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lexbor_mraw_t *</td><td></td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_mraw_text<a class="anchor" aria-hidden="true" id="lxb_html_document_mraw_text" href="#lxb_html_document_mraw_text">#</a></h4><p>This function returns <code>mraw</code> object for work with strings memory.<br>
+Through the <code>mraw</code> object, memory is allocated for all text, strings.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lexbor_mraw_t *</span>
+<span class="deffname">lxb_html_document_mraw_text</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lexbor_mraw_t *</td><td></td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_tag_heap<a class="anchor" aria-hidden="true" id="lxb_html_document_tag_heap" href="#lxb_html_document_tag_heap">#</a></h4><p>This function returns <code>lxb_tag_heap_t</code> object for work with tags.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_tag_heap_t *</span>
+<span class="deffname">lxb_html_document_tag_heap</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_tag_heap_t *</td><td></td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_ns_heap<a class="anchor" aria-hidden="true" id="lxb_html_document_ns_heap" href="#lxb_html_document_ns_heap">#</a></h4><p>This function returns <code>lxb_ns_heap_t</code> object for work with namespaces.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_ns_heap_t *</span>
+<span class="deffname">lxb_html_document_ns_heap</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_ns_heap_t *</td><td></td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_opt_set<a class="anchor" aria-hidden="true" id="lxb_html_document_opt_set" href="#lxb_html_document_opt_set">#</a></h4><p>This function sets options for the document.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std-type">void</span></span>
+<span class="deffname">lxb_html_document_opt_set</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>,
+                          <span class="deftype">lxb_html_document_opt_t</span> <span class="var">opt</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>opt</td><td>Options bitmask.</td></tr>
+<tr>
+<td>Return</td><td>void</td><td>Returns nothing.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_opt<a class="anchor" aria-hidden="true" id="lxb_html_document_opt" href="#lxb_html_document_opt">#</a></h4><p>This function returns current options for document.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_html_document_opt_t</span>
+<span class="deffname">lxb_html_document_opt</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>)</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_html_document_opt_t</td><td>Current options.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_create_struct<a class="anchor" aria-hidden="true" id="lxb_html_document_create_struct" href="#lxb_html_document_create_struct">#</a></h4><p>This function create and return users structures.<br>
+The created structures will be destroyed along with the document.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std-type">void</span> *</span>
+<span class="deffname">lxb_html_document_create_struct</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>,
+                                <span class="deftype"><span class="type">size_t</span></span> <span class="var">struct_size</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>struct_size</td><td>User structure size.</td></tr>
+<tr>
+<td>Return</td><td>void *</td><td>Pointer to user object if successful, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<p>Example:</p>
+
+<pre class="code highlight"><code><span class="deftype">my_best_struct_t </span>*<span class="var">my_best</span>;
+my_best = <span class="ffname">lxb_html_document_create_struct</span>(<span class="var">document</span>, 
+                                          sizeof(<span class="var">my_best_struct_t</span>));
+<span class="comment">/* Do something */</code></pre>
+<h4>lxb_html_document_destroy_struct<a class="anchor" aria-hidden="true" id="lxb_html_document_destroy_struct" href="#lxb_html_document_destroy_struct">#</a></h4><p>This function destroy and freed users structures.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std-type">void</span> *</span>
+<span class="deffname">lxb_html_document_destroy_struct</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>, <span class="deftype"><span class="std-type">void</span> </span>*<span class="var">data</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>data</td><td>Pointer to user object. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>void *</td><td><code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_create_element<a class="anchor" aria-hidden="true" id="lxb_html_document_create_element" href="#lxb_html_document_create_element">#</a></h4><p>This function create element by tag name.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_dom_element_t *</span>
+<span class="deffname">lxb_html_document_create_element</span>(<span class="deftype">lxb_html_document_t </span>*<span class="var">document</span>,
+                                 <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">local_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">lname_len</span>,
+                                 <span class="deftype"><span class="std-type">void</span> </span>*<span class="var">reserved_for_opt</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>local_name</td><td>Not <code>NULL</code>. Tag name.</td></tr>
+<tr>
+<td>In</td><td>lname_len</td><td>Length of local_name.</td></tr>
+<tr>
+<td>In</td><td>reserved_for_opt</td><td>Reserved for future.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_element_t *</td><td>Pointer to created element if successful, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_document_destroy_element<a class="anchor" aria-hidden="true" id="lxb_html_document_destroy_element" href="#lxb_html_document_destroy_element">#</a></h4><p>This function destroy HTML element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_dom_element_t *</span>
+<span class="deffname">lxb_html_document_destroy_element</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>document</td><td>Pointer to document. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>element</td><td>Pointer to element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_element_t *</td><td><code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_anchor_element_t<a class="anchor" aria-hidden="true" id="lxb_html_anchor_element_t" href="#lxb_html_anchor_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/anchor_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLAnchorElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_area_element_t<a class="anchor" aria-hidden="true" id="lxb_html_area_element_t" href="#lxb_html_area_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/area_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLAreaElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_audio_element_t<a class="anchor" aria-hidden="true" id="lxb_html_audio_element_t" href="#lxb_html_audio_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/audio_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLAudioElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_media_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_br_element_t<a class="anchor" aria-hidden="true" id="lxb_html_br_element_t" href="#lxb_html_br_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/br_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLBRElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_base_element_t<a class="anchor" aria-hidden="true" id="lxb_html_base_element_t" href="#lxb_html_base_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/base_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLBaseElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_body_element_t<a class="anchor" aria-hidden="true" id="lxb_html_body_element_t" href="#lxb_html_body_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/body_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLBodyElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_button_element_t<a class="anchor" aria-hidden="true" id="lxb_html_button_element_t" href="#lxb_html_button_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/button_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLButtonElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_canvas_element_t<a class="anchor" aria-hidden="true" id="lxb_html_canvas_element_t" href="#lxb_html_canvas_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/canvas_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLCanvasElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_d_list_element_t<a class="anchor" aria-hidden="true" id="lxb_html_d_list_element_t" href="#lxb_html_d_list_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/d_list_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLDListElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_data_element_t<a class="anchor" aria-hidden="true" id="lxb_html_data_element_t" href="#lxb_html_data_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/data_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLDataElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_data_list_element_t<a class="anchor" aria-hidden="true" id="lxb_html_data_list_element_t" href="#lxb_html_data_list_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/data_list_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLDataListElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_details_element_t<a class="anchor" aria-hidden="true" id="lxb_html_details_element_t" href="#lxb_html_details_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/details_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLDetailsElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_dialog_element_t<a class="anchor" aria-hidden="true" id="lxb_html_dialog_element_t" href="#lxb_html_dialog_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/dialog_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLDialogElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_directory_element_t<a class="anchor" aria-hidden="true" id="lxb_html_directory_element_t" href="#lxb_html_directory_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/directory_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLDirectoryElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_div_element_t<a class="anchor" aria-hidden="true" id="lxb_html_div_element_t" href="#lxb_html_div_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/div_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLDivElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_element_t<a class="anchor" aria-hidden="true" id="lxb_html_element_t" href="#lxb_html_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_element_t</td></tr>
+</tbody>
+</table>
+<h4>Functions<a class="anchor" aria-hidden="true" id="functions" href="#functions">#</a></h4><table>
+<thead><tr>
+<th class="function-list-return">Return value</th><th class="function-list-name">Name</th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right">lxb_html_element_t&nbsp;*</td><td><a href="#lxb_html_element_inner_html_set">lxb_html_element_inner_html_set</a>(lxb_html_element_t *element, const lxb_char_t *html, size_t size)</td></tr>
+</tbody>
+</table>
+<h4>lxb_html_element_inner_html_set<a class="anchor" aria-hidden="true" id="lxb_html_element_inner_html_set" href="#lxb_html_element_inner_html_set">#</a></h4><p>This function builds a tree from a HTML fragment and replaces all the child elements of the set element with the created ones.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_html_element_t *</span>
+<span class="deffname">lxb_html_element_inner_html_set</span>(<span class="deftype">lxb_html_element_t </span>*<span class="var">element</span>,
+                                <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">html</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">size</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to element in which all child elements will be replaced. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>html</td><td>Pointer to HTML fragment. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>size</td><td>Length of <code>html</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_html_element_t *</td><td>Pointer to <code>element</code> if successful, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_embed_element_t<a class="anchor" aria-hidden="true" id="lxb_html_embed_element_t" href="#lxb_html_embed_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/embed_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLEmbedElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_field_set_element_t<a class="anchor" aria-hidden="true" id="lxb_html_field_set_element_t" href="#lxb_html_field_set_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/field_set_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLFieldSetElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_font_element_t<a class="anchor" aria-hidden="true" id="lxb_html_font_element_t" href="#lxb_html_font_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/font_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLFontElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_form_element_t<a class="anchor" aria-hidden="true" id="lxb_html_form_element_t" href="#lxb_html_form_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/form_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLFormElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_frame_element_t<a class="anchor" aria-hidden="true" id="lxb_html_frame_element_t" href="#lxb_html_frame_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/frame_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLFrameElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_frame_set_element_t<a class="anchor" aria-hidden="true" id="lxb_html_frame_set_element_t" href="#lxb_html_frame_set_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/frame_set_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLFrameSetElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_hr_element_t<a class="anchor" aria-hidden="true" id="lxb_html_hr_element_t" href="#lxb_html_hr_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/hr_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLHRElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_head_element_t<a class="anchor" aria-hidden="true" id="lxb_html_head_element_t" href="#lxb_html_head_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/head_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLHeadElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_heading_element_t<a class="anchor" aria-hidden="true" id="lxb_html_heading_element_t" href="#lxb_html_heading_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/heading_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLHeadingElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_html_element_t<a class="anchor" aria-hidden="true" id="lxb_html_html_element_t" href="#lxb_html_html_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/html_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLHtmlElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_iframe_element_t<a class="anchor" aria-hidden="true" id="lxb_html_iframe_element_t" href="#lxb_html_iframe_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/iframe_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLIFrameElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_image_element_t<a class="anchor" aria-hidden="true" id="lxb_html_image_element_t" href="#lxb_html_image_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/image_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLImageElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_input_element_t<a class="anchor" aria-hidden="true" id="lxb_html_input_element_t" href="#lxb_html_input_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/input_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLInputElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_li_element_t<a class="anchor" aria-hidden="true" id="lxb_html_li_element_t" href="#lxb_html_li_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/li_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLLIElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_label_element_t<a class="anchor" aria-hidden="true" id="lxb_html_label_element_t" href="#lxb_html_label_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/label_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLLabelElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_legend_element_t<a class="anchor" aria-hidden="true" id="lxb_html_legend_element_t" href="#lxb_html_legend_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/legend_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLLegendElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_link_element_t<a class="anchor" aria-hidden="true" id="lxb_html_link_element_t" href="#lxb_html_link_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/link_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLLinkElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_map_element_t<a class="anchor" aria-hidden="true" id="lxb_html_map_element_t" href="#lxb_html_map_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/map_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLMapElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_marquee_element_t<a class="anchor" aria-hidden="true" id="lxb_html_marquee_element_t" href="#lxb_html_marquee_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/marquee_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLMarqueeElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_media_element_t<a class="anchor" aria-hidden="true" id="lxb_html_media_element_t" href="#lxb_html_media_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/media_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLMediaElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_menu_element_t<a class="anchor" aria-hidden="true" id="lxb_html_menu_element_t" href="#lxb_html_menu_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/menu_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLMenuElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_meta_element_t<a class="anchor" aria-hidden="true" id="lxb_html_meta_element_t" href="#lxb_html_meta_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/meta_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLMetaElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_meter_element_t<a class="anchor" aria-hidden="true" id="lxb_html_meter_element_t" href="#lxb_html_meter_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/meter_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLMeterElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_mod_element_t<a class="anchor" aria-hidden="true" id="lxb_html_mod_element_t" href="#lxb_html_mod_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/mod_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLModElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_o_list_element_t<a class="anchor" aria-hidden="true" id="lxb_html_o_list_element_t" href="#lxb_html_o_list_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/o_list_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLOListElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_object_element_t<a class="anchor" aria-hidden="true" id="lxb_html_object_element_t" href="#lxb_html_object_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/object_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLObjectElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_opt_group_element_t<a class="anchor" aria-hidden="true" id="lxb_html_opt_group_element_t" href="#lxb_html_opt_group_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/opt_group_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLOptGroupElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_option_element_t<a class="anchor" aria-hidden="true" id="lxb_html_option_element_t" href="#lxb_html_option_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/option_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLOptionElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_output_element_t<a class="anchor" aria-hidden="true" id="lxb_html_output_element_t" href="#lxb_html_output_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/output_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLOutputElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_paragraph_element_t<a class="anchor" aria-hidden="true" id="lxb_html_paragraph_element_t" href="#lxb_html_paragraph_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/paragraph_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLParagraphElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_param_element_t<a class="anchor" aria-hidden="true" id="lxb_html_param_element_t" href="#lxb_html_param_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/param_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLParamElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_picture_element_t<a class="anchor" aria-hidden="true" id="lxb_html_picture_element_t" href="#lxb_html_picture_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/picture_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLPictureElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_pre_element_t<a class="anchor" aria-hidden="true" id="lxb_html_pre_element_t" href="#lxb_html_pre_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/pre_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLPreElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_progress_element_t<a class="anchor" aria-hidden="true" id="lxb_html_progress_element_t" href="#lxb_html_progress_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/progress_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLProgressElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_quote_element_t<a class="anchor" aria-hidden="true" id="lxb_html_quote_element_t" href="#lxb_html_quote_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/quote_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLQuoteElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_script_element_t<a class="anchor" aria-hidden="true" id="lxb_html_script_element_t" href="#lxb_html_script_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/script_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLScriptElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_select_element_t<a class="anchor" aria-hidden="true" id="lxb_html_select_element_t" href="#lxb_html_select_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/select_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLSelectElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_slot_element_t<a class="anchor" aria-hidden="true" id="lxb_html_slot_element_t" href="#lxb_html_slot_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/slot_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLSlotElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_source_element_t<a class="anchor" aria-hidden="true" id="lxb_html_source_element_t" href="#lxb_html_source_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/source_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLSourceElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_span_element_t<a class="anchor" aria-hidden="true" id="lxb_html_span_element_t" href="#lxb_html_span_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/span_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLSpanElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_style_element_t<a class="anchor" aria-hidden="true" id="lxb_html_style_element_t" href="#lxb_html_style_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/style_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLStyleElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_table_caption_element_t<a class="anchor" aria-hidden="true" id="lxb_html_table_caption_element_t" href="#lxb_html_table_caption_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/table_caption_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLTableCaptionElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_table_cell_element_t<a class="anchor" aria-hidden="true" id="lxb_html_table_cell_element_t" href="#lxb_html_table_cell_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/table_cell_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLTableCellElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_table_col_element_t<a class="anchor" aria-hidden="true" id="lxb_html_table_col_element_t" href="#lxb_html_table_col_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/table_col_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLTableColElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_table_element_t<a class="anchor" aria-hidden="true" id="lxb_html_table_element_t" href="#lxb_html_table_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/table_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLTableElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_table_row_element_t<a class="anchor" aria-hidden="true" id="lxb_html_table_row_element_t" href="#lxb_html_table_row_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/table_row_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLTableRowElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_table_section_element_t<a class="anchor" aria-hidden="true" id="lxb_html_table_section_element_t" href="#lxb_html_table_section_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/table_section_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLTableSectionElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_template_element_t<a class="anchor" aria-hidden="true" id="lxb_html_template_element_t" href="#lxb_html_template_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/template_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLTemplateElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_text_area_element_t<a class="anchor" aria-hidden="true" id="lxb_html_text_area_element_t" href="#lxb_html_text_area_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/text_area_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLTextAreaElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_time_element_t<a class="anchor" aria-hidden="true" id="lxb_html_time_element_t" href="#lxb_html_time_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/time_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLTimeElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_title_element_t<a class="anchor" aria-hidden="true" id="lxb_html_title_element_t" href="#lxb_html_title_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/title_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLTitleElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_track_element_t<a class="anchor" aria-hidden="true" id="lxb_html_track_element_t" href="#lxb_html_track_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/track_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLTrackElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_u_list_element_t<a class="anchor" aria-hidden="true" id="lxb_html_u_list_element_t" href="#lxb_html_u_list_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/u_list_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLUListElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_unknown_element_t<a class="anchor" aria-hidden="true" id="lxb_html_unknown_element_t" href="#lxb_html_unknown_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/unknown_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLUnknownElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_video_element_t<a class="anchor" aria-hidden="true" id="lxb_html_video_element_t" href="#lxb_html_video_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/video_element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>HTMLVideoElement</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_html_media_element_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_html_window_t<a class="anchor" aria-hidden="true" id="lxb_html_window_t" href="#lxb_html_window_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/html/interfaces/window.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>Window</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_event_target_t</td></tr>
+</tbody>
+</table>
+</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="footer">
+		<div class="footer-content">
+			<span class="copy">© 2018-2019 Alexander Borisov</span>
+		</div>
+	</div>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-130050727-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-130050727-1');
+	</script>
+</body>
+</html>

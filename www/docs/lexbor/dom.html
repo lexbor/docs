@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lexbor: DOM Module</title>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link rel="apple-touch-icon" sizes="120x120" href="/img/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+	<link rel="manifest" href="/img/site.webmanifest">
+	<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#da532c">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="stylesheet" href="/new/lexbor/docs/www/css/bootstrap-grid.min.css">
+	<link rel="stylesheet" href="/new/lexbor/docs/www/css/style.css?time=1555781069.777233">
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head>
+
+<body>
+	<div class="page">
+		<div class="head">
+			<div class="head-content">
+				
+				<div class="head-left"><a href="/new/lexbor/docs/www">lexbor</a></div>
+				
+				<div class="head-right">
+					<ul>
+						<li><a href="/new/lexbor/docs/www/download.html">Download</a></li>
+						<li><a href="/new/lexbor/docs/www/docs/lexbor.html">Documentation</a></li>
+						<li><a href="/new/lexbor/docs/www/support.html">Support</a></li>
+						<li><a href="/new/lexbor/docs/www/license.html">License</a></li>
+						<li><a href="/new/lexbor/docs/www/roadmap.html">Roadmap</a></li>
+						<li><a href="/new/lexbor/docs/www/about.html">About Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-content">
+				<ul><li><a href="/new/lexbor/docs/www/docs/lexbor.html">lexbor</a></li><li class="nav-spliter">/</li><li>DOM</li></ul>
+			</div>
+		</div>
+		<div class="body">
+				<div class="split dom-module">
+					<div class="left">
+						<div class="left-content markdown-refs">
+							<ul class="nav-level-1">
+<li><a href="#dom">DOM</a>
+<ul class="nav-level-2">
+<li><a href="#interface_types">Interface Types</a>
+</ul>
+						</div>
+					</div>
+					<div class="right">
+						<div class="right-content">
+							<div class="markdown-body"><h1>DOM<a class="anchor" aria-hidden="true" id="dom" href="#dom">#</a></h1><p>This is documentation for <code>DOM</code> module for <a href="/">Lexbor library</a>. Module created by <a href="https://dom.spec.whatwg.org/">whatwg specification</a>.</p>
+<h2>Interface Types<a class="anchor" aria-hidden="true" id="interface_types" href="#interface_types">#</a></h2><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Attr</td><td><a href="#lxb_dom_attr_t">lxb_dom_attr_t</a></td></tr>
+<tr>
+<td>CDATASection</td><td><a href="#lxb_dom_cdata_section_t">lxb_dom_cdata_section_t</a></td></tr>
+<tr>
+<td>CharacterData</td><td><a href="#lxb_dom_character_data_t">lxb_dom_character_data_t</a></td></tr>
+<tr>
+<td>Comment</td><td><a href="#lxb_dom_comment_t">lxb_dom_comment_t</a></td></tr>
+<tr>
+<td>Document</td><td><a href="#lxb_dom_document_t">lxb_dom_document_t</a></td></tr>
+<tr>
+<td>DocumentFragment</td><td><a href="#lxb_dom_document_fragment_t">lxb_dom_document_fragment_t</a></td></tr>
+<tr>
+<td>DocumentType</td><td><a href="#lxb_dom_document_type_t">lxb_dom_document_type_t</a></td></tr>
+<tr>
+<td>Element</td><td><a href="#lxb_dom_element_t">lxb_dom_element_t</a></td></tr>
+<tr>
+<td>EventTarget</td><td><a href="#lxb_dom_event_target_t">lxb_dom_event_target_t</a></td></tr>
+<tr>
+<td>Node</td><td><a href="#lxb_dom_node_t">lxb_dom_node_t</a></td></tr>
+<tr>
+<td>ProcessingInstruction</td><td><a href="#lxb_dom_processing_instruction_t">lxb_dom_processing_instruction_t</a></td></tr>
+<tr>
+<td>ShadowRoot</td><td><a href="#lxb_dom_shadow_root_t">lxb_dom_shadow_root_t</a></td></tr>
+<tr>
+<td>Text</td><td><a href="#lxb_dom_text_t">lxb_dom_text_t</a></td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_attr_t<a class="anchor" aria-hidden="true" id="lxb_dom_attr_t" href="#lxb_dom_attr_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/attr.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>Attr</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_node_t</td></tr>
+</tbody>
+</table>
+<h4>Functions<a class="anchor" aria-hidden="true" id="functions" href="#functions">#</a></h4><table>
+<thead><tr>
+<th class="function-list-return">Return value</th><th class="function-list-name">Name</th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td>lxb_dom_attr_set_name(lxb_dom_attr_t *attr, const lxb_char_t *local_name, size_t local_name_len, const lxb_char_t *prefix, size_t prefix_len, bool lowercase)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td>lxb_dom_attr_set_name_wo_copy(lxb_dom_attr_t *attr, lxb_char_t *local_name, size_t local_name_len, const lxb_char_t *prefix, size_t prefix_len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td>lxb_dom_attr_set_value(lxb_dom_attr_t *attr, const lxb_char_t *value, size_t value_len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td>lxb_dom_attr_set_value_wo_copy(lxb_dom_attr_t *attr, lxb_char_t *value, size_t value_len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td>lxb_dom_attr_set_existing_value(lxb_dom_attr_t *attr, const lxb_char_t *value, size_t value_len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td>lxb_dom_attr_clone_name_value(lxb_dom_attr_t *attr_from, lxb_dom_attr_t *attr_to)</td></tr>
+<tr>
+<td style="text-align: right">bool</td><td>lxb_dom_attr_compare(lxb_dom_attr_t *first, lxb_dom_attr_t *second)</td></tr>
+<tr>
+<td style="text-align: right">const&nbsp;lxb_char_t&nbsp;*</td><td>lxb_dom_attr_qualified_name(lxb_dom_attr_t *attr, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">const&nbsp;lxb_char_t&nbsp;*</td><td>lxb_dom_attr_local_name(lxb_dom_attr_t *attr, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">const&nbsp;lxb_char_t&nbsp;*</td><td>lxb_dom_attr_value(lxb_dom_attr_t *attr, size_t *len)</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_cdata_section_t<a class="anchor" aria-hidden="true" id="lxb_dom_cdata_section_t" href="#lxb_dom_cdata_section_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/cdata_section.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>CDATASection</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_text_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_character_data_t<a class="anchor" aria-hidden="true" id="lxb_dom_character_data_t" href="#lxb_dom_character_data_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/character_data.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>CharacterData</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_node_t</td></tr>
+</tbody>
+</table>
+<h4>Functions<a class="anchor" aria-hidden="true" id="functions" href="#functions">#</a></h4><table>
+<thead><tr>
+<th class="function-list-return">Return value</th><th class="function-list-name">Name</th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_character_data_replace">lxb_dom_character_data_replace</a>(lxb_dom_character_data_t *ch_data, const lxb_char_t *data, size_t len, size_t offset, size_t count)</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_character_data_replace<a class="anchor" aria-hidden="true" id="lxb_dom_character_data_replace" href="#lxb_dom_character_data_replace">#</a></h4><p>This function replaces data in a text node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_character_data_replace</span>(<span class="deftype">lxb_dom_character_data_t </span>*<span class="var">ch_data</span>,
+                               <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">data</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">len</span>,
+                               <span class="deftype"><span class="type">size_t</span></span> <span class="var">offset</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">count</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>ch_data</td><td>Pointer to character data node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>data</td><td>Pointer to data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>len</td><td>Length of <code>data</code>.</td></tr>
+<tr>
+<td>In</td><td>offset</td><td>Where to begin replacing characters. Start value starts at 0.</td></tr>
+<tr>
+<td>In</td><td>count</td><td>How many characters to replace.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_comment_t<a class="anchor" aria-hidden="true" id="lxb_dom_comment_t" href="#lxb_dom_comment_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/comment.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>Comment</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_character_data_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_document_t<a class="anchor" aria-hidden="true" id="lxb_dom_document_t" href="#lxb_dom_document_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/document.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>Document</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_node_t</td></tr>
+</tbody>
+</table>
+<h4>Functions<a class="anchor" aria-hidden="true" id="functions" href="#functions">#</a></h4><table>
+<thead><tr>
+<th class="function-list-return">Return value</th><th class="function-list-name">Name</th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right">void</td><td>lxb_dom_document_attach_doctype(lxb_dom_document_t *document, lxb_dom_document_type_t *doctype)</td></tr>
+<tr>
+<td style="text-align: right">void</td><td>lxb_dom_document_attach_element(lxb_dom_document_t *document, lxb_dom_element_t *element)</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_element_t">lxb_dom_element_t</a>&nbsp;*</td><td>lxb_dom_document_create_element(lxb_dom_document_t *document, const lxb_char_t *local_name, size_t lname_len, void *reserved_for_opt)</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_element_t">lxb_dom_element_t</a>&nbsp;*</td><td>lxb_dom_document_destroy_element(lxb_dom_element_t *element)</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_document_fragment_t">lxb_dom_document_fragment_t</a> *</td><td>lxb_dom_document_create_document_fragment(lxb_dom_document_t *document)</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_text_t">lxb_dom_text_t</a>&nbsp;*</td><td>lxb_dom_document_create_text_node(lxb_dom_document_t *document, const lxb_char_t *data, size_t len)</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_cdata_section_t">lxb_dom_cdata_section_t</a>&nbsp;*</td><td>lxb_dom_document_create_cdata_section(lxb_dom_document_t *document, const lxb_char_t *data, size_t len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_processing_instruction_t&nbsp;*</td><td>lxb_dom_document_create_processing_instruction(lxb_dom_document_t *document, const lxb_char_t *target, size_t target_len, const lxb_char_t *data, size_t data_len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_comment_t&nbsp;*</td><td>lxb_dom_document_create_comment(lxb_dom_document_t *document, const lxb_char_t *data, size_t len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_interface_t&nbsp;*</td><td>lxb_dom_document_create_interface(lxb_dom_document_t *document, lxb_tag_id_t tag_id, lxb_ns_id_t ns)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_interface_t&nbsp;*</td><td>lxb_dom_document_destroy_interface(lxb_dom_interface_t *interface)</td></tr>
+<tr>
+<td style="text-align: right">void&nbsp;*</td><td>lxb_dom_document_create_struct(lxb_dom_document_t *document, size_t struct_size)</td></tr>
+<tr>
+<td style="text-align: right">void&nbsp;*</td><td>lxb_dom_document_destroy_struct(lxb_dom_document_t *document, void *structure)</td></tr>
+<tr>
+<td style="text-align: right">lxb_char_t&nbsp;*</td><td>lxb_dom_document_create_text(lxb_dom_document_t *document, size_t len)</td></tr>
+<tr>
+<td style="text-align: right">void&nbsp;*</td><td>lxb_dom_document_destroy_text(lxb_dom_document_t *document, lxb_char_t *text)</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_document_fragment_t<a class="anchor" aria-hidden="true" id="lxb_dom_document_fragment_t" href="#lxb_dom_document_fragment_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/document_fragment.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>DocumentFragment</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_node_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_document_type_t<a class="anchor" aria-hidden="true" id="lxb_dom_document_type_t" href="#lxb_dom_document_type_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/document_type.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>DocumentType</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_node_t</td></tr>
+</tbody>
+</table>
+<h4>Functions<a class="anchor" aria-hidden="true" id="functions" href="#functions">#</a></h4><table>
+<thead><tr>
+<th class="function-list-return">Return value</th><th class="function-list-name">Name</th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right">const&nbsp;lxb_char_t&nbsp;*</td><td>lxb_dom_document_type_name(lxb_dom_document_type_t *doc_type, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">const&nbsp;lxb_char_t&nbsp;*</td><td>lxb_dom_document_type_public_id(lxb_dom_document_type_t *doc_type, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">const&nbsp;lxb_char_t&nbsp;*</td><td>lxb_dom_document_type_system_id(lxb_dom_document_type_t *doc_type, size_t *len)</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_document_type_name<a class="anchor" aria-hidden="true" id="lxb_dom_document_type_name" href="#lxb_dom_document_type_name">#</a></h4><p>This function returns name of document type node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_document_type_name</span>(<span class="deftype">lxb_dom_document_type_t </span>*<span class="var">doc_type</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>pi</td><td>Pointer to DOM document type node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length of name. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to the name data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_document_type_public_id<a class="anchor" aria-hidden="true" id="lxb_dom_document_type_public_id" href="#lxb_dom_document_type_public_id">#</a></h4><p>This function returns public id of document type node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_document_type_public_id</span>(<span class="deftype">lxb_dom_document_type_t </span>*<span class="var">doc_type</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>pi</td><td>Pointer to DOM document type node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length of public id. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to the public id data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_document_type_system_id<a class="anchor" aria-hidden="true" id="lxb_dom_document_type_system_id" href="#lxb_dom_document_type_system_id">#</a></h4><p>This function returns system id of document type node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_document_type_system_id</span>(<span class="deftype">lxb_dom_document_type_t </span>*<span class="var">doc_type</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>pi</td><td>Pointer to DOM document type node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length of system id. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to the system id data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_element_t<a class="anchor" aria-hidden="true" id="lxb_dom_element_t" href="#lxb_dom_element_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/element.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>Element</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_node_t</td></tr>
+</tbody>
+</table>
+<h4>Functions<a class="anchor" aria-hidden="true" id="functions" href="#functions">#</a></h4><table>
+<thead><tr>
+<th class="function-list-return">Return value</th><th class="function-list-name">Name</th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right">bool</td><td><a href="#lxb_dom_element_has_attributes">lxb_dom_element_has_attributes</a>(lxb_dom_element_t *element)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_attr_t *</td><td><a href="#lxb_dom_element_set_attribute">lxb_dom_element_set_attribute</a>(lxb_dom_element_t *element, const lxb_char_t *qualified_name, size_t qn_len, const lxb_char_t *value, size_t value_len)</td></tr>
+<tr>
+<td style="text-align: right">const lxb_char_t&nbsp;*</td><td><a href="#lxb_dom_element_get_attribute">lxb_dom_element_get_attribute</a>(lxb_dom_element_t *element, const lxb_char_t *qualified_name, size_t qn_len, size_t *value_len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_element_remove_attribute">lxb_dom_element_remove_attribute</a>(lxb_dom_element_t *element, const lxb_char_t *qualified_name, size_t qn_len)</td></tr>
+<tr>
+<td style="text-align: right">bool</td><td><a href="#lxb_dom_element_has_attribute">lxb_dom_element_has_attribute</a>(lxb_dom_element_t *element, const lxb_char_t *qualified_name, size_t qn_len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_element_attr_append">lxb_dom_element_attr_append</a>(lxb_dom_element_t *element, lxb_dom_attr_t *attr)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_element_attr_remove">lxb_dom_element_attr_remove</a>(lxb_dom_element_t *element, lxb_dom_attr_t *attr)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_attr_t *</td><td><a href="#lxb_dom_element_attr_by_name">lxb_dom_element_attr_by_name</a>(lxb_dom_element_t *element, const lxb_char_t *qualified_name, size_t qn_len)</td></tr>
+<tr>
+<td style="text-align: right">bool</td><td><a href="#lxb_dom_element_compare">lxb_dom_element_compare</a>(lxb_dom_element_t *first, lxb_dom_element_t *second)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_element_qualified_name_set">lxb_dom_element_qualified_name_set</a>(lxb_dom_element_t *element, const lxb_char_t *prefix, unsigned int prefix_len, const lxb_char_t *lname, unsigned int lname_len)</td></tr>
+<tr>
+<td style="text-align: right">bool</td><td><a href="#lxb_dom_element_qualified_name_cmp">lxb_dom_element_qualified_name_cmp</a>(lxb_dom_element_t *element, lxb_tag_id_t tag_id, const lxb_char_t *prefix, size_t prefix_len, const lxb_char_t *lname, size_t lname_len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_element_is_set">lxb_dom_element_is_set</a>(lxb_dom_element_t *element, const lxb_char_t *is, size_t is_len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_elements_by_tag_name">lxb_dom_elements_by_tag_name</a>(lxb_dom_element_t *root, lxb_dom_collection_t *collection, const lxb_char_t *qualified_name, size_t len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_elements_by_class_name">lxb_dom_elements_by_class_name</a>(lxb_dom_element_t *root, lxb_dom_collection_t *collection, const lxb_char_t *class_name, size_t len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_elements_by_attr">lxb_dom_elements_by_attr</a>(lxb_dom_element_t *root, lxb_dom_collection_t *collection, const lxb_char_t *qualified_name, size_t qname_len, const lxb_char_t *value, size_t value_len, bool case_insensitive)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_elements_by_attr_begin">lxb_dom_elements_by_attr_begin</a>(lxb_dom_element_t *root, lxb_dom_collection_t *collection, const lxb_char_t *qualified_name, size_t qname_len, const lxb_char_t *value, size_t value_len, bool case_insensitive)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_elements_by_attr_end">lxb_dom_elements_by_attr_end</a>(lxb_dom_element_t *root, lxb_dom_collection_t *collection, const lxb_char_t *qualified_name, size_t qname_len, const lxb_char_t *value, size_t value_len, bool case_insensitive)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td><a href="#lxb_dom_elements_by_attr_contain">lxb_dom_elements_by_attr_contain</a>(lxb_dom_element_t *root, lxb_dom_collection_t *collection, const lxb_char_t *qualified_name, size_t qname_len, const lxb_char_t *value, size_t value_len, bool case_insensitive)</td></tr>
+<tr>
+<td style="text-align: right">const&nbsp;lxb_char_t&nbsp;*</td><td><a href="#lxb_dom_element_qualified_name">lxb_dom_element_qualified_name</a>(lxb_dom_element_t *element, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">const lxb_char_t *</td><td><a href="#lxb_dom_element_qualified_name_upper">lxb_dom_element_qualified_name_upper</a>(lxb_dom_element_t *element, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">const lxb_char_t *</td><td><a href="#lxb_dom_element_local_name">lxb_dom_element_local_name</a>(lxb_dom_element_t *element, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">const lxb_char_t *</td><td><a href="#lxb_dom_element_prefix">lxb_dom_element_prefix</a>(lxb_dom_element_t *element, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">const lxb_char_t *</td><td><a href="#lxb_dom_element_tag_name">lxb_dom_element_tag_name</a>(lxb_dom_element_t *element, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">const lxb_char_t *</td><td><a href="#lxb_dom_element_id">lxb_dom_element_id</a>(lxb_dom_element_t *element, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">const lxb_char_t *</td><td><a href="#lxb_dom_element_class">lxb_dom_element_class</a>(lxb_dom_element_t *element, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">bool</td><td><a href="#lxb_dom_element_is_custom">lxb_dom_element_is_custom</a>(lxb_dom_element_t *element)</td></tr>
+<tr>
+<td style="text-align: right">bool</td><td><a href="#lxb_dom_element_custom_is_defined">lxb_dom_element_custom_is_defined</a>(lxb_dom_element_t *element)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_attr_t *</td><td><a href="#lxb_dom_element_first_attribute">lxb_dom_element_first_attribute</a>(lxb_dom_element_t *element)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_attr_t *</td><td><a href="#lxb_dom_element_next_attribute">lxb_dom_element_next_attribute</a>(lxb_dom_attr_t *attr)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_attr_t *</td><td><a href="#lxb_dom_element_prev_attribute">lxb_dom_element_prev_attribute</a>(lxb_dom_attr_t *attr)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_attr_t *</td><td><a href="#lxb_dom_element_last_attribute">lxb_dom_element_last_attribute</a>(lxb_dom_element_t *element)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_attr_t *</td><td><a href="#lxb_dom_element_id_attribute">lxb_dom_element_id_attribute</a>(lxb_dom_element_t *element)</td></tr>
+<tr>
+<td style="text-align: right">lxb_dom_attr_t *</td><td><a href="#lxb_dom_element_class_attribute">lxb_dom_element_class_attribute</a>(lxb_dom_element_t *element)</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_has_attributes<a class="anchor" aria-hidden="true" id="lxb_dom_element_has_attributes" href="#lxb_dom_element_has_attributes">#</a></h4><p>This function checks the presence of an attributes on an element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std-type">bool</span></span>
+<span class="deffname">lxb_dom_element_has_attributes</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>bool</td><td><code>true</code> if exists, otherwise <code>false</code>.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_set_attribute<a class="anchor" aria-hidden="true" id="lxb_dom_element_set_attribute" href="#lxb_dom_element_set_attribute">#</a></h4><p>This function adds attribute to an element, and gives it the specified value.</p>
+<p>If the attribute already exists, only the value is set/changed.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_dom_attr_t *</span>
+<span class="deffname">lxb_dom_element_set_attribute</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>,
+                              <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">qualified_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">qn_len</span>,
+                              <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">value</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">value_len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>qualified_name</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>qn_len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>In</td><td>value</td><td>Pointer to value data. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>value_len</td><td>Length of <code>value</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_attr_t *</td><td>Attribute object if successful, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_get_attribute<a class="anchor" aria-hidden="true" id="lxb_dom_element_get_attribute" href="#lxb_dom_element_get_attribute">#</a></h4><p>This function returns value of attribute by name, from element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_element_get_attribute</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>,
+                              <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">qualified_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">qn_len</span>,
+                              <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">value_len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>qualified_name</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>qn_len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>Out</td><td>value_len</td><td>Length of <code>value</code>.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to value data if attribute exists, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_remove_attribute<a class="anchor" aria-hidden="true" id="lxb_dom_element_remove_attribute" href="#lxb_dom_element_remove_attribute">#</a></h4><p>This function removes the attribute from an element by name.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_element_remove_attribute</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>,
+                                 <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">qualified_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">qn_len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>qualified_name</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>qn_len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_has_attribute<a class="anchor" aria-hidden="true" id="lxb_dom_element_has_attribute" href="#lxb_dom_element_has_attribute">#</a></h4><p>This function checks the presence of an attribute on an element by name.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std-type">bool</span></span>
+<span class="deffname">lxb_dom_element_has_attribute</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>,
+                              <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">qualified_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">qn_len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>qualified_name</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>qn_len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>Return</td><td>bool</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_attr_append<a class="anchor" aria-hidden="true" id="lxb_dom_element_attr_append" href="#lxb_dom_element_attr_append">#</a></h4><p>This function adds an attribute to the element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_element_attr_append</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>, <span class="deftype">lxb_dom_attr_t </span>*<span class="var">attr</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>attr</td><td>Pointer to attribute. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>bool</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_attr_remove<a class="anchor" aria-hidden="true" id="lxb_dom_element_attr_remove" href="#lxb_dom_element_attr_remove">#</a></h4><p>This function removes the attribute from an element by pointer.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_element_attr_remove</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>, <span class="deftype">lxb_dom_attr_t </span>*<span class="var">attr</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>attr</td><td>Pointer to attribute. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>bool</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_attr_by_name<a class="anchor" aria-hidden="true" id="lxb_dom_element_attr_by_name" href="#lxb_dom_element_attr_by_name">#</a></h4><p>This function returns pointer of attribute by name, from element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_dom_attr_t *</span>
+<span class="deffname">lxb_dom_element_attr_by_name</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>,
+                             <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">qualified_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">qn_len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>qualified_name</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>qn_len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_attr_t *</td><td>Pointer to attribute if exists, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_compare<a class="anchor" aria-hidden="true" id="lxb_dom_element_compare" href="#lxb_dom_element_compare">#</a></h4><p>This function returns pointer of attribute by name, from element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std-type">bool</span></span>
+<span class="deffname">lxb_dom_element_compare</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">first</span>, <span class="deftype">lxb_dom_element_t </span>*<span class="var">second</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>first</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>second</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>bool</td><td><code>true</code> if equal, otherwise <code>false</code>.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_qualified_name_set<a class="anchor" aria-hidden="true" id="lxb_dom_element_qualified_name_set" href="#lxb_dom_element_qualified_name_set">#</a></h4><p>This function sets the qualified name for the element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_element_qualified_name_set</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>,
+                                   <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">prefix</span>, <span class="deftype"><span class="std-type">unsigned</span> int</span> <span class="var">prefix_len</span>,
+                                   <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">lname</span>, <span class="deftype"><span class="std-type">unsigned</span> int</span> <span class="var">lname_len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>prefix</td><td>Pointer to prefix data. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>prefix_len</td><td>Length of <code>prefix</code>.</td></tr>
+<tr>
+<td>In</td><td>lname</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>lname_len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_attr_t *</td><td>Pointer to attribute if exists, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_qualified_name_cmp<a class="anchor" aria-hidden="true" id="lxb_dom_element_qualified_name_cmp" href="#lxb_dom_element_qualified_name_cmp">#</a></h4><p>This function compares the qualified name of the element with the one passed.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std-type">bool</span></span>
+<span class="deffname">lxb_dom_element_qualified_name_cmp</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>, <span class="deftype">lxb_tag_id_t</span> <span class="var">tag_id</span>,
+                                   <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">prefix</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">prefix_len</span>,
+                                   <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">lname</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">lname_len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>prefix</td><td>Pointer to prefix data. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>prefix_len</td><td>Length of <code>prefix</code>.</td></tr>
+<tr>
+<td>In</td><td>lname</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>lname_len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>Return</td><td>bool</td><td><code>true</code> if equal, otherwise <code>false</code>.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_is_set<a class="anchor" aria-hidden="true" id="lxb_dom_element_is_set" href="#lxb_dom_element_is_set">#</a></h4><p>This function sets IS value for element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_element_is_set</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>,
+                       <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">is</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">is_len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>is</td><td>Pointer to is data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>is_len</td><td>Length of <code>is</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_elements_by_tag_name<a class="anchor" aria-hidden="true" id="lxb_dom_elements_by_tag_name" href="#lxb_dom_elements_by_tag_name">#</a></h4><p>This function searches for elements by tag name and adds them to the collection.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_elements_by_tag_name</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">root</span>,
+                             <span class="deftype">lxb_dom_collection_t </span>*<span class="var">collection</span>,
+                             <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">qualified_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>root</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>collection</td><td>Pointer to collection object. Not <code>NULL</code>. Must be created and initialized.</td></tr>
+<tr>
+<td>In</td><td>qualified_name</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_elements_by_class_name<a class="anchor" aria-hidden="true" id="lxb_dom_elements_by_class_name" href="#lxb_dom_elements_by_class_name">#</a></h4><p>This function searches for elements by class name and adds them to the collection.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_elements_by_class_name</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">root</span>,
+                               <span class="deftype">lxb_dom_collection_t </span>*<span class="var">collection</span>,
+                               <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">class_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>root</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>collection</td><td>Pointer to collection object. Not <code>NULL</code>. Must be created and initialized.</td></tr>
+<tr>
+<td>In</td><td>class_name</td><td>Pointer to class name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>len</td><td>Length of <code>class_name</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_elements_by_attr<a class="anchor" aria-hidden="true" id="lxb_dom_elements_by_attr" href="#lxb_dom_elements_by_attr">#</a></h4><p>This function searches for elements by attribute name and value (optional) and adds them to the collection.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_elements_by_attr</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">root</span>,
+                         <span class="deftype">lxb_dom_collection_t </span>*<span class="var">collection</span>,
+                         <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">qualified_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">qname_len</span>,
+                         <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">value</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">value_len</span>,
+                         <span class="deftype"><span class="std-type">bool</span></span> <span class="var">case_insensitive</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>root</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>collection</td><td>Pointer to collection object. Not <code>NULL</code>. Must be created and initialized.</td></tr>
+<tr>
+<td>In</td><td>qualified_name</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>In</td><td>value</td><td>Pointer to name data. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>value_len</td><td>Length of <code>value</code>.</td></tr>
+<tr>
+<td>In</td><td>case_insensitive</td><td>Case insensitive if set to <code>true</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_elements_by_attr_begin<a class="anchor" aria-hidden="true" id="lxb_dom_elements_by_attr_begin" href="#lxb_dom_elements_by_attr_begin">#</a></h4><p>This function searches for elements at the beginning of the attribute value and adds them to the collection.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_elements_by_attr_begin</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">root</span>,
+                               <span class="deftype">lxb_dom_collection_t </span>*<span class="var">collection</span>,
+                               <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">qualified_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">qname_len</span>,
+                               <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">value</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">value_len</span>,
+                               <span class="deftype"><span class="std-type">bool</span></span> <span class="var">case_insensitive</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>root</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>collection</td><td>Pointer to collection object. Not <code>NULL</code>. Must be created and initialized.</td></tr>
+<tr>
+<td>In</td><td>qualified_name</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>In</td><td>value</td><td>Pointer to name data. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>value_len</td><td>Length of <code>value</code>.</td></tr>
+<tr>
+<td>In</td><td>case_insensitive</td><td>Case insensitive if set to <code>true</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_elements_by_attr_end<a class="anchor" aria-hidden="true" id="lxb_dom_elements_by_attr_end" href="#lxb_dom_elements_by_attr_end">#</a></h4><p>This function searches for elements at the end of an attribute value and adds them to the collection.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_elements_by_attr_end</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">root</span>,
+                             <span class="deftype">lxb_dom_collection_t </span>*<span class="var">collection</span>,
+                             <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">qualified_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">qname_len</span>,
+                             <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">value</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">value_len</span>,
+                             <span class="deftype"><span class="std-type">bool</span></span> <span class="var">case_insensitive</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>root</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>collection</td><td>Pointer to collection object. Not <code>NULL</code>. Must be created and initialized.</td></tr>
+<tr>
+<td>In</td><td>qualified_name</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>In</td><td>value</td><td>Pointer to name data. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>value_len</td><td>Length of <code>value</code>.</td></tr>
+<tr>
+<td>In</td><td>case_insensitive</td><td>Case insensitive if set to <code>true</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_elements_by_attr_contain<a class="anchor" aria-hidden="true" id="lxb_dom_elements_by_attr_contain" href="#lxb_dom_elements_by_attr_contain">#</a></h4><p>This function searches for elements at contain of an attribute value and adds them to the collection.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_elements_by_attr_contain</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">root</span>,
+                                 <span class="deftype">lxb_dom_collection_t </span>*<span class="var">collection</span>,
+                                 <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">qualified_name</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">qname_len</span>,
+                                 <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">value</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">value_len</span>,
+                                 <span class="deftype"><span class="std-type">bool</span></span> <span class="var">case_insensitive</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>root</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>collection</td><td>Pointer to collection object. Not <code>NULL</code>. Must be created and initialized.</td></tr>
+<tr>
+<td>In</td><td>qualified_name</td><td>Pointer to name data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>len</td><td>Length of <code>qualified_name</code>.</td></tr>
+<tr>
+<td>In</td><td>value</td><td>Pointer to name data. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>value_len</td><td>Length of <code>value</code>.</td></tr>
+<tr>
+<td>In</td><td>case_insensitive</td><td>Case insensitive if set to <code>true</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_qualified_name<a class="anchor" aria-hidden="true" id="lxb_dom_element_qualified_name" href="#lxb_dom_element_qualified_name">#</a></h4><p>This function returns the qualified name of the element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_element_qualified_name</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length. Can be <code>NULL</code>. Length of name.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to name data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_qualified_name_upper<a class="anchor" aria-hidden="true" id="lxb_dom_element_qualified_name_upper" href="#lxb_dom_element_qualified_name_upper">#</a></h4><p>This function returns qualified name of an element in uppercase.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_element_qualified_name_upper</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length. Can be <code>NULL</code>. Length of name.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to name data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_local_name<a class="anchor" aria-hidden="true" id="lxb_dom_element_local_name" href="#lxb_dom_element_local_name">#</a></h4><p>This function returns local name of an element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_element_local_name</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length. Can be <code>NULL</code>. Length of name.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to local name data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_prefix<a class="anchor" aria-hidden="true" id="lxb_dom_element_prefix" href="#lxb_dom_element_prefix">#</a></h4><p>This function returns namespace prefix of an element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_element_prefix</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length. Can be <code>NULL</code>. Length of name.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to prefix data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_tag_name<a class="anchor" aria-hidden="true" id="lxb_dom_element_tag_name" href="#lxb_dom_element_tag_name">#</a></h4><p>This function returns tag name of an element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_element_tag_name</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length. Can be <code>NULL</code>. Length of name.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to tag name data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_id<a class="anchor" aria-hidden="true" id="lxb_dom_element_id" href="#lxb_dom_element_id">#</a></h4><p>This function returns id of an element. In other words, returns the value from the <code>id</code> attribute.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_element_id</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length. Can be <code>NULL</code>. Length of name.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to id data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_class<a class="anchor" aria-hidden="true" id="lxb_dom_element_class" href="#lxb_dom_element_class">#</a></h4><p>This function returns class of an element. In other words, returns the value from the <code>class</code> attribute.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_element_class</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length. Can be <code>NULL</code>. Length of name.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to class data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_is_custom<a class="anchor" aria-hidden="true" id="lxb_dom_element_is_custom" href="#lxb_dom_element_is_custom">#</a></h4><p>This function checks for element is custom.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std-type">bool</span></span>
+<span class="deffname">lxb_dom_element_is_custom</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>bool</td><td><code>true</code> if custom, otherwise <code>false</code>.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_custom_is_defined<a class="anchor" aria-hidden="true" id="lxb_dom_element_custom_is_defined" href="#lxb_dom_element_custom_is_defined">#</a></h4><p>This function checks for element is custom defined.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std-type">bool</span></span>
+<span class="deffname">lxb_dom_element_custom_is_defined</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>bool</td><td><code>true</code> if defined, otherwise <code>false</code>.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_first_attribute<a class="anchor" aria-hidden="true" id="lxb_dom_element_first_attribute" href="#lxb_dom_element_first_attribute">#</a></h4><p>This function returns the first attribute from the element attribute list.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_dom_attr_t *</span>
+<span class="deffname">lxb_dom_element_first_attribute</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_attr_t *</td><td>Attribute object if exists, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_next_attribute<a class="anchor" aria-hidden="true" id="lxb_dom_element_next_attribute" href="#lxb_dom_element_next_attribute">#</a></h4><p>This function returns the next attribute from the element attribute list.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_dom_attr_t *</span>
+<span class="deffname">lxb_dom_element_next_attribute</span>(<span class="deftype">lxb_dom_attr_t </span>*<span class="var">attr</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_attr_t *</td><td>Attribute object if exists, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_prev_attribute<a class="anchor" aria-hidden="true" id="lxb_dom_element_prev_attribute" href="#lxb_dom_element_prev_attribute">#</a></h4><p>This function returns the previous attribute from the element attribute list.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_dom_attr_t *</span>
+<span class="deffname">lxb_dom_element_prev_attribute</span>(<span class="deftype">lxb_dom_attr_t </span>*<span class="var">attr</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_attr_t *</td><td>Attribute object if exists, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_last_attribute<a class="anchor" aria-hidden="true" id="lxb_dom_element_last_attribute" href="#lxb_dom_element_last_attribute">#</a></h4><p>This function returns the last attribute from the element attribute list.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_dom_attr_t *</span>
+<span class="deffname">lxb_dom_element_last_attribute</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_attr_t *</td><td>Attribute object if exists, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_id_attribute<a class="anchor" aria-hidden="true" id="lxb_dom_element_id_attribute" href="#lxb_dom_element_id_attribute">#</a></h4><p>This function returns pointer to <code>id</code> attribute of element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_dom_attr_t *</span>
+<span class="deffname">lxb_dom_element_id_attribute</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_attr_t *</td><td>Attribute object if exists, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_element_class_attribute<a class="anchor" aria-hidden="true" id="lxb_dom_element_class_attribute" href="#lxb_dom_element_class_attribute">#</a></h4><p>This function returns pointer to <code>class</code> attribute of element.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline lxb_dom_attr_t *</span>
+<span class="deffname">lxb_dom_element_class_attribute</span>(<span class="deftype">lxb_dom_element_t </span>*<span class="var">element</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>element</td><td>Pointer to DOM element. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_attr_t *</td><td>Attribute object if exists, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_event_target_t<a class="anchor" aria-hidden="true" id="lxb_dom_event_target_t" href="#lxb_dom_event_target_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/event_target.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>EventTarget</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>None</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_node_t<a class="anchor" aria-hidden="true" id="lxb_dom_node_t" href="#lxb_dom_node_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/node.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>Node</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_event_target_t</td></tr>
+</tbody>
+</table>
+<h4>Attributes<a class="anchor" aria-hidden="true" id="attributes" href="#attributes">#</a></h4><table>
+<thead><tr>
+<th class="function-list-return">Value</th><th class="function-list-name">Name</th><th class="function-list-desc">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_document_t">lxb_dom_document_t</a>&nbsp;*</td><td>owner_document</td><td>Pointer to the document that owns the node.</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_node_t">lxb_dom_node_t</a> *</td><td>next</td><td>Pointer to the next node.</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_node_t">lxb_dom_node_t</a> *</td><td>prev</td><td>Pointer to the next node.</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_node_t">lxb_dom_node_t</a> *</td><td>parent</td><td>Pointer to the previous node.</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_node_t">lxb_dom_node_t</a> *</td><td>first_child</td><td>Pointer to the first child.</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_node_t">lxb_dom_node_t</a> *</td><td>last_child</td><td>Pointer to the last child.</td></tr>
+<tr>
+<td style="text-align: right">unsigned int</td><td>ns</td><td>Namespace identifier.</td></tr>
+<tr>
+<td style="text-align: right">unsigned int</td><td>tag_id</td><td>Tag name identifier.</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_node_type_t">lxb_dom_node_type_t</a></td><td>type</td><td>Node type.</td></tr>
+</tbody>
+</table>
+<h4>Enums<a class="anchor" aria-hidden="true" id="enums" href="#enums">#</a></h4><h4>lxb_dom_node_type_t<a class="anchor" aria-hidden="true" id="lxb_dom_node_type_t" href="#lxb_dom_node_type_t">#</a></h4>
+<pre class="code highlight"><code>LXB_DOM_NODE_TYPE_UNDEF                  = <span class="number">0</span>x<span class="number">00</span>,
+LXB_DOM_NODE_TYPE_ELEMENT                = <span class="number">0</span>x<span class="number">01</span>,
+LXB_DOM_NODE_TYPE_ATTRIBUTE              = <span class="number">0</span>x<span class="number">02</span>,
+LXB_DOM_NODE_TYPE_TEXT                   = <span class="number">0</span>x<span class="number">03</span>,
+LXB_DOM_NODE_TYPE_CDATA_SECTION          = <span class="number">0</span>x<span class="number">04</span>,
+LXB_DOM_NODE_TYPE_ENTITY_REFERENCE       = <span class="number">0</span>x<span class="number">05</span>, <span class="comment">/* historical */</span>
+LXB_DOM_NODE_TYPE_ENTITY                 = <span class="number">0</span>x<span class="number">06</span>, <span class="comment">/* historical */</span>
+LXB_DOM_NODE_TYPE_PROCESSING_INSTRUCTION = <span class="number">0</span>x<span class="number">07</span>,
+LXB_DOM_NODE_TYPE_COMMENT                = <span class="number">0</span>x<span class="number">08</span>,
+LXB_DOM_NODE_TYPE_DOCUMENT               = <span class="number">0</span>x<span class="number">09</span>,
+LXB_DOM_NODE_TYPE_DOCUMENT_TYPE          = <span class="number">0</span>x<span class="number">0</span>A,
+LXB_DOM_NODE_TYPE_DOCUMENT_FRAGMENT      = <span class="number">0</span>x<span class="number">0</span>B,
+LXB_DOM_NODE_TYPE_NOTATION               = <span class="number">0</span>x<span class="number">0</span>C, <span class="comment">/* historical */</span>
+LXB_DOM_NODE_TYPE_LAST_ENTRY             = <span class="number">0</span>x<span class="number">0</span>D</code></pre>
+<h4>Functions<a class="anchor" aria-hidden="true" id="functions" href="#functions">#</a></h4><table>
+<thead><tr>
+<th class="function-list-return">Return value</th><th class="function-list-name">Name</th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_node_t">lxb_dom_node_t</a>&nbsp;*</td><td>lxb_dom_node_destroy(lxb_dom_node_t *node)</td></tr>
+<tr>
+<td style="text-align: right"><a href="#lxb_dom_node_t">lxb_dom_node_t</a> *</td><td>lxb_dom_node_destroy_deep(lxb_dom_node_t *root)</td></tr>
+<tr>
+<td style="text-align: right">const&nbsp;lxb_char_t&nbsp;*</td><td>lxb_dom_node_name(lxb_dom_node_t *node, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">void</td><td>lxb_dom_node_insert_child(lxb_dom_node_t *to, lxb_dom_node_t *node)</td></tr>
+<tr>
+<td style="text-align: right">void</td><td>lxb_dom_node_insert_before(lxb_dom_node_t *to, lxb_dom_node_t *node)</td></tr>
+<tr>
+<td style="text-align: right">void</td><td>lxb_dom_node_insert_after(lxb_dom_node_t *to, lxb_dom_node_t *node)</td></tr>
+<tr>
+<td style="text-align: right">void</td><td>lxb_dom_node_remove(lxb_dom_node_t *node)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td>lxb_dom_node_replace_all(lxb_dom_node_t *parent, lxb_dom_node_t *node)</td></tr>
+<tr>
+<td style="text-align: right">void</td><td>lxb_dom_node_simple_walk(lxb_dom_node_t *root, lxb_dom_node_simple_walker_f walker_cb, void *ctx)</td></tr>
+<tr>
+<td style="text-align: right">lxb_char_t *</td><td>lxb_dom_node_text_content(lxb_dom_node_t *node, size_t *len)</td></tr>
+<tr>
+<td style="text-align: right">lxb_status_t</td><td>lxb_dom_node_text_content_set(lxb_dom_node_t*node, const lxb_char_t *content, size_t len)</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_node_destroy<a class="anchor" aria-hidden="true" id="lxb_dom_node_destroy" href="#lxb_dom_node_destroy">#</a></h4><p>This function destroys the node and frees the memory.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_dom_node_t *</span>
+<span class="deffname">lxb_dom_node_destroy</span>(<span class="deftype">lxb_dom_node_t </span>*<span class="var">node</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>node</td><td>Pointer to DOM node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_node_t *</td><td><code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_node_destroy_deep<a class="anchor" aria-hidden="true" id="lxb_dom_node_destroy_deep" href="#lxb_dom_node_destroy_deep">#</a></h4><p>This function destroys the node and all child nodes and frees the memory.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_dom_node_t *</span>
+<span class="deffname">lxb_dom_node_destroy_deep</span>(<span class="deftype">lxb_dom_node_t </span>*<span class="var">root</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>root</td><td>Pointer to DOM node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_dom_node_t *</td><td><code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_node_name<a class="anchor" aria-hidden="true" id="lxb_dom_node_name" href="#lxb_dom_node_name">#</a></h4><p>This function returns the name of the node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_node_name</span>(<span class="deftype">lxb_dom_node_t </span>*<span class="var">node</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>node</td><td>Pointer to DOM node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length. Can be <code>NULL</code>. Length of name.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to the name data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_node_insert_child<a class="anchor" aria-hidden="true" id="lxb_dom_node_insert_child" href="#lxb_dom_node_insert_child">#</a></h4><p>This function inserts a child node to the specified node. The node is inserted at the end.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std-type">void</span></span>
+<span class="deffname">lxb_dom_node_insert_child</span>(<span class="deftype">lxb_dom_node_t </span>*<span class="var">to</span>, <span class="deftype">lxb_dom_node_t </span>*<span class="var">node</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>to</td><td>Pointer to DOM node. Not <code>NULL</code>. Where to insert.</td></tr>
+<tr>
+<td>In</td><td>node</td><td>Pointer to DOM node. Not <code>NULL</code>. Whom to insert.</td></tr>
+<tr>
+<td>Return</td><td>void</td><td>Returns nothing.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_node_insert_before<a class="anchor" aria-hidden="true" id="lxb_dom_node_insert_before" href="#lxb_dom_node_insert_before">#</a></h4><p>This function inserts a node before the specified node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std-type">void</span></span>
+<span class="deffname">lxb_dom_node_insert_before</span>(<span class="deftype">lxb_dom_node_t </span>*<span class="var">to</span>, <span class="deftype">lxb_dom_node_t </span>*<span class="var">node</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>to</td><td>Pointer to DOM node. Not <code>NULL</code>. Before whom.</td></tr>
+<tr>
+<td>In</td><td>node</td><td>Pointer to DOM node. Not <code>NULL</code>. Whom to insert.</td></tr>
+<tr>
+<td>Return</td><td>void</td><td>Returns nothing.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_node_insert_after<a class="anchor" aria-hidden="true" id="lxb_dom_node_insert_after" href="#lxb_dom_node_insert_after">#</a></h4><p>This function inserts a node after the specified node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std-type">void</span></span>
+<span class="deffname">lxb_dom_node_insert_after</span>(<span class="deftype">lxb_dom_node_t </span>*<span class="var">to</span>, <span class="deftype">lxb_dom_node_t </span>*<span class="var">node</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>to</td><td>Pointer to DOM node. Not <code>NULL</code>. After whom.</td></tr>
+<tr>
+<td>In</td><td>node</td><td>Pointer to DOM node. Not <code>NULL</code>. Whom to insert.</td></tr>
+<tr>
+<td>Return</td><td>void</td><td>Returns nothing.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_node_remove<a class="anchor" aria-hidden="true" id="lxb_dom_node_remove" href="#lxb_dom_node_remove">#</a></h4><p>This function remove a node without freeing memory.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std-type">void</span></span>
+<span class="deffname">lxb_dom_node_remove</span>(<span class="deftype">lxb_dom_node_t </span>*<span class="var">node</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>node</td><td>Pointer to DOM node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>void</td><td>Returns nothing.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_node_replace_all<a class="anchor" aria-hidden="true" id="lxb_dom_node_replace_all" href="#lxb_dom_node_replace_all">#</a></h4><p>This function destroy all child nodes, freeing memory, and then inserts the node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_node_replace_all</span>(<span class="deftype">lxb_dom_node_t </span>*<span class="var">root</span>, <span class="deftype">lxb_dom_node_t </span>*<span class="var">node</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>root</td><td>Pointer to DOM node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>node</td><td>Pointer to DOM node. Not <code>NULL</code>. Whom to insert.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_node_simple_walk<a class="anchor" aria-hidden="true" id="lxb_dom_node_simple_walk" href="#lxb_dom_node_simple_walk">#</a></h4><p>This function walk the tree and calls a callback function to each node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API <span class="std-type">void</span></span>
+<span class="deffname">lxb_dom_node_simple_walk</span>(<span class="deftype">lxb_dom_node_t </span>*<span class="var">root</span>,
+                         <span class="deftype">lxb_dom_node_simple_walker_f</span> <span class="var">walker_cb</span>, <span class="deftype"><span class="std-type">void</span> </span>*<span class="var">ctx</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>root</td><td>Pointer to DOM node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>walker_cb</td><td>Pointer to callback function. Not <code>NULL</code>. This function will be called on each element in the tree.</td></tr>
+<tr>
+<td>In</td><td>ctx</td><td>Pointer to user context. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<p>Prototype for <code>lxb_dom_node_simple_walker_f</code>:</p>
+
+<pre class="code highlight"><code><span class="defftype"><span class="std">typedef</span></span> <span class="deffname">lexbor_action_t</span>
+(*<span class="var">lxb_dom_node_simple_walker_f</span>)(<span class="deftype">lxb_dom_node_t </span>*<span class="var">node</span>, <span class="std-type">void</span> *ctx);</code></pre>
+<h4>lxb_dom_node_text_content<a class="anchor" aria-hidden="true" id="lxb_dom_node_text_content" href="#lxb_dom_node_text_content">#</a></h4><p>This function returns the text content of the specified node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_char_t *</span>
+<span class="deffname">lxb_dom_node_text_content</span>(<span class="deftype">lxb_dom_node_t </span>*<span class="var">node</span>, <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>node</td><td>Pointer to DOM node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length. Can be <code>NULL</code>. Length of content.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to the content data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_node_text_content_set<a class="anchor" aria-hidden="true" id="lxb_dom_node_text_content_set" href="#lxb_dom_node_text_content_set">#</a></h4><p>This function sets the text content of the specified node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_dom_node_text_content_set</span>(<span class="deftype">lxb_dom_node_t </span>*<span class="var">node</span>,
+                              <span class="deftype"><span class="std">const</span> lxb_char_t </span>*<span class="var">content</span>, <span class="deftype"><span class="type">size_t</span></span> <span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>node</td><td>Pointer to DOM node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>content</td><td>Pointer to content data. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>In</td><td>len</td><td>Length of <code>content</code>.</td></tr>
+<tr>
+<td>Return</td><td>lxb_status_t</td><td><code>LXB_STATUS_OK</code> if successful, otherwise error occurred.</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_processing_instruction_t<a class="anchor" aria-hidden="true" id="lxb_dom_processing_instruction_t" href="#lxb_dom_processing_instruction_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/processing_instruction.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>ProcessingInstruction</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_character_data_t</td></tr>
+</tbody>
+</table>
+<h4>Functions<a class="anchor" aria-hidden="true" id="functions" href="#functions">#</a></h4><table>
+<thead><tr>
+<th class="function-list-return">Return value</th><th class="function-list-name">Name</th></tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right">const&nbsp;lxb_char_t&nbsp;*</td><td><a href="#lxb_dom_processing_instruction_target">lxb_dom_processing_instruction_target</a>(lxb_dom_processing_instruction_t *pi, size_t *len)</td></tr>
+</tbody>
+</table>
+<h4>lxb_dom_processing_instruction_target<a class="anchor" aria-hidden="true" id="lxb_dom_processing_instruction_target" href="#lxb_dom_processing_instruction_target">#</a></h4><p>This function returns target of processing instruction node.</p>
+
+<pre class="code highlight"><code class="api-function"><span class="defftype">lxb_inline <span class="std">const</span> lxb_char_t *</span>
+<span class="deffname">lxb_dom_processing_instruction_target</span>(<span class="deftype">lxb_dom_processing_instruction_t </span>*<span class="var">pi</span>,
+                                      <span class="deftype"><span class="type">size_t</span> </span>*<span class="var">len</span>);</code></pre>
+<table>
+<thead><tr>
+<th class="api-function-action">Action</th><th class="api-function-name">Name</th><th class="api-function-description">Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>In</td><td>pi</td><td>Pointer to DOM processing instruction node. Not <code>NULL</code>.</td></tr>
+<tr>
+<td>Out</td><td>len</td><td>Pointer to length of target. Can be <code>NULL</code>.</td></tr>
+<tr>
+<td>Return</td><td>const lxb_char_t *</td><td>Pointer to the target data, otherwise <code>NULL</code> value.</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_shadow_root_t<a class="anchor" aria-hidden="true" id="lxb_dom_shadow_root_t" href="#lxb_dom_shadow_root_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/shadow_root.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>ShadowRoot</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_document_fragment_t</td></tr>
+</tbody>
+</table>
+<h3>lxb_dom_text_t<a class="anchor" aria-hidden="true" id="lxb_dom_text_t" href="#lxb_dom_text_t">#</a></h3><table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="typedef-header" style="text-align: right">Header:</td><td><code>#include &lt;lexbor/dom/interfaces/text.h&gt;</code></td></tr>
+<tr>
+<td style="text-align: right">Since:</td><td>Lexbor HTML 0.1.0</td></tr>
+<tr>
+<td style="text-align: right">Spec name:</td><td>Text</td></tr>
+<tr>
+<td style="text-align: right">Inherits:</td><td>lxb_dom_character_data_t</td></tr>
+</tbody>
+</table>
+</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="footer">
+		<div class="footer-content">
+			<span class="copy">© 2018-2019 Alexander Borisov</span>
+		</div>
+	</div>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-130050727-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-130050727-1');
+	</script>
+</body>
+</html>

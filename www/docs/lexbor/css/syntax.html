@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lexbor: CSS Syntax</title>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link rel="apple-touch-icon" sizes="120x120" href="/img/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+	<link rel="manifest" href="/img/site.webmanifest">
+	<link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#da532c">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="stylesheet" href="/new/lexbor/docs/www/css/bootstrap-grid.min.css">
+	<link rel="stylesheet" href="/new/lexbor/docs/www/css/style.css?time=1555781069.960015">
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head>
+
+<body>
+	<div class="page">
+		<div class="head">
+			<div class="head-content">
+				
+				<div class="head-left"><a href="/new/lexbor/docs/www">lexbor</a></div>
+				
+				<div class="head-right">
+					<ul>
+						<li><a href="/new/lexbor/docs/www/download.html">Download</a></li>
+						<li><a href="/new/lexbor/docs/www/docs/lexbor.html">Documentation</a></li>
+						<li><a href="/new/lexbor/docs/www/support.html">Support</a></li>
+						<li><a href="/new/lexbor/docs/www/license.html">License</a></li>
+						<li><a href="/new/lexbor/docs/www/roadmap.html">Roadmap</a></li>
+						<li><a href="/new/lexbor/docs/www/about.html">About Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="navigation">
+			<div class="navigation-content">
+				<ul><li><a href="/new/lexbor/docs/www/docs/lexbor.html">lexbor</a></li><li class="nav-spliter">/</li><li><a href="/new/lexbor/docs/www/docs/lexbor/css.html">CSS</a></li><li class="nav-spliter">/</li><li>Syntax</li></ul>
+			</div>
+		</div>
+		<div class="body">
+				<div class="split dom-module">
+					<div class="left">
+						<div class="left-content markdown-refs">
+							<ul class="nav-level-1">
+<li><a href="#css_syntax">CSS Syntax</a>
+<ul class="nav-level-2">
+<li><a href="#parsing">Parsing</a>
+<li><a href="#token_callback">Token callback</a>
+<li><a href="#data_of_token">Data of Token</a>
+<li><a href="#token_types">Token types</a>
+</ul>
+						</div>
+					</div>
+					<div class="right">
+						<div class="right-content">
+							<div class="markdown-body"><h1>CSS Syntax<a class="anchor" aria-hidden="true" id="css_syntax" href="#css_syntax">#</a></h1><p>This is documentation for <code>CSS Syntax</code> module for <a href="/">Lexbor library</a>. Module created by <a href="https://drafts.csswg.org/css-syntax-3/">csswg specification</a>.</p>
+<p>This module parses the СSS data, splits СSS data into tokens and builds the AST tree.</p>
+<h2>Parsing<a class="anchor" aria-hidden="true" id="parsing" href="#parsing">#</a></h2><p>Two ways to parsing CSS:</p>
+<h4>Single buffer<a class="anchor" aria-hidden="true" id="single_buffer" href="#single_buffer">#</a></h4><p>This method is suitable if you have CSS data in one buffer then select the data parsing approach.<br>
+Function <code>lxb_css_syntax_tokenizer_parse</code> implements parsing <strong>without copying</strong> the input buffer.</p>
+
+<pre class="code highlight"><code><span class="deftype">lxb_css_syntax_tokenizer_t </span>*<span class="var">tkz</span>;
+
+tkz = <span class="ffname">lxb_css_syntax_tokenizer_create</span>();
+<span class="ffname">lxb_css_syntax_tokenizer_init</span>(<span class="var">tkz</span>);
+
+<span class="ffname">lxb_css_syntax_tokenizer_parse</span>(<span class="var">tkz</span>, <span class="var">css_data</span>, <span class="var">css_size</span>);
+
+<span class="ffname">lxb_css_syntax_tokenizer_destroy</span>(<span class="var">tkz</span>);</code></pre>
+<h4>Chunks<a class="anchor" aria-hidden="true" id="chunks" href="#chunks">#</a></h4><p>This method is suitable if you have СSS data splits into many buffers.<br>
+Incoming buffers will be copied and released as they are used.</p>
+
+<pre class="code highlight"><code><span class="deftype">lxb_css_syntax_tokenizer_t </span>*<span class="var">tkz</span>;
+
+tkz = <span class="ffname">lxb_css_syntax_tokenizer_create</span>();
+<span class="ffname">lxb_css_syntax_tokenizer_init</span>(<span class="var">tkz</span>);
+
+<span class="ffname">lxb_css_syntax_tokenizer_begin</span>(<span class="var">tkz</span>);
+
+<span class="ffname">lxb_css_syntax_tokenizer_chunk</span>(<span class="var">tkz</span>, <span class="var">css_buf_one</span>, <span class="var">css_buf_one_size</span>);
+<span class="ffname">lxb_css_syntax_tokenizer_chunk</span>(<span class="var">tkz</span>, <span class="var">css_buf_two</span>, <span class="var">css_buf_two_size</span>);
+
+<span class="ffname">lxb_css_syntax_tokenizer_end</span>(<span class="var">tkz</span>);
+
+<span class="ffname">lxb_css_syntax_tokenizer_destroy</span>(<span class="var">tkz</span>);</code></pre>
+<h2>Token callback<a class="anchor" aria-hidden="true" id="token_callback" href="#token_callback">#</a></h2><p>By default, the tokenizer does not use the received tokens in any way while parsing the CSS.<br>
+To change this behavior it is necessary to define a callback for ready tokens using the function <code>lxb_css_syntax_tokenizer_token_cb_set</code>.</p>
+
+<pre class="code highlight"><code>#include <span class="text">"lexbor/css/syntax/tokenizer.<span class="mpath">h</span>"</span>
+
+<span class="defftype">lxb_css_syntax_token_t *</span>
+<span class="deffname">token_ready_callback</span>(<span class="deftype">lxb_css_syntax_tokenizer_t </span>*<span class="var">tkz</span>, 
+                     <span class="deftype">lxb_css_syntax_token_t </span>*<span class="var">token</span>, <span class="deftype"><span class="std-type">void</span> </span>*<span class="var">ctx</span>)
+{
+    <span class="comment">/* Do anything with a token */</span>
+
+    <span class="deftype"><span class="std">return</span></span> <span class="var">token</span>;
+}
+
+<span class="defftype"><span class="std-type">int</span> </span>
+<span class="deffname">main</span>(<span class="deftype"><span class="std-type">int</span></span> <span class="var">argc</span>, <span class="deftype"><span class="std">const</span> <span class="std-type">char</span> </span>*<span class="var">argv</span>[])
+{
+    <span class="deftype">lxb_css_syntax_tokenizer_t </span>*<span class="var">tkz</span>;
+
+    <span class="deftype">lxb_char_t</span> <span class="var">css_data[]</span> = <span class="text">"div {display: block}"</span>;
+    <span class="deftype"><span class="type">size_t</span></span> <span class="var">css_size</span> = <span class="ffname"><span class="std">sizeof</span></span>(<span class="var">css_data</span>) - <span class="number">1</span>;
+
+    tkz = <span class="ffname">lxb_css_syntax_tokenizer_create</span>();
+    <span class="ffname">lxb_css_syntax_tokenizer_init</span>(<span class="var">tkz</span>);
+
+    <span class="comment">/* Sets callback */</span>
+    <span class="ffname">lxb_css_syntax_tokenizer_token_cb_set</span>(<span class="var">tkz</span>, <span class="var">token_ready_callback</span>, <span class="var"><span class="std-bn">NULL</span></span>);
+
+    <span class="ffname">lxb_css_syntax_tokenizer_parse</span>(<span class="var">tkz</span>, <span class="var">css_data</span>, <span class="var">css_size</span>);
+
+    <span class="ffname">lxb_css_syntax_tokenizer_destroy</span>(<span class="var">tkz</span>);
+}</code></pre>
+<h2>Data of Token<a class="anchor" aria-hidden="true" id="data_of_token" href="#data_of_token">#</a></h2><p>There are two types of tokens:</p>
+<ol>
+<li>Have data: <code>Ident</code>, <code>String</code>, <code>Bad string</code>, <code>Function</code>, <code>At keyword</code>, <code>Hash</code>, <code>URL</code>, <code>Bad URL</code>, <code>Dimension</code>, <code>Whitespaces</code>, <code>Comment</code></li>
+<li>No data: <code>Number</code>, <code>Percentage</code>, <code>CDO</code>, <code>CDC</code>, <code>Colon</code>, <code>Semicolon</code>, <code>Comma</code>, <code>Left/Right Square Bracket</code>, <code>Left/Right Parenthesis</code>, <code>Left/Right Curly Bracket</code></li>
+</ol>
+<p>Tokens coming to a callback from a tokenizer have no data, only pointers to incoming buffer from begin to end token data.</p>
+<p>For example, we have incoming buffer: <code>*data = "d\69v {display: block}"</code>.<br>
+In callback will come nine tokens:</p>
+<table>
+<thead><tr>
+<th class="hide"></th><th class="hide"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td>1.</td><td>Ident: <code>d\69v</code></td><td>Token: <code>*begin = 'd'</code>, <code>*end = ' '</code></td></tr>
+<tr>
+<td>2.</td><td>Whitespace: <code></code></td><td>Token: <code>*begin = ' '</code>, <code>*end = '{'</code></td></tr>
+<tr>
+<td>3.</td><td>Left Curly Bracket: <code>{</code></td><td>Token: <code>*begin = NULL</code>, <code>*end = NULL</code></td></tr>
+<tr>
+<td>4.</td><td>Ident: <code>display</code></td><td>Token: <code>*begin = 'd'</code>, <code>*end = ':'</code></td></tr>
+<tr>
+<td>5.</td><td>Colon: <code>:</code></td><td>Token: <code>*begin = NULL</code>, <code>*end = NULL</code></td></tr>
+<tr>
+<td>6.</td><td>Whitespace: <code></code></td><td>Token: <code>*begin = ' '</code>, <code>*end = 'b'</code></td></tr>
+<tr>
+<td>7.</td><td>Ident: <code>block</code></td><td>Token: <code>*begin = 'b'</code>, <code>*end = '}'</code></td></tr>
+<tr>
+<td>8.</td><td>Right Curly Bracket: <code>}</code></td><td>Token: <code>*begin = NULL</code>, <code>*end = NULL</code></td></tr>
+<tr>
+<td>9.</td><td>End of File</td><td>Token: <code>*begin = NULL</code>, <code>*end = NULL</code></td></tr>
+</tbody>
+</table>
+<p>From the table we see that the token has only pointers to the data.<br>
+We need to process the token to correctly receive the data on the pointers.<br>
+To process data, there are two functions with almost identical functionality:</p>
+<ol>
+<li>
+<pre class="code highlight"><code><span class="defftype">lxb_inline lxb_status_t</span>
+<span class="deffname">lxb_css_syntax_tokenizer_make_data</span>(<span class="deftype">lxb_css_syntax_tokenizer_t </span>*<span class="var">tkz</span>,
+                                   <span class="deftype">lxb_css_syntax_token_t </span>*<span class="var">token</span>);</code></pre>
+</li>
+<li>
+<pre class="code highlight"><code><span class="defftype">LXB_API lxb_status_t</span>
+<span class="deffname">lxb_css_syntax_token_make_data</span>(<span class="deftype">lxb_css_syntax_token_t </span>*<span class="var">token</span>, <span class="deftype">lexbor_in_node_t </span>*<span class="var">in</span>,
+                               <span class="deftype">lexbor_mraw_t </span>*<span class="var">mraw</span>, <span class="deftype">lxb_css_syntax_token_data_t </span>*<span class="var">td</span>);</code></pre>
+</li>
+</ol>
+<p>For example, look at the first function (full example):</p>
+
+<pre class="code highlight"><code>#include <span class="text">"lexbor/css/syntax/tokenizer.<span class="mpath">h</span>"</span>
+
+<span class="defftype">lxb_css_syntax_token_t *</span>
+<span class="deffname">token_ready_callback</span>(<span class="deftype">lxb_css_syntax_tokenizer_t </span>*<span class="var">tkz</span>, 
+                     <span class="deftype">lxb_css_syntax_token_t </span>*<span class="var">token</span>, <span class="deftype"><span class="std-type">void</span> </span>*<span class="var">ctx</span>)
+{
+    <span class="deftype">lxb_status_t</span> <span class="var">status</span>;
+
+    status = <span class="ffname">lxb_css_syntax_tokenizer_make_data</span>(<span class="var">tkz</span>, <span class="var">token</span>);
+    <span class="ffname"><span class="std">if</span></span> (status != LXB_STATUS_OK) {
+        <span class="deftype"><span class="std">return</span></span> <span class="var"><span class="std-bn">NULL</span></span>;
+    }
+
+    <span class="ffname"><span class="std">if</span></span> (lxb_css_syntax_token_type(token) == LXB_CSS_SYNTAX_TOKEN_IDENT) {
+        <span class="deftype">lxb_css_syntax_token_ident_t </span>*<span class="var">ident</span>;
+
+        ident = <span class="ffname">lxb_css_syntax_token_ident</span>(<span class="var">token</span>);
+        <span class="comment">/* <span class="deftype">or</span> <span class="var">ident</span> = &#38;token->types.<span class="mpath">ident</span>; */</span>
+
+        <span class="ffname">printf</span>(<span class="text">"Ident data: %s\n"</span>, ident->data.<span class="var">data</span>);
+    }
+    <span class="comment">/* Do anything with a token */</span>
+
+    <span class="deftype"><span class="std">return</span></span> <span class="var">token</span>;
+}
+
+<span class="defftype"><span class="std-type">int</span> </span>
+<span class="deffname">main</span>(<span class="deftype"><span class="std-type">int</span></span> <span class="var">argc</span>, <span class="deftype"><span class="std">const</span> <span class="std-type">char</span> </span>*<span class="var">argv</span>[])
+{
+    <span class="deftype">lxb_css_syntax_tokenizer_t </span>*<span class="var">tkz</span>;
+
+    <span class="deftype">lxb_char_t</span> <span class="var">css_data[]</span> = <span class="text">"d\\<span class="number">69</span>v {display: block}"</span>;
+    <span class="deftype"><span class="type">size_t</span></span> <span class="var">css_size</span> = <span class="ffname"><span class="std">sizeof</span></span>(<span class="var">css_data</span>) - <span class="number">1</span>;
+
+    tkz = <span class="ffname">lxb_css_syntax_tokenizer_create</span>();
+    <span class="ffname">lxb_css_syntax_tokenizer_init</span>(<span class="var">tkz</span>);
+
+    <span class="comment">/* Sets callback */</span>
+    <span class="ffname">lxb_css_syntax_tokenizer_token_cb_set</span>(<span class="var">tkz</span>, <span class="var">token_ready_callback</span>, <span class="var"><span class="std-bn">NULL</span></span>);
+
+    <span class="ffname">lxb_css_syntax_tokenizer_parse</span>(<span class="var">tkz</span>, <span class="var">css_data</span>, <span class="var">css_size</span>);
+
+    <span class="ffname">lxb_css_syntax_tokenizer_destroy</span>(<span class="var">tkz</span>);
+}</code></pre>
+<p>The output of the program:</p>
+
+<pre class="code highlight"><code>Ident data: div
+Ident data: display
+Ident data: block</code></pre>
+<h2>Token types<a class="anchor" aria-hidden="true" id="token_types" href="#token_types">#</a></h2><table>
+<thead><tr>
+<th>Name</th><th>Example</th><th>ID</th><th>type</th><th>Cast macro</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>At-keyword</td><td><code>@media</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_AT_KEYWORD</code></td><td><code>lxb_css_syntax_token_at_keyword_t</code></td><td><code>lxb_css_syntax_token_at_keyword(token)</code></td></tr>
+<tr>
+<td>Bad&nbsp;string</td><td><code>"my\nbest"</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_BAD_STRING</code></td><td><code>lxb_css_syntax_token_bad_string_t</code></td><td><code>lxb_css_syntax_token_bad_string(token)</code></td></tr>
+<tr>
+<td>Bad&nbsp;URL</td><td><code>url(http bad)</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_BAD_URL</code></td><td><code>lxb_css_syntax_token_bad_url_t</code></td><td><code>lxb_css_syntax_token_bad_url(token)</code></td></tr>
+<tr>
+<td>CDC</td><td><code>--&gt;</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_CDC</code></td><td><code>lxb_css_syntax_token_cdc_t</code></td><td><code>lxb_css_syntax_token_cdc(token)</code></td></tr>
+<tr>
+<td>CDO</td><td><code>&lt;!--</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_CDO</code></td><td><code>lxb_css_syntax_token_cdo_t</code></td><td><code>lxb_css_syntax_token_cdo(token)</code></td></tr>
+<tr>
+<td>Colon</td><td><code>:</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_COLON</code></td><td><code>lxb_css_syntax_token_colon_t</code></td><td><code>lxb_css_syntax_token_colon(token)</code></td></tr>
+<tr>
+<td>Comma</td><td><code>,</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_COMMA</code></td><td><code>lxb_css_syntax_token_comma_t</code></td><td><code>lxb_css_syntax_token_comma(token)</code></td></tr>
+<tr>
+<td>Comment</td><td><code>/* some */</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_COMMENT</code></td><td><code>lxb_css_syntax_token_comment_t</code></td><td><code>lxb_css_syntax_token_comment(token)</code></td></tr>
+<tr>
+<td>Delim</td><td><code>*</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_DELIM</code></td><td><code>lxb_css_syntax_token_delim_t</code></td><td><code>lxb_css_syntax_token_delim(token)</code></td></tr>
+<tr>
+<td>Dimension</td><td><code>1.2em</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_DIMENSION</code></td><td><code>lxb_css_syntax_token_dimension_t</code></td><td><code>lxb_css_syntax_token_dimension(token)</code></td></tr>
+<tr>
+<td>Function</td><td><code>not(</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_FUNCTION</code></td><td><code>lxb_css_syntax_token_function_t</code></td><td><code>lxb_css_syntax_token_function(token)</code></td></tr>
+<tr>
+<td>Hash</td><td><code>#id</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_HASH</code></td><td><code>lxb_css_syntax_token_hash_t</code></td><td><code>lxb_css_syntax_token_hash(token)</code></td></tr>
+<tr>
+<td>Ident</td><td><code>div</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_IDENT</code></td><td><code>lxb_css_syntax_token_ident_t</code></td><td><code>lxb_css_syntax_token_ident(token)</code></td></tr>
+<tr>
+<td>Left&nbsp;curly&nbsp;bracket</td><td><code>{</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_LC_BRACKET</code></td><td><code>lxb_css_syntax_token_lc_bracket_t</code></td><td><code>lxb_css_syntax_token_lc_bracket(token)</code></td></tr>
+<tr>
+<td>Left&nbsp;square&nbsp;bracket</td><td><code>[</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_LS_BRACKET</code></td><td><code>lxb_css_syntax_token_ls_bracket_t</code></td><td><code>lxb_css_syntax_token_ls_bracket(token)</code></td></tr>
+<tr>
+<td>Left&nbsp;parenthesis</td><td><code>(</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_L_PARENTHESIS</code></td><td><code>lxb_css_syntax_token_l_parenthesis_t</code></td><td><code>lxb_css_syntax_token_l_parenthesis(token)</code></td></tr>
+<tr>
+<td>Number</td><td><code>1.4</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_NUMBER</code></td><td><code>lxb_css_syntax_token_number_t</code></td><td><code>lxb_css_syntax_token_number(token)</code></td></tr>
+<tr>
+<td>Percentage</td><td><code>10%</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_PERCENTAGE</code></td><td><code>lxb_css_syntax_token_percentage_t</code></td><td><code>lxb_css_syntax_token_percentage(token)</code></td></tr>
+<tr>
+<td>Right&nbsp;curly&nbsp;bracket</td><td><code>}</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_RC_BRACKET</code></td><td><code>lxb_css_syntax_token_rc_bracket_t</code></td><td><code>lxb_css_syntax_token_rc_bracket(token)</code></td></tr>
+<tr>
+<td>Right&nbsp;square&nbsp;bracket</td><td><code>]</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_RS_BRACKET</code></td><td><code>lxb_css_syntax_token_rs_bracket_t</code></td><td><code>lxb_css_syntax_token_rs_bracket(token)</code></td></tr>
+<tr>
+<td>Right&nbsp;parenthesis</td><td><code>)</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_R_PARENTHESIS</code></td><td><code>lxb_css_syntax_token_r_parenthesis_t</code></td><td><code>lxb_css_syntax_token_r_parenthesis(token)</code></td></tr>
+<tr>
+<td>Semicolon</td><td><code>;</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_SEMICOLON</code></td><td><code>lxb_css_syntax_token_semicolon_t</code></td><td><code>lxb_css_syntax_token_semicolon(token)</code></td></tr>
+<tr>
+<td>String</td><td><code>"my best"</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_STRING</code></td><td><code>lxb_css_syntax_token_string_t</code></td><td><code>lxb_css_syntax_token_string(token)</code></td></tr>
+<tr>
+<td>URL</td><td><code>url(http)</code></td><td><code>LXB_CSS_SYNTAX_TOKEN_URL</code></td><td><code>lxb_css_syntax_token_url_t</code></td><td><code>lxb_css_syntax_token_url(token)</code></td></tr>
+<tr>
+<td>Whitespace</td><td><code></code></td><td><code>LXB_CSS_SYNTAX_TOKEN_WHITESPACE</code></td><td><code>lxb_css_syntax_token_whitespace_t</code></td><td><code>lxb_css_syntax_token_whitespace(token)</code></td></tr>
+</tbody>
+</table>
+<h3>Documentation in under construction.<a class="anchor" aria-hidden="true" id="documentation_in_under_construction_" href="#documentation_in_under_construction_">#</a></h3><p>Documentation in under construction.</p>
+</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="footer">
+		<div class="footer-content">
+			<span class="copy">© 2018-2019 Alexander Borisov</span>
+		</div>
+	</div>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-130050727-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-130050727-1');
+	</script>
+</body>
+</html>
