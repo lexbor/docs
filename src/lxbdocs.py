@@ -39,10 +39,10 @@ class Docs:
         else:
             self.module = None
 
-        self.markdown_render = lexbor.DocsRender()
+        self.markdown_render = lexbor.DocsRender(escape=False)
         self.markdown_render.conv = self
 
-        self.markdown = mistune.Markdown(self.markdown_render, escape = False, hard_wrap = True)
+        self.markdown = mistune.Markdown(renderer = self.markdown_render)
 
         self.jinja2_env = Environment(
             loader = FileSystemLoader(theme_path, encoding='utf-8')
@@ -175,6 +175,8 @@ class Docs:
         md_html = self.markdown(md)
         refs_html = self.create_refs(1, refs_max)
         template = self.jinja2_env.get_template(theme_path)
+
+        print(refs_html)
 
         args = {
             'conv': self,

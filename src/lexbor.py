@@ -1,9 +1,9 @@
 
 import copy, re
-import mistune
-from mistune import Renderer, InlineGrammar, InlineLexer
+import mistune 
+from mistune import HTMLRenderer
 
-class DocsRender(Renderer):
+class DocsRender(HTMLRenderer):
     link_rel_reg = re.compile("^(:?[a-zA-Z]+:|\/|#)")
     link_to_class = re.compile('\s*<a\s+href="\s*#class-([^"]+)"></a>\s*$')
 
@@ -34,7 +34,7 @@ class DocsRender(Renderer):
 
         return ''.join(res)
 
-    def header(self, text, level, raw):
+    def heading(self, text: str, level: int, **attrs):
         name = name_convert("%s" % (text))
 
         if level >= 1 and level <= 6:
@@ -42,44 +42,44 @@ class DocsRender(Renderer):
 
         return '<h%s>%s<a class="anchor" aria-hidden="true" id="%s" href="#%s">#</a></h%s>' % (level, text, name, name, level)
 
-    def image(self, src, title, alt_text):
-        rg = self.link_rel_reg.match(src)
+    def image(self, text: str, url: str, title=None):
+        rg = self.link_rel_reg.match(url)
 
         if rg == None:
-            src = self.conv.make_url(src)
+            url = self.conv.make_url(url)
 
-        return super().image(src, title, alt_text)
+        return super().image(text, url, title)
 
-    def link(self, link, title, content):
-        rg = self.link_rel_reg.match(link)
+    def link(self, text: str, url: str, title=None):
+        rg = self.link_rel_reg.match(url)
 
         if rg == None:
-            link = self.conv.make_url(link)
+            url = self.conv.make_url(url)
 
-        return super().link(link, title, content)
+        return super().link(text, url, title)
 
-    def block_code(self, code, lang):
+    def block_code(self, code: str, info=None):
         ch = CHigh()
         data = ch.lines(code)
         text = ch.convert(code, data)
 
-        if lang == None:
+        if info == None:
             return '\n<pre class="code highlight"><code>%s</code></pre>\n' % \
                 mistune.escape(code)
 
-        if lang.lower() == 'c-api-function':
+        if info.lower() == 'c-api-function':
             return '\n<pre class="code highlight"><code class="api-function">%s</code></pre>\n' % \
                 text
 
-        elif lang.lower() == 'c-api-enum':
+        elif info.lower() == 'c-api-enum':
             return '\n<pre class="code highlight"><code class="api-enum">%s</code></pre>\n' % \
                text
 
-        elif lang.lower() == 'c-api-struct':
+        elif info.lower() == 'c-api-struct':
             return '\n<pre class="code highlight"><code class="api-struct">%s</code></pre>\n' % \
                 text
 
-        elif lang.lower() == 'c':
+        elif info.lower() == 'c':
             return '\n<pre class="code highlight"><code>%s</code></pre>\n' % \
                 text
 
