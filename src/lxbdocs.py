@@ -176,8 +176,6 @@ class Docs:
         refs_html = self.create_refs(1, refs_max)
         template = self.jinja2_env.get_template(theme_path)
 
-        print(refs_html)
-
         args = {
             'conv': self,
             'body': md_html,
