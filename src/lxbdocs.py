@@ -103,7 +103,7 @@ class Docs:
         params = {}
 
         src_full_path = "%s/%s" % (self.source_path, file_path)
-        pr_w = re.compile("^\[([^\]]+)\]:\s*<>\s*\(([^\)]+)\)")
+        pr_w = re.compile("^\[([^\]]+)\]:\s*<>\s*[\"']([^\)]+)[\"']")
         pr_a = re.compile("^\[([^\]]+)\]:\s*([^\s]+)")
         fh = open(src_full_path)
 
