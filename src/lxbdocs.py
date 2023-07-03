@@ -6,6 +6,7 @@ from shutil import copyfile, rmtree
 
 from jinja2 import Environment, FileSystemLoader
 import mistune
+from mistune.plugins.table import table
 import lexbor
 import time
 
@@ -42,7 +43,8 @@ class Docs:
         self.markdown_render = lexbor.DocsRender(escape=False)
         self.markdown_render.conv = self
 
-        self.markdown = mistune.Markdown(renderer = self.markdown_render)
+        self.markdown = mistune.Markdown(renderer = self.markdown_render,
+                                         plugins=[table])
 
         self.jinja2_env = Environment(
             loader = FileSystemLoader(theme_path, encoding='utf-8')

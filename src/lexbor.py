@@ -25,7 +25,7 @@ class DocsRender(HTMLRenderer):
         if flags['align'] != None:
             args.append(' style="text-align: %s"' % flags['align'])
 
-        if flags['header'] == True:
+        if flags['head'] == True:
             res.append('<th%s>%s</th>' % (class_arg, content))
         else:
             res.append('<td%s' % class_arg)
