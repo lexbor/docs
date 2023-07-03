@@ -208,7 +208,3 @@ To install `lexbor` on macOS from MacPorts:
 ```sh
 sudo port install lexbor
 ```
-
-## Source code
-
-The source code of the library is provided on [our GitHub account](https://github.com/lexbor/lexbor).
