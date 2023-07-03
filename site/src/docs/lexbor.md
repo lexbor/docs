@@ -54,7 +54,7 @@ A small example of how to use the Lexbor library in program. Example for create 
 
 # Installation
 
-To install `lexbor` from binary packages, refer to the [Download](../download.md) section.
+To install `lexbor` from binary packages, refer to the [Download](download.md) section.
 
 ## Source code
 
