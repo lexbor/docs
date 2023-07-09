@@ -3,7 +3,7 @@
 
 ## Roadmap
 
-This section lists the most important modules necessary for creating a browser
+This section lists the most important modules involved in creating a browser
 engine.  The list will grow over time.
 
 Specific list items appear in their respective sections (`DOM`, `HTML`, etc.)
