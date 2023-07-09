@@ -4,7 +4,7 @@
 
 ## Binary packages
 
-Binaries are available for:
+The `lexbor` binaries are available for:
 
 * [CentOS](#centos) 6, 7, 8
 
@@ -21,7 +21,7 @@ Binaries are available for:
 
 ### CentOS
 
-1. To configure `lexbor` repository, create the following file named
+1. To configure the `lexbor` repository, create the following file named
    `/etc/yum.repos.d/lexbor.repo`:
 
  ```conf
@@ -32,7 +32,7 @@ Binaries are available for:
  enabled=1
  ```
 
-2. Install `lexbor` base package and additional packages you would like to use:
+2. Install the core `lexbor` package and extra packages you want to use:
 
  ```sh
  yum install liblexbor
@@ -41,15 +41,16 @@ Binaries are available for:
 
 ### Debian
 
-1. Download `lexbor` [signing key](https://lexbor.com/keys/lexbor_signing.key)
-   used for our repositories and packages and add it to apt’s keyring:
+1. Download the `lexbor` [signing
+   key](https://lexbor.com/keys/lexbor_signing.key) used for our repositories
+   and packages and add it to `apt`’s keyring:
 
  ```sh
  curl -O https://lexbor.com/keys/lexbor_signing.key
  apt-key add lexbor_signing.key
  ```
 
-2. To configure `lexbor` repository, create the following file named
+2. To configure the `lexbor` repository, create the following file named
    `/etc/apt/sources.list.d/lexbor.list`.  For Debian 11:
 
  ```conf
@@ -57,9 +58,9 @@ Binaries are available for:
  deb-src https://packages.lexbor.com/debian/ bullseye liblexbor
  ```
 
- Other supported distro codenames are `buster`, `jessie`, and `stretch`.
+ Other supported distros are `buster` (10), `stretch` (9), and `jessie` (8).
 
-3. Install `lexbor` base package and additional packages you would like to use:
+3. Install the core `lexbor` package and extra packages you want to use:
 
  ```sh
  apt update
@@ -69,7 +70,7 @@ Binaries are available for:
 
 ### Fedora
 
-1. To configure `lexbor` repository, create the following file named
+1. To configure the `lexbor` repository, create the following file named
    `/etc/yum.repos.d/lexbor.repo`:
 
  ```conf
@@ -80,7 +81,7 @@ Binaries are available for:
  enabled=1
  ```
 
-2. Install `lexbor` base package and additional packages you would like to use:
+2. Install the core `lexbor` package and extra packages you want to use:
 
  ```sh
  yum install liblexbor
@@ -89,7 +90,7 @@ Binaries are available for:
 
 ### RHEL
 
-1. To configure `lexbor` repository, create the following file named
+1. To configure the `lexbor` repository, create the following file named
    `/etc/yum.repos.d/lexbor.repo`:
 
  ```conf
@@ -100,7 +101,7 @@ Binaries are available for:
  enabled=1
  ```
 
-2. Install `lexbor` base package and additional packages you would like to use:
+2. Install the core `lexbor` package and extra packages you want to use:
 
  ```sh
  yum install liblexbor
@@ -109,15 +110,16 @@ Binaries are available for:
 
 ### Ubuntu
 
-1. Download `lexbor` [signing key](https://lexbor.com/keys/lexbor_signing.key)
-   used for our repositories and packages and add it to apt’s keyring:
+1. Download the `lexbor` [signing
+   key](https://lexbor.com/keys/lexbor_signing.key) used for our repositories
+   and packages and add it to `apt`’s keyring:
 
  ```sh
  curl -O https://lexbor.com/keys/lexbor_signing.key
  apt-key add lexbor_signing.key
  ```
 
-2. To configure `lexbor` repository, create the following file named
+2. To configure the `lexbor` repository, create the following file named
    `/etc/apt/sources.list.d/lexbor.list`.  For Ubuntu 22.04:
 
  ```conf
@@ -125,10 +127,11 @@ Binaries are available for:
  deb-src https://packages.lexbor.com/ubuntu/ jammy liblexbor
  ```
 
- Other supported distros are `bionic`, `cosmic`, `disco`, `eoan`,
- `focal`, `groovy`, `hirsute`, `trusty`,  and `xenial`.
+ Other supported distros are `hirsute` (21.04), `groovy` (20.10), `focal`
+ (20.04), `eoan` (19.10), `disco` (19.04), `cosmic` (18.10), `bionic` (18.04),
+ `xenial` (16.04), and `trusty` (14.04).
 
-3. Install `lexbor` base package and additional packages you would like to use:
+3. Install the core `lexbor` package and extra packages you want to use:
 
  ```sh
  apt update
@@ -140,7 +143,7 @@ Binaries are available for:
 
 ### Homebrew
 
-To install `lexbor` from Homebrew:
+To install `lexbor` from [Homebrew](https://brew.sh):
 
 ```sh
 brew install lexbor
@@ -148,7 +151,7 @@ brew install lexbor
 
 ### MacPorts
 
-To install `lexbor` from MacPorts:
+To install `lexbor` from [MacPorts](https://www.macports.org):
 
 ```sh
 sudo port install lexbor
