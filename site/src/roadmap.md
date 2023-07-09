@@ -89,7 +89,9 @@ in order of their implementation.
 ### Fonts, OpenType
 
 1. [Font/OpenType](https://docs.microsoft.com/ru-ru/typography/opentype/spec/)
+
    1.1. [Parsing OpenType font files](https://docs.microsoft.com/ru-ru/typography/opentype/spec/otff)
+
    1.2. Calculating font metrics for glyphs in HTML layout: `baseline`,
         `ascender`, `descender`, `line-gap`, `x-height`, `cap-height`,
         `width`, `height`
@@ -107,6 +109,7 @@ in order of their implementation.
 ### URL
 
 1. [URL](https://url.spec.whatwg.org/)
+
    1.1. [Parsing](https://url.spec.whatwg.org/#url-parsing)
 
    1.2. [Punycode](http://www.unicode.org/reports/tr46/)
