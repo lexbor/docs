@@ -1,5 +1,5 @@
-[name]: <> (Web browser engine development. Part One: HTML)
-[title]: <> (Web browser engine development. Part One: HTML)
+[name]: <> 'Web browser engine development. Part One: HTML'
+[title]: <> 'Web browser engine development. Part One: HTML'
 [theme]: document.html
 [refs_deep_max]: 2
 
