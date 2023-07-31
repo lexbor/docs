@@ -266,40 +266,24 @@ available status codes reside in `/source/lexbor/core/base.h`.
 
 Almost all functions follow this naming pattern:
 
-```
-lxb_<module-name>_<path-to-file>_<file-name>_<name>(...);
-|_| |___________| |____________| |_________| |____|
- |        |              |            |        |
- |        -------        |            |        |
- ----------     |     ----     --------        |
-          |     |     |        |               |
-/source/lexbor/html/tree/open_elements.h       |
-          |     |     |        |               |
-          |    --     |        |       ---------
-          |    |    ---      ---       |
-          |    |    |        |         |
-         |‾| |‾‾| |‾‾| |‾‾‾‾‾‾‾‾‾‾‾| |‾‾|
-         lxb_html_tree_open_elements_find(...);
-```
+[naming1]: /img/naming1.png
+
+![Common Naming Pattern][naming1]
+
+<style>
+    img[alt="Common Naming Pattern"] {width: 500; height: 405; display: block; margin: auto}
+</style>
 
 The exception is the [core](#core) module (`/source/lexbor/core/`), which uses
 the following pattern:
 
-```
-lexbor_<path-to-file>_<file-name>_<name>(...);
-|____| |____________| |_________| |____|
-   |                      |         |
-   -------           ------         |
-         |           |              |
-|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| |‾|             |
-/source/lexbor/core/avl.h           |
-|_________________| |_|             |
-         |           |              |
-         --------    |    -----------
-                |    |    |
-             |‾‾‾‾| |‾| |‾‾‾‾|
-             lexbor_avl_create(...);
-```
+[naming2]: /img/naming2.png
+
+![Core Naming Pattern][naming2]
+
+<style>
+    img[alt="Core Naming Pattern"] {width: 500; height: 405; display: block; margin: auto}
+</style>
 
 In other words, `lexbor_*` functions occur in the `core` module, full stop.
 
