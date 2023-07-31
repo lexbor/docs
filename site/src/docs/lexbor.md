@@ -271,7 +271,7 @@ Almost all functions follow this naming pattern:
 ![Common Naming Pattern][naming1]
 
 <style>
-    img[alt="Common Naming Pattern"] {width: 500; height: 405; display: block; margin: auto}
+    img[alt="Common Naming Pattern"] {height: 305px; display: block; margin: auto}
 </style>
 
 The exception is the [core](#core) module (`/source/lexbor/core/`), which uses
@@ -282,7 +282,7 @@ the following pattern:
 ![Core Naming Pattern][naming2]
 
 <style>
-    img[alt="Core Naming Pattern"] {width: 500; height: 405; display: block; margin: auto}
+    img[alt="Core Naming Pattern"] {height: 305px; display: block; margin: auto}
 </style>
 
 In other words, `lexbor_*` functions occur in the `core` module, full stop.
