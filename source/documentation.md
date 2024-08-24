@@ -1,8 +1,3 @@
-[name]: lexbor
-[title]: Documentation
-[theme]: document.html
-
-
 # Quick Start
 
 These steps show how to use `lexbor` in your code;
@@ -57,7 +52,7 @@ they assume you have Linux and `gcc`.
    ```
 
 
-# Installation
+## Installation
 
 To install `lexbor` from binary packages, refer to the [Download](download.md)
 section.
@@ -174,7 +169,7 @@ make
 ```
 
 
-# General Considerations
+## General Considerations
 
 ## Our Approach: Dependencies, Algorithms, Platforms
 
@@ -266,7 +261,7 @@ available status codes reside in `/source/lexbor/core/base.h`.
 
 Almost all functions follow this naming pattern:
 
-[naming1]: /img/naming1.png
+[naming1]: img/naming1.png
 
 ![Common Naming Pattern][naming1]
 
@@ -277,7 +272,7 @@ Almost all functions follow this naming pattern:
 The exception is the [core](#core) module (`/source/lexbor/core/`), which uses
 the following pattern:
 
-[naming2]: /img/naming2.png
+[naming2]: img/naming2.png
 
 ![Core Naming Pattern][naming2]
 
@@ -374,7 +369,7 @@ Note that this approach is not an absolute must, even if ubiqutious.  There are
 cases where a different API fits better.
 
 
-# Modules
+## Modules
 
 The `lexbor` project is modular by design, and each module can be built
 separately (at least potentially). Modules can depend on each other; for
@@ -399,7 +394,7 @@ example, with `/source/lexbor/html/base.h`:
 ```
 
 
-## Core Module
+## Core
 
 This is the base module; it implements all algorithms that are essential for
 the project, such as AVL and BST trees, arrays, strings and so on.  It also

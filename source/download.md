@@ -1,6 +1,4 @@
-[name]: Download
-[title]: Download
-[theme]: document.html
+# Download
 
 ## Binary packages
 
@@ -24,7 +22,7 @@ The `lexbor` binaries are available for:
 1. To configure the `lexbor` repository, create the following file named
    `/etc/yum.repos.d/lexbor.repo`:
 
- ```conf
+ ```ini
  [lexbor]
  name=lexbor repo
  baseurl=https://packages.lexbor.com/centos/$releasever/$basearch/
@@ -53,7 +51,7 @@ The `lexbor` binaries are available for:
 2. To configure the `lexbor` repository, create the following file named
    `/etc/apt/sources.list.d/lexbor.list`.  For Debian 11:
 
- ```conf
+ ```ini
  deb https://packages.lexbor.com/debian/ bullseye liblexbor
  deb-src https://packages.lexbor.com/debian/ bullseye liblexbor
  ```
@@ -73,7 +71,7 @@ The `lexbor` binaries are available for:
 1. To configure the `lexbor` repository, create the following file named
    `/etc/yum.repos.d/lexbor.repo`:
 
- ```conf
+ ```ini
  [lexbor]
  name=lexbor repo
  baseurl=https://packages.lexbor.com/fedora/$releasever/$basearch/
@@ -93,7 +91,7 @@ The `lexbor` binaries are available for:
 1. To configure the `lexbor` repository, create the following file named
    `/etc/yum.repos.d/lexbor.repo`:
 
- ```conf
+ ```ini
  [lexbor]
  name=lexbor repo
  baseurl=https://packages.lexbor.com/rhel/$releasever/$basearch/
@@ -122,7 +120,7 @@ The `lexbor` binaries are available for:
 2. To configure the `lexbor` repository, create the following file named
    `/etc/apt/sources.list.d/lexbor.list`.  For Ubuntu 22.04:
 
- ```conf
+ ```ini
  deb https://packages.lexbor.com/ubuntu/ jammy liblexbor
  deb-src https://packages.lexbor.com/ubuntu/ jammy liblexbor
  ```

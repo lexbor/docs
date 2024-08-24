@@ -1,7 +1,4 @@
-[name]: Roadmap
-[theme]: document.html
-
-## Roadmap
+# Roadmap
 
 This section lists the most important modules involved in creating a browser
 engine.  The list will grow over time.
@@ -9,7 +6,7 @@ engine.  The list will grow over time.
 Specific list items appear in their respective sections (`DOM`, `HTML`, etc.)
 in order of their implementation.
 
-### Legend
+## Legend
 
 ![Done][done]: There is no need to return to this item.  Done is done.<br>
 ![In Progress][progress]: Continually in development; can already be used.
@@ -20,13 +17,13 @@ If status is not given, the work hasn't started yet.
 [progress]: img/in_progress.svg
 
 
-### DOM
+## DOM
 
 1. [DOM Interfaces](https://dom.spec.whatwg.org/#node-trees): ![In Progress][progress]
 2. [DOM Events](https://dom.spec.whatwg.org/#events)
 
 
-### HTML
+## HTML
 
 1. [HTML Parser](https://html.spec.whatwg.org/multipage/parsing.html#parsing): ![Done][done]
 2. [HTML Interfaces](https://html.spec.whatwg.org/multipage/semantics.html#semantics): ![In Progress][progress]
@@ -34,7 +31,7 @@ If status is not given, the work hasn't started yet.
 4. [Queuing a mutation record](https://dom.spec.whatwg.org/#queueing-a-mutation-record)
 
 
-### CSS
+## CSS
 
 1. [Syntax](https://drafts.csswg.org/css-syntax-3/):![Done][done]
 2. [Grammar](https://drafts.csswg.org/css-values-4/#component-combinators): for generating CSS tests by grammars. ![Done][done]
@@ -59,7 +56,7 @@ If status is not given, the work hasn't started yet.
 21. [Variables](https://drafts.csswg.org/css-variables-1/)
 
 
-### Fonts, OpenType
+## Fonts, OpenType
 
 1. [Font/OpenType](https://docs.microsoft.com/ru-ru/typography/opentype/spec/)<br>
    1.1. [Parsing OpenType font files](https://docs.microsoft.com/ru-ru/typography/opentype/spec/otff)<br>
@@ -68,25 +65,25 @@ If status is not given, the work hasn't started yet.
         `width`, `height`
 
 
-### Encodings
+## Encodings
 
 1. [Encoding](https://encoding.spec.whatwg.org/): ![Done][done]
 2. [Prescanning a byte stream to determine its encoding](https://html.spec.whatwg.org/multipage/parsing.html#prescan-a-byte-stream-to-determine-its-encoding): ![Done][done]
 
 
-### URL
+## URL
 
 1. [URL](https://url.spec.whatwg.org/): ![Done][done]<br>
    1.1. [Parsing](https://url.spec.whatwg.org/#url-parsing): ![Done][done]<br>
    1.2. [Punycode](https://www.rfc-editor.org/info/rfc3492): ![Done][done]
 
 
-### Unicode
+## Unicode
 
 1. [http://www.unicode.org/](http://www.unicode.org/): ![Done][done]<br>
    1.1. [Normalization forms](https://www.unicode.org/reports/tr15/): ![Done][done]<br>
    1.2. [Unicode IDNA Compatibility Processing](http://www.unicode.org/reports/tr46/): ![Done][done]
 
-### Layout
+## Layout
 
 1. Building a rendering tree - now we're at that stage.
