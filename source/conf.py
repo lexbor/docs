@@ -35,5 +35,5 @@ html_theme_options = {
     "top_of_page_buttons": ["view", "edit"],
     "source_repository": "https://github.com/lexbor/docs/",
     "source_branch": "main",
-    "source_directory": "/",
+    "source_directory": "source/",
 }
