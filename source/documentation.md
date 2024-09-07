@@ -292,7 +292,7 @@ use:
 Most structures and objects have an API for creating, initializing, cleaning,
 and deleting them. This follows the general pattern:
 
-```C
+```c
 <structure-name> *
 <function-prefix>_create(void);
 
@@ -330,7 +330,7 @@ void
 
 Typical usage:
 
-```C
+```c
 lexbor_avl_t *avl = lexbor_avl_create();
 lxb_status_t status = lexbor_avl_init(avl, 1024);
 
@@ -347,7 +347,7 @@ lexbor_avl_node_destroy(avl, true);
 
 Now, with an object on the stack:
 
-```C
+```c
 lexbor_avl_t avl = {0};
 lxb_status_t status = lexbor_avl_init(&avl, 1024);
 
@@ -381,7 +381,7 @@ project.
 Each module records its version in the `base.h` file located at the module root.
 For example, see `/source/lexbor/html/base.h`:
 
-```C
+```c
 #define <MODULE-NAME>_VERSION_MAJOR 1
 #define <MODULE-NAME>_VERSION_MINOR 0
 #define <MODULE-NAME>_VERSION_PATCH 3
@@ -420,7 +420,8 @@ Parser, and Interfaces for HTML Elements.
 
 Documentation for this module will be available later. For guidance, refer to
 the
-[examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/html).
+[HTML examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/html) in our repo
+or the corresponding [articles](articles/index).
 
 
 ## Encoding
@@ -440,7 +441,10 @@ windows-1255, windows-1256, windows-1257, windows-1258, windows-874,
 x-mac-cyrillic, x-user-defined
 ```
 
-Documentation for this module will be available later. For guidance, refer to the [examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/encoding).
+Documentation for this module will be available later. For guidance, refer to
+the [Encoding
+examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/encoding)
+in our repo or the corresponding [articles](articles/index).
 
 
 ## CSS
@@ -448,5 +452,6 @@ Documentation for this module will be available later. For guidance, refer to th
 This module implements the [CSS specification](https://drafts.csswg.org/).
 
 Documentation for this module will be available later. For guidance, refer to
-the
-[examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/css).
+the [CSS
+examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/css) in
+our repo or the corresponding [articles](articles/index).

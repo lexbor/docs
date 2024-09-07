@@ -85,7 +85,7 @@ the specifications mentioned.
 The tokenizer processes a data stream into tokens.
 
 For example, with CSS:
-```CSS
+```css
 div {width: 10px !important}
 ```
 
@@ -123,7 +123,7 @@ A specific structure includes:
 8. Function
 
 For example, consider `Qualified Rule`:
-```CSS
+```css
 div {width: 10px !important}
 ```
 
@@ -176,7 +176,7 @@ main ones.
 We can set up callbacks for all stages of CSS syntax structures and pass tokens
 to these callbacks. It would look something like this:
 
-```CSS
+```css
 div {width: 10px !important}
 ```
 
@@ -226,7 +226,7 @@ grammar but also track nesting through tokens such as `{`, `}`, `(`, `)`, and
 
 It might look something like this:
 
-```CSS
+```css
 div {width: 10px !important}
 ```
 
@@ -372,7 +372,7 @@ is structured. Values in grammars can include combinators and multipliers.
 
 **Sequential Order**
 
-```HTML
+```html
 <my> = a b c
 ```
 
@@ -380,7 +380,7 @@ is structured. Values in grammars can include combinators and multipliers.
 - `<my> = a b c`
 
 **One Value from the List**:
-```HTML
+```html
 <my> = a | b | c
 ```
 
@@ -390,7 +390,7 @@ is structured. Values in grammars can include combinators and multipliers.
 - `<my> = c`
 
 **One or All Values from the List in Any Order**:
-```HTML
+```html
 <my> = a || b || c
 ```
 
@@ -435,7 +435,7 @@ For those familiar with regular expressions, this concept will be immediately
 clear.
 
 **Zero or Infinite Number of Times**:
-```HTML
+```html
 <my> = a*
 ```
 
@@ -445,7 +445,7 @@ clear.
 - `<my> = `
 
 **One or Infinite Number of Times**:
-```HTML
+```html
 <my> = a+
 ```
 
@@ -454,7 +454,7 @@ clear.
 - `<my> = a a a a a a a a a a a a a`
 
 **May or May Not be Present**:
-```HTML
+```html
 <my> = a?
 ```
 
@@ -463,7 +463,7 @@ clear.
 - `<my> = `
 
 **May be Present from `A` to `B` Times, Period**:
-```HTML
+```html
 <my> = a{1,4}
 ```
 
@@ -474,7 +474,7 @@ clear.
 - `<my> = a a a a`
 
 **One or Infinite Number of Times Separated by Comma**:
-```HTML
+```html
 <my> = a#
 ```
 
@@ -485,7 +485,7 @@ clear.
 - `<my> = a, a, a, a`
 
 **Exactly One Value Must be Present**:
-```HTML
+```html
 <my> = [a? | b? | c?]!
 ```
 
@@ -495,7 +495,7 @@ error.
 
 **Multipliers can be Combined**:
 
-```HTML
+```html
 <my> = a#{1,5}
 ```
 
@@ -545,7 +545,7 @@ The main problems I encountered:
 
 For example, consider this grammar:
 
-```HTML
+```html
 <text-decoration-line> = none | [ underline || overline || line-through || blink ]
 <text-decoration-style> = solid | double | dotted | dashed | wavy
 <text-decoration-color> = <color>
@@ -561,7 +561,7 @@ To manage this, I implemented a limiter for group options using `/1`. This
 notation indicates how many options should be selected from the group. As a
 result, `<text-decoration>` was transformed into:
 
-```HTML
+```html
 <text-decoration> = <text-decoration-line> || <text-decoration-style> || <text-decoration-color>/1
 ```
 
@@ -572,7 +572,7 @@ spaces between them. This approach is insufficient; we need to address this
 directly in the grammar. To handle this, the `^WS` modifier (Without Spaces) was
 introduced:
 
-```HTML
+```html
 <frequency> = <number-token> <frequency-units>^WS
 <
 
@@ -595,7 +595,7 @@ For example:
 
 Tests would be generated as follows:
 
-```HTML
+```html
 <x> = a b c
 <x> = a c b
 <x> = b a c

@@ -3,3 +3,4 @@ furo
 pyspelling
 myst-parser
 sphinx-autobuild
+sphinx-copybutton
