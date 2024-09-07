@@ -17,6 +17,7 @@ The `lexbor` binaries are available for:
 
 * [macOS](#macos)
 
+
 ### CentOS
 
 1. To configure the `lexbor` repository, create the following file named
@@ -30,18 +31,19 @@ The `lexbor` binaries are available for:
  enabled=1
  ```
 
-2. Install the core `lexbor` package and extra packages you want to use:
+2. Install the core `lexbor` package and any additional packages you need:
 
  ```sh
  yum install liblexbor
  yum install liblexbor-devel
  ```
 
+
 ### Debian
 
 1. Download the `lexbor` [signing
    key](https://lexbor.com/keys/lexbor_signing.key) used for our repositories
-   and packages and add it to `apt`’s keyring:
+   and add it to `apt`’s keyring:
 
  ```sh
  curl -O https://lexbor.com/keys/lexbor_signing.key
@@ -49,22 +51,23 @@ The `lexbor` binaries are available for:
  ```
 
 2. To configure the `lexbor` repository, create the following file named
-   `/etc/apt/sources.list.d/lexbor.list`.  For Debian 11:
+   `/etc/apt/sources.list.d/lexbor.list`. For Debian 11:
 
  ```ini
  deb https://packages.lexbor.com/debian/ bullseye liblexbor
  deb-src https://packages.lexbor.com/debian/ bullseye liblexbor
  ```
 
- Other supported distros are `buster` (10), `stretch` (9), and `jessie` (8).
+ Supported distros also include `buster` (10), `stretch` (9), and `jessie` (8).
 
-3. Install the core `lexbor` package and extra packages you want to use:
+3. Install the core `lexbor` package and any additional packages you need:
 
  ```sh
  apt update
  apt install liblexbor
  apt install liblexbor-dev
  ```
+
 
 ### Fedora
 
@@ -79,12 +82,13 @@ The `lexbor` binaries are available for:
  enabled=1
  ```
 
-2. Install the core `lexbor` package and extra packages you want to use:
+2. Install the core `lexbor` package and any additional packages you need:
 
  ```sh
  yum install liblexbor
  yum install liblexbor-dev
  ```
+
 
 ### RHEL
 
@@ -99,18 +103,19 @@ The `lexbor` binaries are available for:
  enabled=1
  ```
 
-2. Install the core `lexbor` package and extra packages you want to use:
+2. Install the core `lexbor` package and any additional packages you need:
 
  ```sh
  yum install liblexbor
  yum install liblexbor-dev
  ```
 
+
 ### Ubuntu
 
 1. Download the `lexbor` [signing
    key](https://lexbor.com/keys/lexbor_signing.key) used for our repositories
-   and packages and add it to `apt`’s keyring:
+   and add it to `apt`’s keyring:
 
  ```sh
  curl -O https://lexbor.com/keys/lexbor_signing.key
@@ -118,18 +123,18 @@ The `lexbor` binaries are available for:
  ```
 
 2. To configure the `lexbor` repository, create the following file named
-   `/etc/apt/sources.list.d/lexbor.list`.  For Ubuntu 22.04:
+   `/etc/apt/sources.list.d/lexbor.list`. For Ubuntu 22.04:
 
  ```ini
  deb https://packages.lexbor.com/ubuntu/ jammy liblexbor
  deb-src https://packages.lexbor.com/ubuntu/ jammy liblexbor
  ```
 
- Other supported distros are `hirsute` (21.04), `groovy` (20.10), `focal`
+ Supported distros also include `hirsute` (21.04), `groovy` (20.10), `focal`
  (20.04), `eoan` (19.10), `disco` (19.04), `cosmic` (18.10), `bionic` (18.04),
  `xenial` (16.04), and `trusty` (14.04).
 
-3. Install the core `lexbor` package and extra packages you want to use:
+3. Install the core `lexbor` package and any additional packages you need:
 
  ```sh
  apt update
@@ -137,19 +142,21 @@ The `lexbor` binaries are available for:
  apt install liblexbor-dev
  ```
 
+
 ## macOS
 
 ### Homebrew
 
-To install `lexbor` from [Homebrew](https://brew.sh):
+To install `lexbor` using [Homebrew](https://brew.sh):
 
 ```sh
 brew install lexbor
 ```
 
+
 ### MacPorts
 
-To install `lexbor` from [MacPorts](https://www.macports.org):
+To install `lexbor` using [MacPorts](https://www.macports.org):
 
 ```sh
 sudo port install lexbor

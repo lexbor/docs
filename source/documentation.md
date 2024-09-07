@@ -1,17 +1,17 @@
-# Quick Start
+# Documentation
 
-These steps show how to use `lexbor` in your code;
-they assume you have Linux and `gcc`.
+## Quick Start
 
-1. [Install](#installation) `lexbor` library in your system.
+These steps show how to use `lexbor` in your code. They assume you are using Linux and `gcc`.
+
+1. [Install](#installation) the `lexbor` library on your system.
 
 2. Let's parse some sample HTML markup.
-   Save this code as `myhtml.c`:
+   Save the following code as `myhtml.c`:
 
-   ```C
+   ```c
    #include <lexbor/html/parser.h>
    #include <lexbor/dom/interfaces/element.h>
-
 
    int
    main(int argc, const char *argv[])
@@ -33,7 +33,7 @@ they assume you have Linux and `gcc`.
            exit(EXIT_FAILURE);
        }
 
-      tag_name = lxb_dom_element_qualified_name(lxb_dom_interface_element(document->body),
+       tag_name = lxb_dom_element_qualified_name(lxb_dom_interface_element(document->body),
                                                  NULL);
 
        printf("Element tag name: %s\n", tag_name);
@@ -51,22 +51,15 @@ they assume you have Linux and `gcc`.
    ./myhtml
    ```
 
-
 ## Installation
 
-To install `lexbor` from binary packages, refer to the [Download](download.md)
-section.
-
+To install `lexbor` from binary packages, refer to the [Download](download.md) section.
 
 ## Source code
 
-The source code is available on
-[GitHub](https://github.com/lexbor/lexbor).
+The source code is available on [GitHub](https://github.com/lexbor/lexbor).
 
-To build and install `Lexbor`from source, use
-[CMake](https://cmake.org/);
-it's an open-source, cross-platform build system.
-
+To build and install `lexbor` from source, use [CMake](https://cmake.org/), an open-source, cross-platform build system.
 
 ### Linux, *BSD, macOS
 
@@ -80,27 +73,27 @@ sudo make install
 
 Optional flags recognized by the `cmake` command:
 
-| Flags | Default | Description |
-|---|:---:|---|
-|LEXBOR_OPTIMIZATION_LEVEL| -O2 |   |
-|LEXBOR_C_FLAGS|  | Default `C` compilation flags.<br>For details, see the `port.cmake` files in the [ports](https://github.com/lexbor/lexbor/tree/master/source/lexbor/ports) directory. |
-|LEXBOR_CXX_FLAGS|  | Default `C++` compilation flags. |
-|LEXBOR_WITHOUT_THREADS| ON | Reserved for future use. |
-|LEXBOR_BUILD_SHARED| ON | Create a shared library. |
-|LEXBOR_BUILD_STATIC| ON | Create a static library. |
-|LEXBOR_BUILD_SEPARATELY| OFF | Build all modules separately.  Each project module will have its own library (both shared and static). |
-|LEXBOR_BUILD_EXAMPLES| OFF | Build examples. |
-|LEXBOR_BUILD_TESTS| OFF | Build tests. |
-|LEXBOR_BUILD_TESTS_CPP| ON | Build C++ tests. Tests verify the correct operation of the library in C++. Used with LEXBOR_BUILD_TESTS. |
-|LEXBOR_BUILD_UTILS| OFF | Build project utilities and helpers. |
-|LEXBOR_BUILD_WITH_ASAN| OFF | If possible, build with Address Sanitizer enabled. |
-|LEXBOR_INSTALL_HEADERS| ON | Install library headers (all `.h` files). |
-|LEXBOR_PRINT_MODULE_DEPENDENCIES| OFF | List dependencies between modules. |
-
+| Flag                          | Default | Description                                                                                              |
+|-------------------------------|:-------:|----------------------------------------------------------------------------------------------------------|
+| LEXBOR_OPTIMIZATION_LEVEL      |   -O2   | Optimization level for building.                                                                          |
+| LEXBOR_C_FLAGS                 |         | Default `C` compilation flags. See the `port.cmake` files in the [ports](https://github.com/lexbor/lexbor/tree/master/source/lexbor/ports) directory. |
+| LEXBOR_CXX_FLAGS               |         | Default `C++` compilation flags.                                                                          |
+| LEXBOR_WITHOUT_THREADS         |   ON    | Reserved for future use.                                                                                  |
+| LEXBOR_BUILD_SHARED            |   ON    | Create a shared library.                                                                                  |
+| LEXBOR_BUILD_STATIC            |   ON    | Create a static library.                                                                                  |
+| LEXBOR_BUILD_SEPARATELY        |  OFF    | Build all modules separately. Each module will have its own library (shared and static).                   |
+| LEXBOR_BUILD_EXAMPLES          |  OFF    | Build example programs.                                                                                   |
+| LEXBOR_BUILD_TESTS             |  OFF    | Build tests.                                                                                              |
+| LEXBOR_BUILD_TESTS_CPP         |   ON    | Build C++ tests to verify library operation in C++. Requires `LEXBOR_BUILD_TESTS`.                        |
+| LEXBOR_BUILD_UTILS             |  OFF    | Build project utilities and helpers.                                                                      |
+| LEXBOR_BUILD_WITH_ASAN         |  OFF    | Enable Address Sanitizer if possible.                                                                     |
+| LEXBOR_INSTALL_HEADERS         |   ON    | Install library headers (`.h` files).                                                                     |
+| LEXBOR_PRINT_MODULE_DEPENDENCIES|  OFF    | Print module dependencies.                                                                                |
 
 ### Windows
 
 Use the [CMake](https://cmake.org/) GUI tool.
+
 For Windows with [MSYS2](https://www.msys2.org/):
 
 ```sh
@@ -112,8 +105,7 @@ make install
 
 ### Command Line Examples
 
-We recommend building the project in a separate directory, which can be easily
-deleted later, because `cmake` produces lots of clutter:
+We recommend building the project in a separate directory to easily clean up later, as `cmake` generates many temporary files:
 
 ```sh
 mkdir build
@@ -123,7 +115,7 @@ cd build
 To build a debug version of `lexbor` with Address Sanitizer enabled:
 
 ```sh
-cmake . -DCMAKE_C_FLAGS="-fsanitize=address -g" -DLEXBOR_OPTIMIZATION_LEVEL="-O0" -DLEXBOR_BUILD_TESTS=ON -DLEXBOR_BUILD_EXAMPLES=ON
+cmake .. -DCMAKE_C_FLAGS="-fsanitize=address -g" -DLEXBOR_OPTIMIZATION_LEVEL="-O0" -DLEXBOR_BUILD_TESTS=ON -DLEXBOR_BUILD_EXAMPLES=ON
 make
 make test
 ```
@@ -145,7 +137,7 @@ make
 make install
 ```
 
-To install only the shared library (without headers):
+To install only the shared library without headers:
 
 ```sh
 cmake .. -DLEXBOR_BUILD_STATIC=OFF -DLEXBOR_INSTALL_HEADERS=OFF
@@ -156,8 +148,7 @@ sudo make install
 
 ### Code Samples
 
-All code samples are available on the `lexbor` repo in the [`/examples/`
-directory](https://github.com/lexbor/lexbor/tree/master/examples).
+All code samples are available in the `lexbor` repository under the [`/examples/` directory](https://github.com/lexbor/lexbor/tree/master/examples).
 
 To build and run the samples:
 
@@ -171,30 +162,29 @@ make
 
 ## General Considerations
 
-## Our Approach: Dependencies, Algorithms, Platforms
+### Our Approach: Dependencies, Algorithms, Platforms
 
-- The project is developed in pure `C` without external dependencies.
-  Go hard or go home.
+- The project is written in pure `C` without external dependencies. We believe
+  in a "go hard or go home" approach.
 
-- We're not reinventing every algo known to humankind, but we approach object
-  creation and memory management in our own way.  Most classic algorithms
-  `lexbor` uses are noticeably tweaked for the needs of the project.
+- While we're not reinventing every algorithm known to humankind, we handle
+  object creation and memory management in our own way. Many classic algorithms
+  used in `lexbor` are adapted to meet the specific needs of the project.
 
-- We're not averse to using third-party code, but it's often easier to start
-  from scratch than incorporate an extra dependency (Node.js, we're looking at
-  you).
+- We're open to using third-party code, but it’s often simpler to start from
+  scratch than to add extra dependencies (looking at you, Node.js).
 
-- A number of funcions are platform dependent, such as threading, timers, I/0,
-  blocking primitives (spinlocks, mutexes).  To help their implementation, a
-  separate `port` module exists; its structure and build rules differ from the
-  other modules.
+- Some functions are platform-dependent, such as threading, timers, I/O, and
+  blocking primitives (spinlocks, mutexes). For these, we have a separate `port`
+  module with its own structure and build rules, distinct from the other
+  modules.
 
 
 ## Memory Management
 
-There are four major dynamic memory functions:
+There are four main dynamic memory functions:
 
-```C
+```c
 void *
 lexbor_malloc(size_t size);
 
@@ -208,92 +198,99 @@ void *
 lexbor_free(void *dst);
 ```
 
-They are:
+These functions:
 
-- Defined in `/source/lexbor/core/lexbor.h` (the [core](#core) module)
+- Are defined in `/source/lexbor/core/lexbor.h` (in the [core](#core) module).
 
-- Implemented in `/source/port/*/lexbor/core/memory.c`
-  (the `port` module mentioned above)
+- Are implemented in `/source/port/*/lexbor/core/memory.c` (in the `port`
+  module).
 
-- Open to redefining
+- Can be redefined if needed.
 
-As their names hint, they are intended as a replacement for the standard
-`malloc`, `calloc`, `realloc`, and `free` functions.  Unlike `free`, though,
-the `lexbor_free` function returns a `void *` value which is always `NULL`;
-this is some syntactic sugar to avoid explicitly nullifying `free`'d variables:
 
-```C
+As the names suggest, they serve as replacements for the standard `malloc`,
+`calloc`, `realloc`, and `free`. However, unlike `free`, the `lexbor_free`
+function returns a `void *` that is always `NULL`. This simplifies the process
+of nullifying freed variables:
+
+```c
 if (object->table != NULL) {
     object->table = lexbor_free(object->table);
 }
 ```
 
-Otherwise, we would have to nullify `object->table`:
+Without this, you'd need to explicitly nullify `object->table`:
 
-```C
+```c
 if (object->table != NULL) {
-	lexbor_free(object->table);
-	object->table = NULL;
+    lexbor_free(object->table);
+    object->table = NULL;
 }
 ```
 
-We'll talk about other discrepancies later.
+We'll discuss other differences later.
 
 
 ## Status Codes
 
-If a function can fail somehow, it should report the failure.
-We have two big rules when working with status codes:
+If a function can fail, it should report the failure. We follow two main rules when working with status codes:
 
-- If the status is `LXB_STATUS_OK` (`0`), all is fine; otherwise,
+- If the status is `LXB_STATUS_OK` (`0`), everything is fine; otherwise,
   **something went wrong**.
 
-- Always return **meaningful** statuses. That is, if memory wasn't allocated,
-  the `LXB_STATUS_ERROR_MEMORY_ALLOCATION` status is returned, not a fake value
-  such as `0x1f1f`.
+- Always return **meaningful** status codes. For example, if memory allocation
+  fails, return `LXB_STATUS_ERROR_MEMORY_ALLOCATION`, not a generic value like
+  `0x1f1f`.
 
-Status codes are passed around as `lxb_status_t`.  The typedef occurs
-throughout the code and is defined in `/source/lexbor/core/types.h`; all
-available status codes reside in `/source/lexbor/core/base.h`.
+
+Status codes are passed as `lxb_status_t`. This type is defined throughout the
+codebase in `/source/lexbor/core/types.h`, and all available status codes are
+listed in `/source/lexbor/core/base.h`.
 
 
 ## Function Naming
 
-Almost all functions follow this naming pattern:
+Most functions follow this naming pattern:
 
 [naming1]: img/naming1.png
 
 ![Common Naming Pattern][naming1]
 
 <style>
-    img[alt="Common Naming Pattern"] {height: 305px; display: block; margin: auto}
+    img[alt="Common Naming Pattern"] { height: 305px; display: block; margin: auto; }
 </style>
 
-The exception is the [core](#core) module (`/source/lexbor/core/`), which uses
-the following pattern:
+
+The exception is the [core](#core) module (`/source/lexbor/core/`), which uses a
+different pattern:
 
 [naming2]: img/naming2.png
 
 ![Core Naming Pattern][naming2]
 
 <style>
-    img[alt="Core Naming Pattern"] {height: 305px; display: block; margin: auto}
+    img[alt="Core Naming Pattern"] { height: 305px; display: block; margin: auto; }
 </style>
 
-In other words, `lexbor_*` functions occur in the `core` module, full stop.
+
+In other words, all `lexbor_*` functions are located in the `core` module,
+without exceptions.
 
 
 ## Header Locations
 
 All paths are relative to the `/source/` directory. For example, to include a
-header file from the [html](#html) module in the `/source/lexbor/html/`
-directory: `#include "lexbor/html/tree.h"`.
+header file from the [html](#html) module located in `/source/lexbor/html/`,
+use:
 
+```c
+#include "lexbor/html/tree.h"
+```
 
 ## Data Structures
 
-Most structures and objects have an API to create, initialize, clean, and
-delete them according to the following pattern:
+Most structures and objects have an API for creating, initializing, cleaning,
+and deleting them. This follows the general pattern:
 
 ```C
 <structure-name> *
@@ -312,24 +309,24 @@ void
 <function-name>_destroy(<structure-name> *obj, bool self_destroy);
 ```
 
-- The `*_init` function accepts any number of arguments and always returns
+- The `*_init` function can accept any number of arguments and always returns
   `lxb_status_t`.
 
-- Cleanup functions, `*_clean` and `*_erase`, can return any
-  value, but usually it's `void`.
+- Cleanup functions, `*_clean` and `*_erase`, may return any value, but they
+  typically return `void`.
 
-- If `NULL` is passed as the first argument (object) to the `*_init` function,
-  the function returns `LXB_STATUS_ERROR_OBJECT_NULL`.
+- If `NULL` is passed as the first argument (the object) to the `*_init`
+  function, it returns `LXB_STATUS_ERROR_OBJECT_NULL`.
 
-- If the `*_destroy` function is called with `self_destroy` equal to `true`,
-  the returned value is always `NULL`; otherwise, `obj` is returned.
+- When the `*_destroy` function is called with `self_destroy` set to `true`, the
+  returned value is always `NULL`; otherwise, the object (`obj`) is returned.
 
-- The `*_destroy` functions always check the object for `NULL`; if the object
-  is `NULL`, the function returns `NULL` as well.
+- The `*_destroy` functions always check if the object is `NULL`; if so, they
+  return `NULL`.
 
-- If the `*_destroy` function wasn't passed the `bool self_destroy` argument,
-  the object can only be created using the `*_create` function (i. e., not on
-  the stack).
+- If the `*_destroy` function doesn’t take the `bool self_destroy` argument, the
+  object can only be created using the `*_create` function (i.e., not on the
+  stack).
 
 Typical usage:
 
@@ -365,23 +362,24 @@ if (status != LXB_STATUS_OK) {
 lexbor_avl_node_destroy(&avl, false);
 ```
 
-Note that this approach is not an absolute must, even if ubiqutious.  There are
-cases where a different API fits better.
+Note that this approach is not an absolute requirement, even though it is
+common. There are cases where a different API may be more suitable.
 
 
 ## Modules
 
-The `lexbor` project is modular by design, and each module can be built
-separately (at least potentially). Modules can depend on each other; for
-example, now all modules rely on the [core](#core) module.
+The `lexbor` project is designed to be modular, allowing each module to be built
+separately if desired. Modules can depend on each other; for instance, all
+modules currently rely on the [core](#core) module.
 
-Each module is a subdirectory in the `/source/` directory of the project.
+Each module is located in a subdirectory within the `/source/` directory of the
+project.
 
 
 ## Versions
 
-Each module stores its version in the `base.h` file at the module root. For
-example, with `/source/lexbor/html/base.h`:
+Each module records its version in the `base.h` file located at the module root.
+For example, see `/source/lexbor/html/base.h`:
 
 ```C
 #define <MODULE-NAME>_VERSION_MAJOR 1
@@ -396,20 +394,20 @@ example, with `/source/lexbor/html/base.h`:
 
 ## Core
 
-This is the base module; it implements all algorithms that are essential for
-the project, such as AVL and BST trees, arrays, strings and so on.  It also
-implements memory management.  The module is continually evolving.  New
-algorithms are being added; existing ones, optimized.
+This is the base module, implementing essential algorithms for the project, such
+as AVL and BST trees, arrays, and strings. It also handles memory management.
+The module is continuously evolving with new algorithms being added and existing
+ones optimized.
 
-The documentation for this module will be available later.
+Documentation for this module will be available later.
 
 
 ## DOM
 
 This module implements the [DOM specification](https://dom.spec.whatwg.org/).
-Its functions manipulate the DOM tree: its nodes, attributes, and events.
+Its functions manage the DOM tree, including its nodes, attributes, and events.
 
-The documentation for this module will be available later.
+Documentation for this module will be available later.
 
 
 ## HTML
@@ -417,11 +415,11 @@ The documentation for this module will be available later.
 This module implements the [HTML
 specification](https://html.spec.whatwg.org/multipage/).
 
-Implemented now: Tokenizer, Tree Builder, Parser, Fragment Parser, Interfaces
-for HTML Elements.
+Current implementations include: Tokenizer, Tree Builder, Parser, Fragment
+Parser, and Interfaces for HTML Elements.
 
-The documentation for this module will be available later.  For guidance, refer
-to the
+Documentation for this module will be available later. For guidance, refer to
+the
 [examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/html).
 
 
@@ -430,7 +428,8 @@ to the
 This module implements the [Encoding
 specification](https://encoding.spec.whatwg.org/).
 
-Implemented now: streaming encode/decode.  Available encodings:
+Current implementations include streaming encode/decode. Available encodings:
+
 ```
 big5, euc-jp, euc-kr, gbk, ibm866, iso-2022-jp, iso-8859-10, iso-8859-13,
 iso-8859-14, iso-8859-15, iso-8859-16, iso-8859-2, iso-8859-3, iso-8859-4,
@@ -441,16 +440,13 @@ windows-1255, windows-1256, windows-1257, windows-1258, windows-874,
 x-mac-cyrillic, x-user-defined
 ```
 
-The documentation for this module will be available later.  For guidance, refer
-to the
-[examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/encoding).
+Documentation for this module will be available later. For guidance, refer to the [examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/encoding).
 
 
 ## CSS
 
-This module implements the [CSS
-specification](https://drafts.csswg.org/).
+This module implements the [CSS specification](https://drafts.csswg.org/).
 
-The documentation for this module will be available later.  For guidance, refer
-to the
+Documentation for this module will be available later. For guidance, refer to
+the
 [examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/css).

@@ -1,17 +1,20 @@
 # Roadmap
 
 This section lists the most important modules involved in creating a browser
-engine.  The list will grow over time.
+engine. The list will grow over time.
 
-Specific list items appear in their respective sections (`DOM`, `HTML`, etc.)
-in order of their implementation.
+Specific list items appear in their respective sections (`DOM`, `HTML`, etc.) in
+the order of their implementation.
+
 
 ## Legend
 
-![Done][done]: There is no need to return to this item.  Done is done.<br>
-![In Progress][progress]: Continually in development; can already be used.
+- ![Done][done]: There is no need to revisit this item; it is complete.
 
-If status is not given, the work hasn't started yet.
+- ![In Progress][progress]: Continually in development but available for use.
+
+- If no status is given, the work has not yet started.
+
 
 [done]: img/done.svg
 [progress]: img/in_progress.svg
@@ -84,6 +87,7 @@ If status is not given, the work hasn't started yet.
    1.1. [Normalization forms](https://www.unicode.org/reports/tr15/): ![Done][done]<br>
    1.2. [Unicode IDNA Compatibility Processing](http://www.unicode.org/reports/tr46/): ![Done][done]
 
+
 ## Layout
 
-1. Building a rendering tree - now we're at that stage.
+1. Building a rendering tree: we're at this stage right now.
