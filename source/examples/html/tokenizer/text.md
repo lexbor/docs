@@ -1,26 +1,18 @@
-# HTML Tokenizer Example
+# Tokenizing Text Nodes in HTML: Example
 
-This article describes the functionality of the example code provided in the
-file
-[lexbor/html/tokenizer/text.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/tokenizer/text.c).
-The code implements an HTML tokenizer using the `lexbor` library, focusing on
-extracting and printing text tokens from HTML input.
+In this example, found in `lexbor/html/tokenizer/text.c`, we explore how to 
+use the `lexbor` library to tokenize HTML content and selectively process 
+text nodes (`#text` nodes). The example shows how to set up a tokenizer, 
+manage the parsing process, and handle tokens using callback functions 
+provided by `lexbor`.
 
-## Overview of the Code
+## Key Code Sections
 
-The main thrust of this code is to parse HTML data, identify text tokens within
-it, and print those tokens to the standard output. The code utilizes functions
-provided by the `lexbor` library, a lightweight and efficient HTML and XML
-processing library.
+### Defining the Error Handling Macro
 
-## Key Sections of the Code
-
-### Header and Macros
-
-The code begins with the inclusion of the `lexbor/html/tokenizer.h` header file,
-which contains the necessary declarations for using the tokenizer functionality
-of the `lexbor` library. Following this, a macro named `FAILED` is defined. This
-macro can be used throughout the code to simplify error handling:
+Before diving into the core functionality, the example defines an error 
+handling macro, `FAILED`. This macro ensures that any critical error 
+terminates the program with an appropriate error message.
 
 ```c
 #define FAILED(...)                                                            \
@@ -32,13 +24,11 @@ macro can be used throughout the code to simplify error handling:
     while (0)
 ```
 
-It takes a format string and arguments to generate error messages. When invoked,
-it prints the message to standard error and terminates the program.
+### The Token Callback Function
 
-### Token Callback Function
-
-Next, there is the `token_callback` function that manages the processing of
-tokens emitted by the tokenizer:
+The `token_callback` function processes tokens produced by the tokenizer. 
+Its purpose is to skip all tokens that are not text nodes and print 
+the content of the text nodes.
 
 ```c
 static lxb_html_token_t *
@@ -48,75 +38,98 @@ token_callback(lxb_html_tokenizer_t *tkz, lxb_html_token_t *token, void *ctx)
     if (token->tag_id != LXB_TAG__TEXT) {
         return token;
     }
-    
+
     printf("%.*s", (int) (token->text_end - token->text_start),
            token->text_start);
-    
+
     return token;
 }
 ```
 
-The function checks whether the token is a text token (identified by
-`LXB_TAG__TEXT`). If it is not, it simply returns the token without further
-processing. For text tokens, it prints the text content to standard output using
-the `printf` function. This content is extracted from the token's `text_start`
-and `text_end` fields, which indicate the starting and ending positions of the
-text within the HTML data.
+Here, we check the `tag_id` of the token. If it is not `LXB_TAG__TEXT`, the 
+function returns the token unchanged. Otherwise, it calculates the token's 
+text length and prints it.
 
-### Main Function
+### Main Function and Initialization
 
-Finally, the `main` function orchestrates the tokenizer's operation:
+The `main` function sets up the tokenizer, registers the callback function, 
+and processes a chunk of HTML data.
 
 ```c
-int main(int argc, const char *argv[])
+int
+main(int argc, const char *argv[])
 {
-    ...
+    lxb_status_t status;
+    lxb_html_tokenizer_t *tkz;
+
     const lxb_char_t data[] = "<div>Hi<span> my </span>friend</div>! "
                               "&#x54;&#x72;&#x79;&#x20;&#x65;&#x6e;&#x74;"
                               "&#x69;&#x74;&#x69;&#x65;&#x73;&excl;";
-    
-    ...
-    
+
+    printf("HTML:\n%s\n\n", (char *) data);
+    printf("Result:\n");
+
     tkz = lxb_html_tokenizer_create();
     status = lxb_html_tokenizer_init(tkz);
     if (status != LXB_STATUS_OK) {
         FAILED("Failed to create tokenizer object");
     }
-    ...
-    
+```
+
+This portion of the code initializes a new tokenizer and checks for 
+successful creation. If initialization fails, the program exits.
+
+### Setting the Callback and Processing HTML
+
+Next, we set the token callback function, begin tokenization, feed the HTML 
+data chunk, and finalize the parsing.
+
+```c
+    lxb_html_tokenizer_callback_token_done_set(tkz, token_callback, NULL);
+
+    status = lxb_html_tokenizer_begin(tkz);
+    if (status != LXB_STATUS_OK) {
+        FAILED("Failed to prepare tokenizer object for parsing");
+    }
+
     status = lxb_html_tokenizer_chunk(tkz, data, (sizeof(data) - 1));
     if (status != LXB_STATUS_OK) {
         FAILED("Failed to parse the html data");
     }
-    
-    ...
-    
+
+    status = lxb_html_tokenizer_end(tkz);
+    if (status != LXB_STATUS_OK) {
+        FAILED("Failed to ending of parsing the html data");
+    }
+
+    printf("\n");
+
     lxb_html_tokenizer_destroy(tkz);
-    
+
     return 0;
 }
 ```
 
-The HTML input is defined as a character array that includes HTML elements and
-character references. The code creates a tokenizer instance using
-`lxb_html_tokenizer_create()` and initializes it with
-`lxb_html_tokenizer_init()`. If these operations fail, the `FAILED` macro is
-called to report the issue and exit.
+Here, the critical steps include:
+- Setting the callback function with `lxb_html_tokenizer_callback_token_done_set`.
+- Starting tokenization with `lxb_html_tokenizer_begin`.
+- Feeding the HTML data with `lxb_html_tokenizer_chunk`.
+- Completing the parsing with `lxb_html_tokenizer_end`.
+- Cleaning up resources with `lxb_html_tokenizer_destroy`.
 
-The tokenizer callback is set through
-`lxb_html_tokenizer_callback_token_done_set()`, linking the `token_callback`
-function to handle tokens once they are fully parsed. The main parsing
-operations occur through `lxb_html_tokenizer_begin()` and
-`lxb_html_tokenizer_chunk()`, processing the data until the end of the input
-with `lxb_html_tokenizer_end()`.
+## Notes
 
-Finally, the tokenizer instance is destroyed with
-`lxb_html_tokenizer_destroy(tkz)`, which frees up resources allocated during the
-process.
+- The example uses a custom callback function to handle specific tokens 
+  (only text nodes in this case).
+- The macro `FAILED` provides a simple and effective way to handle errors.
+- Understanding the use of callbacks in tokenization processes is crucial 
+  for advanced HTML parsing tasks.
 
-## Conclusion
+## Summary
 
-This example provides a clear illustration of how to utilize the `lexbor` library
-to parse HTML and process text tokens. By focusing on text tokens, and employing
-proper error handling mechanics, the code demonstrates a concise yet effective
-approach to basic HTML tokenization.
+This example demonstrates how to use the `lexbor` library to tokenize and 
+process HTML content, focusing on text nodes. By setting up a tokenizer, 
+defining a callback function, and managing the parsing process, users gain 
+insights into effectively handling HTML content in C with `lexbor`. This 
+example is particularly instructive for developers looking to perform 
+fine-grained HTML parsing and extraction tasks.

@@ -1,106 +1,136 @@
-# URL Parsing Example
+# URL Parsing and Serialization: Example
 
-This article provides an explanation of the URL parsing example found in the
-source file
-[lexbor/url/relative.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/url/relative.c).
-The example demonstrates the parsing of a relative URL based on a provided base
-URL using the `lexbor` library. It outlines the setup of the URL parser, handling
-of input strings, and the serialization of various components of the parsed URL.
+This example comes from the `lexbor/url/relative.c` file and demonstrates how
+to parse and serialize URLs using the `lexbor` library. The following
+explanation will dive into crucial parts of the code, illustrate its core
+functions, and provide detailed reasoning about the various `lexbor` elements 
+used.
 
-## Code Breakdown
+The example illustrates parsing a relative URL against a base URL, initializing
+necessary parsers, and then serializing different components of the URL,
+showcasing the ability of `lexbor` to handle URL manipulation and IDNA
+(internationalized domain name) conversion.
 
-### Initial Setup
+## Key Code Sections
 
-The program begins by including necessary headers and defining the callback
-function. The callback function serves the purpose of printing parsed URL
-components. The main function contains the core logic where URL parsing occurs.
+### URL Parser Initialization
+The first key part involves initializing the URL parser.
+
+```c
+    status = lxb_url_parser_init(&parser, NULL);
+    if (status != LXB_STATUS_OK) {
+        printf("Failed to init URL parser.\n");
+        return EXIT_FAILURE;
+    }
+```
+In this section, `lxb_url_parser_init` initializes the `parser` object.
+Initialization is essential as it sets up the internal state for subsequent URL
+parsing.
+
+### Parsing the Base URL
+Once the parser is initialized, the next task is to parse the base URL.
+
+```c
+    base_url = lxb_url_parse(&parser, NULL, base_url_str.data,
+                             base_url_str.length);
+    if (base_url == NULL) {
+        printf("Failed to parse Base URL.\n");
+        return EXIT_FAILURE;
+    }
+    lxb_url_parser_clean(&parser);
+```
+Here, `lxb_url_parse` is called with the `parser` object, parsing the provided
+`base_url_str`. If successful, it returns a pointer to a `lxb_url_t` structure
+representing the parsed URL. The parser is then cleaned to reset its state.
+
+### Parsing the Relative URL
+Next, the relative URL is parsed using the previously parsed base URL as the
+reference.
+
+```c
+    url = lxb_url_parse(&parser, base_url, url_str.data, url_str.length);
+    if (url == NULL) {
+        printf("Failed to parse URL.\n");
+        return EXIT_FAILURE;
+    }
+
+    lxb_url_parser_destroy(&parser, false);
+```
+Again, `lxb_url_parse` is used, this time passing the `base_url` to provide context 
+for the relative URL. The resulting URL structure is stored in `url`.
+
+### Initializing IDNA
+To serialize Unicode hostnames, IDNA initialization is necessary.
+
+```c
+    status = lxb_unicode_idna_init(&idna);
+    if (status != LXB_STATUS_OK) {
+        printf("Failed to init IDNA.\n");
+        return EXIT_FAILURE;
+    }
+```
+`lxb_unicode_idna_init` prepares the `idna` structure for handling
+internationalized domain names, facilitating transformation between Unicode and
+ASCII representations.
+
+### Serializing URL Components
+Finally, different parts of the parsed URL are serialized and printed out.
+
+```c
+    printf("Parsed URL: ");
+    (void) lxb_url_serialize(url, callback, NULL, false);
+    printf("\n");
+
+    printf("Scheme: ");
+    (void) lxb_url_serialize_scheme(url, callback, NULL);
+    printf("\n");
+
+    printf("Username: ");
+    (void) lxb_url_serialize_username(url, callback, NULL);
+    printf("\n");
+```
+Each `lxb_url_serialize_*` function takes the parsed URL and the `callback`
+function to print each part of the URL string. For the host, both ASCII and
+Unicode formats are printed:
+
+```c
+    printf("Host (ASCII): ");
+    (void) lxb_url_serialize_host(lxb_url_host(url), callback, NULL);
+    printf("\n");
+
+    printf("Host (Unicode): ");
+    (void) lxb_url_serialize_host_unicode(&idna, lxb_url_host(url),
+                                          callback, NULL);
+    printf("\n");
+```
+Using `lxb_url_serialize_host_unicode` alongside `idna` converts and prints the
+Unicode hostname.
+
+### Callback Function
+The `callback` function is a utility to print the individual URL components:
 
 ```c
 static lxb_status_t
-callback(const lxb_char_t *data, size_t len, void *ctx);
+callback(const lxb_char_t *data, size_t len, void *ctx)
+{
+    printf("%.*s", (int) len, (const char *) data);
+
+    return LXB_STATUS_OK;
+}
 ```
+This `callback` is vital for the standard `lexbor` serialization pattern,
+outputting each URL component.
 
-### URL Initialization
+## Notes
+- Initialization and cleanup functions (`init`, `clean`, `destroy`) are crucial
+  to managing `lexbor` objects.
+- Parsing relative URLs against base URLs showcases `lexbor`'s robustness.
+- IDNA transformation emphasizes handling internationalized domain names.
 
-In `main`, variables are defined for the base URL and the URL to parse. The
-lexbor string structures are initialized with `url_str` and `base_url_str`. The
-`lxb_url_parser_t parser` is initialized to set up the parser for processing the
-URLs.
-
-```c
-lxb_url_parser_t parser;
-status = lxb_url_parser_init(&parser, NULL);
-```
-
-This initializes the parser and checks for successful initialization. If it
-fails, the program outputs an error message and exits.
-
-### Parsing Base URL
-
-The `base_url` is then parsed using `lxb_url_parse`, which takes the initialized
-parser, a null pointer (for context), the data of the base URL string, and its
-length.
-
-```c
-base_url = lxb_url_parse(&parser, NULL, base_url_str.data, base_url_str.length);
-```
-
-If parsing the base URL fails, an error message is printed.
-
-### Cleaning Up and Parsing Relative URL
-
-Subsequently, the parser is cleaned up, and the relative URL is parsed in a
-similar manner using the base URL as a reference.
-
-```c
-lxb_url_parser_clean(&parser);
-url = lxb_url_parse(&parser, base_url, url_str.data, url_str.length);
-```
-
-Again, if the parsing fails, an appropriate error message is printed. After the
-relative URL is successfully parsed, the parser must be cleaned up using
-`lxb_url_parser_destroy`.
-
-### Serializing URL Components
-
-The main focus of this example is the serialization of various components of the
-parsed URL. Using callbacks, the program outputs the base URL, relative URL, and
-several segments of the parsed URL:
-
-- Scheme
-- Username
-- Password
-- Host (both ASCII and Unicode)
-- Port
-- Path
-- Query
-- Fragment
-
-Each of these components is printed by invoking serialization functions, such as
-`lxb_url_serialize_scheme` for the scheme, and so forth.
-
-```c
-(void) lxb_url_serialize(url, callback, NULL, false);
-```
-
-The callback function defined earlier is utilized here to display each component
-by printing its representation.
-
-### Final Cleanup
-
-After displaying all URL components, the program cleans up the IDNA context and
-the memory associated with the parsed URL. This ensures that any resources
-utilized during the parsing are properly released.
-
-```c
-(void) lxb_unicode_idna_destroy(&idna, false);
-(void) lxb_url_memory_destroy(url);
-```
-
-### Conclusion
-
-The provided example illustrates the process of relative URL parsing using the
-`lexbor` library. From initializing the parser to serializing specific components
-of the URL, each step is crucial for accurate URL handling in applications. The
-careful management of memory and resources also highlights best practices in
-programming with C.
+## Summary
+The example from `lexbor/url/relative.c` demonstrates parsing relative URLs
+using a base URL, initializing necessary `lexbor` objects, and serializing the
+URL components. This process highlights `lexbor`'s capabilities in handling
+URL parsing and internationalization, which is crucial for applications dealing
+with diverse web addresses. Understanding these routines is essential for
+anyone looking to manipulate URLs effectively using `lexbor`.

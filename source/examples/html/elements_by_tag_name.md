@@ -1,138 +1,108 @@
-# HTML Elements by Tag Name Example
+# Extracting Elements by Tag Name: Example
 
-This article will explain the code found in the source file
-[lexbor/html/elements_by_tag_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/elements_by_tag_name.c),
-which demonstrates how to find and print HTML elements by their tag names using
-the `lexbor` DOM library.
+In this article, we will delve into the `lexbor/html/elements_by_tag_name.c` example,
+which demonstrates how to extract HTML elements by their tag name using the `lexbor`
+library. This specific example focuses on parsing an HTML snippet and then retrieving
+all `<div>` elements from it. We will analyze the different sections of the code to 
+understand how `lexbor` functions and data types facilitate these operations.
 
-## Code Overview
+## Key Code Sections
 
-The purpose of this example is to parse a simple HTML string and retrieve all
-`<div>` elements from the parsed document. It achieves this by leveraging the
-`lexbor` library's DOM capabilities to manage and manipulate the HTML document
-structure.
+### Parsing the HTML Document
 
-## Main Function
-
-The entry point of the program is the `main` function, which begins by declaring
-several variables essential for the parsing process:
-
-- `status` stores the success or failure status of various operations.
-- `element` will point to the current HTML element being processed.
-- `document` links to the HTML document that will be created from the parsed
-  input.
-- `collection` is intended to hold the collection of elements found in the
-  document.
-
-### Parsing HTML
-
-The HTML string defined as:
+The first significant step in the code is parsing an HTML document using the given 
+HTML content.
 
 ```c
 const lxb_char_t html[] = "<div a=b><span></div><div x=z></div>";
+size_t html_szie = sizeof(html) - 1;
+
+document = parse(html, html_szie);
 ```
 
-represents a simple HTML fragment which contains two `<div>` elements and a
-`<span>` element. The size of the HTML string is determined next:
+The `parse` function takes the HTML content and its size to convert the string into 
+an `lxb_html_document_t` structure. This document represents the parsed HTML in 
+memory, allowing further manipulations.
 
-```c
-size_t html_size = sizeof(html) - 1;
-```
+### Creating and Initializing the Collection
 
-This allows the program to recognize the length of the string without including
-the null terminator.
-
-The `parse` function is then called to create a `document` from the HTML string:
-
-```c
-document = parse(html, html_size);
-```
-
-This function interprets the HTML and constructs a corresponding DOM structure.
-The parsing outcome is crucial; it will dictate the next steps in the program.
-
-### Creating a DOM Collection
-
-A collection is created to hold the resulting nodes:
+Next, we need a collection to store the elements we find. `lexbor` provides 
+mechanisms for creating and managing such collections efficiently.
 
 ```c
 collection = lxb_dom_collection_make(&document->dom_document, 128);
-```
-
-This function attempts to allocate memory for a collection that can store up to
-128 DOM elements. If memory allocation fails, the program exits with an error
-message:
-
-```c
 if (collection == NULL) {
     FAILED("Failed to create Collection object");
 }
 ```
 
-### Retrieving Elements by Tag Name
+Here, `lxb_dom_collection_make` initializes a collection with a preallocated size of 
+128 elements. If the creation fails, it returns `NULL`, prompting the program to 
+exit with an error message.
 
-The critical operation of this example is retrieving `<div>` elements from the
-document:
+### Finding Elements by Tag Name
+
+The critical function `lxb_dom_elements_by_tag_name` performs the task of finding 
+all elements with a specific tag name.
 
 ```c
 status = lxb_dom_elements_by_tag_name(lxb_dom_interface_element(document->body),
                                       collection, (const lxb_char_t *) "div", 3);
-```
-
-Here, `lxb_dom_elements_by_tag_name` takes three parameters:
-1. The reference to the body of the document.
-2. The collection object to store the found elements.
-3. The string `"div"` along with its length, specifying which tags to search
-   for.
-
-If the call is unsuccessful, it again exits with an error message:
-
-```c
 if (status != LXB_STATUS_OK) {
     FAILED("Failed to get elements by name");
 }
 ```
 
-### Output the Found Elements
+In this code snippet:
+- `lxb_dom_interface_element(document->body)` converts the body of the document 
+  into a generic element interface.
+- `collection` is passed to store the found elements.
+- The tag name `"div"` is specified along with its length, `3`.
 
-The program then prints the initial HTML string and displays a message
-indicating that it is about to list the found `<div>` elements:
+If the function fails to find any elements, it returns a status other than 
+`LXB_STATUS_OK`.
 
-```c
-PRINT("HTML:");
-PRINT("%s", (const char *) html);
-PRINT("\nFind all 'div' elements by tag name 'div'.");
-PRINT("Elements found:");
-```
+### Iterating Over and Serializing Found Elements
 
-The elements collected are iterated over and serialized for display:
+Once the elements are found, we iterate over the collection and serialize each node 
+for display.
 
 ```c
 for (size_t i = 0; i < lxb_dom_collection_length(collection); i++) {
     element = lxb_dom_collection_element(collection, i);
+
     serialize_node(lxb_dom_interface_node(element));
 }
 ```
 
-This loop retrieves each element from the collection by index and uses the
-`serialize_node` function to output its representation.
+We loop through each element in the collection, retrieve it using 
+`lxb_dom_collection_element`, and then serialize it for output using the 
+`serialize_node` function.
 
 ### Cleanup
 
-Finally, memory allocated for the collection and the document is released:
+Proper cleanup of allocated resources is crucial to avoid memory leaks.
 
 ```c
 lxb_dom_collection_destroy(collection, true);
 lxb_html_document_destroy(document);
 ```
 
-This ensures that there are no memory leaks after the program's execution is
-complete.
+Here, `lxb_dom_collection_destroy` releases the memory for the collection, and 
+`lxb_html_document_destroy` does the same for the document.
 
-## Conclusion
+## Notes
 
-This example serves as a practical demonstration of how to use the `lexbor`
-library to parse HTML and find elements by tag name. By using functions from the
-library's API, the code effectively processes a document and manages collections
-of elements, showcasing the utility of the `lexbor` framework in web development
-tasks.
+- The example underscores the importance of checking return values for error 
+  handling.
+- It showcases the use of `lxb_dom_elements_by_tag_name` to query elements 
+  efficiently.
+
+## Summary
+
+The `lexbor/html/elements_by_tag_name.c` example effectively demonstrates how to 
+parse an HTML document and extract elements by their tag name. Key takeaways include 
+the importance of proper initialization and error handling, as well as the 
+simplicity and power of the `lexbor` API for DOM manipulation tasks. This example is 
+an excellent starting point for developers looking to utilize the `lexbor` library 
+for web scraping or HTML processing tasks.

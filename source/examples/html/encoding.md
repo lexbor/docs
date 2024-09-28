@@ -1,84 +1,100 @@
-# HTML Encoding Example
+# Determining HTML Encoding: Example
 
-This article provides an explanation for the HTML Encoding example found in the
-file
-[lexbor/html/encoding.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/encoding.c).
-This program is designed to read an HTML file, determine its character encoding,
-and print it out. The implementation utilizes the `lexbor` library, which offers
-various functions to handle encoding.
+The example code in `lexbor/html/encoding.c` demonstrates how to determine the encoding of an HTML file using the `lexbor` library. This example is particularly useful for understanding how to initialize the encoding mechanism and extract the encoding information from the HTML content.
 
-## Overview
-
-The main function of the example handles command-line input, reads an HTML file,
-and determines its encoding using the `lexbor` library. The code includes a
-failure handling mechanism and a usage function to guide users on how to execute
-the program properly.
+In this example, the code performs several tasks to determine the HTML encoding. It initializes the HTML encoding detection system, reads the HTML file, and then identifies the encoding used in that file. This process is useful for web scraping, data extraction, and ensuring proper text rendering. The file in question is `lexbor/html/encoding.c`.
 
 ## Key Code Sections
 
-### Error Handling Macro
+### Main Function and Input Handling
 
-The `FAILED` macro is a pivotal part of this code, providing a consistent way to
-handle errors throughout the program. It takes two parameters: a boolean flag
-`with_usage` and a variable number of arguments. If an error occurs, it prints
-the provided error message to the standard error stream and, if requested,
-displays the usage information before quitting the program. This helps keep the
-code clean while managing multiple error points effectively.
+The program starts with the `main` function, which handles user input and delegates file reading and encoding detection.
 
-### Command-Line Arguments
+```c
+int
+main(int argc, const char *argv[])
+{
+    size_t len;
+    lxb_char_t *html;
+    lxb_status_t status;
+    lxb_html_encoding_t em;
+    lxb_html_encoding_entry_t *entry;
 
-In the `main` function, the program checks the number of command-line arguments
-passed to it. If the argument count does not equal 2, the program calls the
-`usage` function to provide instructions on how to execute the program correctly
-and then exits. This ensures that users understand how to use the program before
-any further processing occurs.
+    if (argc != 2) {
+        usage();
+        exit(EXIT_SUCCESS);
+    }
 
-### Reading the HTML File
+    html = lexbor_fs_file_easy_read((lxb_char_t *) argv[1], &len);
+    if (html == NULL) {
+        FAILED(true, "Failed to read file: %s", argv[1]);
+    }
+    // ... rest of code ...
+}
+```
 
-The program reads the HTML file specified in the command-line argument using the
-`lexbor_fs_file_easy_read` function. It stores the content in a dynamic array
-and checks for successful reading. If the file cannot be read, it invokes the
-`FAILED` macro with an appropriate error message, ensuring that the program does
-not proceed with `NULL` data.
+Here, the program expects a single argument: the path to the HTML file. It reads the file content using `lexbor_fs_file_easy_read`, which returns the file's content and length.
 
-### Initializing HTML Encoding
+### Encoding Initialization
 
-The core logic for handling character encoding begins with the initialization of
-the `lxb_html_encoding_t` struct via the `lxb_html_encoding_init` function. This
-struct is essential for managing encoding data throughout the program. If
-initialization fails, the program handles the error gracefully using the
-`FAILED` macro again.
+Next, the program initializes the encoding detection mechanism.
 
-### Determining Encoding
+```c
+status = lxb_html_encoding_init(&em);
+if (status != LXB_STATUS_OK) {
+    FAILED(false, "Failed to init html encoding");
+}
+```
 
-The most crucial part of the program is determining the HTML encoding with the
-`lxb_html_encoding_determine` function. This function analyzes the passed HTML
-data to determine its encoding. In the previous comment section, there is a
-mention of a 1024-byte limit, which reflects a common optimization practice
-where a program doesn't need to read the entire file if a meta encoding tag is
-typically found within the first 1024 bytes. However, this section is commented
-out, meaning the program currently reads the complete content.
+This part initializes the `lxb_html_encoding_t` structure. If initialization fails, the program exits with an error message.
 
-### Printing the Encoding
+### Encoding Determination
 
-Once the encoding is determined, the program retrieves the encoding entry using
-`lxb_html_encoding_meta_entry`. If a valid entry is found, it prints the
-encoding name. If no encoding is determined, it simply outputs that the encoding
-was not found. This provides the user with understandable feedback regarding the
-HTML file's character encoding.
+The core logic for determining the encoding follows.
 
-### Cleanup
+```c
+status = lxb_html_encoding_determine(&em, html, (html + len));
+if (status != LXB_STATUS_OK) {
+    goto failed;
+}
 
-At the end of the program, whether successful or in the case of an error, memory
-cleanup is performed. The `lexbor_free` function is called to release the
-allocated memory for the HTML content, and `lxb_html_encoding_destroy` cleans up
-the encoding struct. This is an important step to prevent memory leaks and
-ensure proper resource management.
+entry = lxb_html_encoding_meta_entry(&em, 0);
+if (entry != NULL) {
+    printf("%.*s\n", (int) (entry->end - entry->name), entry->name);
+}
+else {
+    printf("Encoding not found\n");
+}
+```
 
-## Conclusion
+The function `lxb_html_encoding_determine` scans the HTML content to find any encoding declarations. If an encoding is found, it retrieves the encoding entry using `lxb_html_encoding_meta_entry` and prints the encoding name.
 
-The HTML Encoding example demonstrates essential practices such as error
-handling, memory management, and the use of a library to enhance functionality.
-By following this example, developers can understand how to utilize the `lexbor`
-library for encoding detection in HTML documents, while also adhering to proper
-coding standards for readability and maintainability.
+### Error Handling and Cleanup
+
+In case of errors, the program provides error messages and performs necessary cleanups.
+
+```c
+lexbor_free(html);
+lxb_html_encoding_destroy(&em, false);
+
+return 0;
+
+failed:
+
+lexbor_free(html);
+lxb_html_encoding_destroy(&em, false);
+
+FAILED(false, "Failed to determine encoding");
+```
+
+Here, `lexbor_free` releases the allocated memory for the HTML content, and `lxb_html_encoding_destroy` cleans up the encoding structure.
+
+## Notes
+
+- The example limits the bytes read to the first 1024 to save time, as encoding declarations are typically found early in the HTML.
+- It uses `lexbor_fs_file_easy_read` for easy file reading, which abstracts away low-level file operations.
+- Proper initialization and cleanup are crucial to avoid memory leaks.
+
+## Summary
+
+This example provides a clear, practical demonstration of how to determine the encoding of an HTML file using the `lexbor` library. It covers essential tasks such as initialization, reading file content, detecting encoding, and handling errors. Understanding this example is invaluable for developers needing to ensure correct text processing and rendering in various web-related applications.

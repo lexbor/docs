@@ -1,76 +1,40 @@
-# UTF-8 Decoding and Replacement Example
+# Validating and Replacing Invalid UTF-8 Encodings: Example
 
-This article will explain a C code example that demonstrates UTF-8 decoding and
-the handling of invalid byte sequences using the `lexbor` library. The source file
-for the example is
-[lexbor/encoding/buffer/decode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/decode/validate.c).
+This article explains the example file `lexbor/encoding/buffer/decode/validate.c`
+which demonstrates how to decode a UTF-8 encoded string and handle invalid byte
+sequences by replacing them with a specific replacement sequence using the `lexbor` library.
 
-## Overview
+The purpose of the example is to
+show how to initialize a decoder, set replacement sequences for invalid byte
+sequences, and decode a UTF-8 string, handling errors gracefully. This example
+is useful to those needing to ensure robust UTF-8 decoding in their applications.
 
-The provided code illustrates how to initialize a decoder for UTF-8 encoded
-strings and replace any invalid byte sequences with specified replacement code
-points. This is accomplished utilizing the lexbor encoding API.
+## Key Code Sections
 
-## Code Breakdown
+### Initialization of Encoding Data
 
-### Including Necessary Headers
-
-At the start of the code, the relevant header file from the `lexbor` library is
-included:
+In the first significant part of the code, we initialize the `lexbor` encoding
+data for UTF-8:
 
 ```c
-#include <lexbor/encoding/encoding.h>
-```
+const lxb_encoding_data_t *encoding;
 
-This inclusion is necessary as it provides the required declarations and
-definitions for encoding operations performed later in the code.
-
-### Defining a Macro for Error Handling
-
-A macro named `FAILED` is defined to handle errors gracefully:
-
-```c
-#define FAILED(...)                                                            \
-    do {                                                                       \
-        fprintf(stderr, __VA_ARGS__);                                          \
-        fprintf(stderr, "\n");                                                 \
-                                                                               \
-        exit(EXIT_FAILURE);                                                    \
-    }                                                                          \
-    while (0)
-```
-
-This macro uses `fprintf` to print error messages to standard error and then
-exits the program with `EXIT_FAILURE`. It helps streamline error reporting
-throughout the code.
-
-### Main Function and Buffer Preparation
-
-The main function initializes several variables, including a buffer for decoded
-code points and an instance of the decoder:
-
-```c
-int main(int argc, const char *argv[]) {
-    size_t buf_length;
-    lxb_status_t status;
-    lxb_codepoint_t cp[32];
-    lxb_encoding_decode_t decode;
-    const lxb_encoding_data_t *encoding;
-
-    const lxb_char_t *data = (const lxb_char_t *) "Привет,\x80 мир!";
-    const lxb_char_t *end = data + strlen((char *) data);
-```
-
-In this segment, a buffer `cp` is defined to hold up to 32 decoded code points.
-The `data` variable contains a UTF-8 string that includes an invalid byte
-(`\x80`). The `end` variable calculates the pointer to the end of the `data`.
-
-### Initializing the Decoder
-
-The code initializes the decoder for UTF-8 using:
-
-```c
+/* Initialize for UTF-8 encoding */
 encoding = lxb_encoding_data(LXB_ENCODING_UTF_8);
+```
+
+This uses the `lxb_encoding_data` function to obtain a pointer to the encoding
+data for UTF-8, as specified by the constant `LXB_ENCODING_UTF_8`.
+
+### Decoder Initialization
+
+We then proceed with initializing the decoder by using `lxb_encoding_decode_init`:
+
+```c
+lxb_status_t status;
+lxb_codepoint_t cp[32];
+lxb_encoding_decode_t decode;
+
 status = lxb_encoding_decode_init(&decode, encoding, cp,
                                   sizeof(cp) / sizeof(lxb_codepoint_t));
 if (status != LXB_STATUS_OK) {
@@ -78,14 +42,14 @@ if (status != LXB_STATUS_OK) {
 }
 ```
 
-Here, `lxb_encoding_data` retrieves the encoding data for UTF-8. The
-`lxb_encoding_decode_init` function sets up the decoder with the encoding
-information and the previously defined buffer for decoded code points. If
-initialization fails, the `FAILED` macro is invoked.
+Here, `lxb_encoding_decode_init` initializes the `decode` structure for the given
+encoding and prepares it to store code points in the `cp` buffer. If this operation
+fails, an error message is printed and the program exits.
 
-### Configuring Replacement Settings
+### Setting Replacement Code Points
 
-Next, the code sets up settings for replacing invalid byte sequences:
+Invalid byte sequences are handled by setting a replacement sequence with
+`lxb_encoding_decode_replace_set`:
 
 ```c
 status = lxb_encoding_decode_replace_set(&decode, LXB_ENCODING_REPLACEMENT_BUFFER,
@@ -95,44 +59,53 @@ if (status != LXB_STATUS_OK) {
 }
 ```
 
-This step allows the decoder to specify how to handle invalid sequences by using
-the replacement character defined in lexbor. Again, the error handling is
-consistent throughout.
+By using the `LXB_ENCODING_REPLACEMENT_BUFFER` and associated length macro,
+we configure the decoder to substitute invalid sequences with a predefined replacement.
 
-### Decoding the Input String
+### Decoding the UTF-8 String
 
-The actual decoding is performed with the following:
+The core decoding process is performed with:
 
 ```c
+const lxb_char_t *data = (const lxb_char_t *) "Привет,\x80 мир!";
+const lxb_char_t *end = data + strlen((char *) data);
+
 status = encoding->decode(&decode, &data, end);
 if (status != LXB_STATUS_OK) {
     /* In this example, this cannot happen. */
 }
 ```
 
-This line invokes the decoding process, moving through the input string from
-`data` to `end`. The decoder attempts to handle any valid sequences and replaces
-any invalid sequences as configured earlier.
+Here, `data` contains the UTF-8 string to be decoded, including an invalid byte
+sequence (`\x80`). We call the `encoding->decode` function to process the string
+and handle any invalid sequences using the previously set replacement.
 
-### Outputting the Decoded Values
+### Printing the Result
 
 Finally, the decoded code points are printed:
 
 ```c
-buf_length = lxb_encoding_decode_buf_used(&decode);
+size_t buf_length = lxb_encoding_decode_buf_used(&decode);
 
 for (size_t i = 0; i < buf_length; i++) {
     printf("0x%04X\n", cp[i]);
 }
 ```
 
-Here, `lxb_encoding_decode_buf_used` retrieves the number of valid code points
-decoded. Then, a loop iterates over each code point in the buffer, printing the
-hexadecimal representation.
+The `lxb_encoding_decode_buf_used` function returns the number of code points
+stored in the buffer, which we then iterate over, printing each as a hexadecimal value.
 
-## Conclusion
+## Notes
 
-This example effectively showcases the use of the `lexbor` library for decoding
-UTF-8 strings while managing potentially invalid byte sequences. By initializing
-the decoder, setting up replacement strategies, and decoding the input string,
-the program demonstrates a robust method for handling encoding issues in C.
+1. The `FAILED` macro is used for error handling by printing a message and exiting.
+2. The invalid byte sequence, `\x80`, is replaced using the specified replacement sequence.
+3. The example demonstrates how to handle both initialization and runtime errors
+   gracefully.
+
+## Summary
+
+This example showcases the proper use of the `lexbor` library for decoding UTF-8
+strings while managing invalid byte sequences. It covers data initialization,
+decoder setup, and configurable error handling using replacement sequences.
+Understanding this example is essential for developers needing robust UTF-8
+decoding in their lexbor-based applications.

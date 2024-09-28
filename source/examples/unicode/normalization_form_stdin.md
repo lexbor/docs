@@ -1,60 +1,136 @@
-# Unicode Normalization Form Example
+# Unicode Normalization: Example
 
-This article describes the implementation found in the file
-[lexbor/unicode/normalization_form_stdin.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/unicode/normalization_form_stdin.c).
-The purpose of this code example is to read input from standard input (stdin),
-apply a specified Unicode normalization form, and print the normalized output.
-The program supports four normalization forms: NFC, NFD, NFKC, and NFKD.
+This article explores an example from the `lexbor` library located in the source
+file `lexbor/unicode/normalization_form_stdin.c`. The purpose of this example is
+to normalize Unicode text read from standard input (stdin) using a chosen
+normalization form. It demonstrates how to initialize and use the Unicode
+normalization functions provided by `lexbor`. We will dissect the key portions
+of the code to understand how the library is used and its underlying logic.
 
-## Overview of the Code
+## Key Code Sections
 
-The code begins with necessary include statements and defines the structure for
-the callback function. Here's a breakdown of the main parts of the code:
+### Initialization and Argument Parsing
 
-### Main Function
+The code starts by initializing variables and checking command-line arguments.
+The normalization form is expected as the first argument.
 
-The `main` function serves as the entry point of the program. Its operation
-includes:
+```c
+lxb_unicode_form_t form;
+if (strlen(argv[1]) == 3) {
+    if (memcmp(argv[1], "NFC", 3) == 0) {
+        form = LXB_UNICODE_NFC;
+    }
+    else if (memcmp(argv[1], "NFD", 3) == 0) {
+        form = LXB_UNICODE_NFD;
+    }
+    else {
+        goto usage;
+    }
+}
+else if (strlen(argv[1]) == 4) {
+    if (memcmp(argv[1], "NFKC", 4) == 0) {
+        form = LXB_UNICODE_NFKC;
+    }
+    else if (memcmp(argv[1], "NFKD", 4) == 0) {
+        form = LXB_UNICODE_NFKD;
+    }
+    else {
+        goto usage;
+    }
+}
+else {
+    goto usage;
+}
+```
 
-1. **Argument Handling**: It verifies that at least one argument is provided to
-   specify the normalization form. If not, it directs the flow to a usage
-   message. The accepted arguments are either "NFC" or "NFD" for three-character
-   forms and "NFKC" or "NFKD" for four-character forms.
+Here, the code checks if the provided normalization form is valid (`NFC`, `NFD`,
+`NFKC`, or `NFKD`). Based on the input, it sets the variable `form` to the
+corresponding `lexbor` constant.
 
-2. **Normalization Form Selection**: Depending on the command line argument, the
-   program sets the appropriate normalization form using a series of `if`
-   statements that compare the input string. If none of the specified forms are
-   matched, it again leads to the usage message.
+### Normalizer Creation and Initialization
 
-3. **Initialization of the Normalizer**: The Unicode normalizer is created with
-   `lxb_unicode_normalizer_create()`, followed by its initialization using
-   `lxb_unicode_normalizer_init()`. Upon failure to initialize, the program
-   returns an error status.
+After validating the input, the code proceeds to create and initialize the 
+Unicode normalizer.
 
-4. **Reading Input and Normalization Loop**: The program then enters a loop
-   where it reads data from stdin into an input buffer. Using `fread`, it checks
-   if the end of the file (EOF) is reached or if an error occurs during reading.
-   If data is read successfully, it passes the input to the normalization
-   function `lxb_unicode_normalize()`, which applies the specified normalization
-   using a callback function.
+```c
+lxb_unicode_normalizer_t *uc;
+uc = lxb_unicode_normalizer_create();
+status = lxb_unicode_normalizer_init(uc, form);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
+```
 
-5. **Cleanup**: After processing, it cleans up by destroying the normalizer with
-   `lxb_unicode_normalizer_destroy()`.
+The function `lxb_unicode_normalizer_create` allocates memory for the Unicode 
+normalizer. Then, `lxb_unicode_normalizer_init` initializes the normalizer with 
+the specified form. If initialization fails, the program exits with a failure 
+status.
+
+### Reading and Normalizing Input
+
+The code then enters a loop to read from stdin and normalize the input text.
+
+```c
+char inbuf[4096];
+size_t size;
+bool loop = true;
+
+do {
+    size = fread(inbuf, 1, sizeof(inbuf), stdin);
+    if (size != sizeof(inbuf)) {
+        if (feof(stdin)) {
+            loop = false;
+        }
+        else {
+            return EXIT_FAILURE;
+        }
+    }
+
+    status = lxb_unicode_normalize(uc, (const lxb_char_t *) inbuf, size,
+                                   callback, NULL, !loop);
+    if (status != LXB_STATUS_OK) {
+        return EXIT_FAILURE;
+    }
+}
+while (loop);
+```
+
+The `fread` function reads up to 4096 bytes from stdin into `inbuf`. The loop
+continues until the end of file (EOF) is reached. The function 
+`lxb_unicode_normalize` processes the input data, calling a callback function
+to handle the normalized output.
 
 ### The Callback Function
 
-The `callback` function is defined to handle the normalized output data. It
-takes the normalized data along with its length and prints it to the standard
-output. The format specifier `%.*s` is used to ensure that only the part of the
-buffer corresponding to the normalized data length is printed, handling
-potential null-termination issues gracefully.
+The callback function is responsible for handling each chunk of normalized data.
 
-## Conclusion
+```c
+static lxb_status_t
+callback(const lxb_char_t *data, size_t len, void *ctx)
+{
+    printf("%.*s", (int) len, (const char *) data);
+    return LXB_STATUS_OK;
+}
+```
 
-This example illustrates how to implement a basic command line utility for
-Unicode normalization using the `lexbor` library. It effectively demonstrates
-handling input, processing data with a normalization algorithm, and producing
-output. This utility can be useful in applications where consistent Unicode
-representation is crucial, such as in text processing and data interchange
-scenarios. Users can invoke the tool with specific normalization forms to
-transform their input accordingly.
+This function simply prints the normalized data to stdout. The use of `printf`
+with a length specifier ensures that only the appropriate number of bytes are
+printed.
+
+## Notes
+
+- The example demonstrates proper handling of UTF-8 encoded Unicode data with
+  different normalization forms (`NFC`, `NFD`, `NFKC`, and `NFKD`).
+- The use of the callback mechanism allows for flexible handling of the
+  normalized data, suitable for various outputs or further processing.
+- It showcases important functions within `lexbor` for creating, initializing,
+  and destroying a Unicode normalizer, as well as performing normalization.
+
+## Summary
+
+This example highlights how to use the `lexbor` library to normalize Unicode
+text from stdin based on a specified normalization form. Key functions such as
+`lxb_unicode_normalizer_create`, `lxb_unicode_normalizer_init`, and
+`lxb_unicode_normalize` are utilized. The callback function mechanism ensures
+flexible data handling, making this example a practical demonstration for
+typical usage scenarios of Unicode normalization in `lexbor`.

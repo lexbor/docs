@@ -1,87 +1,172 @@
-# Encoding Conversion Example
+# Character Encoding Conversion: Example
 
-This article describes an example of encoding conversion using the `from_to`
-program from the `lexbor` library, specifically found in the source file
-[lexbor/encoding/buffer/from_to.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/from_to.c).
-The program reads data from the standard input, converts the data from one
-encoding to another (specified by the user), and outputs the result to the
-standard output. 
+This document explains the `lexbor/encoding/buffer/from_to.c` file in the `lexbor` library, which demonstrates how to read input data, decode it using one encoding, and then encode it with another encoding. This example highlights core functionalities of lexbor's encoding module.
 
-## Overview
+## Key Code Sections
 
-The main function of the program is to facilitate the conversion of text between
-various character encodings. This operation is critical in environments where
-data needs to be interpreted correctly across different platforms or
-applications that utilize specific character encoding schemes. The program
-checks the validity of input encodings, performs the decode and encode
-operations, and handles errors appropriately.
+### Encoding Data Initialization
 
-### Major Components
+The program starts by verifying the command-line arguments and retrieving the corresponding encoding data for the given `from` and `to` encodings. The `lxb_encoding_data_by_pre_name` function retrieves the encoding data by its name.
 
-1. **Macro Definition for Error Handling**  
-   A macro named `FAILED` is defined to centralize error handling within the
-   program. It takes a flag (`with_usage`) to determine if usage instructions
-   should be displayed, outputs an error message to `stderr`, and exits the
-   program. This reduces redundancy in error handling and improves code
-   maintainability.
+```c
+if (argc != 3) {
+    usage();
+    exit(EXIT_SUCCESS);
+}
 
-   ```c
-   #define FAILED(with_usage, ...)                                                \
-   ```
+/* Get encoding data for 'from' */
+from = lxb_encoding_data_by_pre_name((const lxb_char_t *) argv[1],
+                                     strlen(argv[1]));
+if (from == NULL) {
+    FAILED(true, "Failed to get encoding from name: %s\n", argv[1]);
+}
 
-2. **Usage Function**  
-   The `usage` function prints out how to use the program along with available
-   encoding names. If the required number of arguments is not provided
-   (specifically two arguments for 'from' and 'to'), this function will be
-   invoked to guide the user.
+/* Get encoding data for 'to' */
+to = lxb_encoding_data_by_pre_name((const lxb_char_t *) argv[2],
+                                   strlen(argv[2]));
+if (to == NULL) {
+    FAILED(true, "Failed to get encoding from name: %s\n", argv[2]);
+}
+```
 
-   ```c
-   static void usage(void) {...}
-   ```
+The `from` and `to` variables store the encoding data retrieved based on the user's input. If the encoding names provided are invalid, the program exits with an error message.
 
-3. **Main Function Logic**  
-   The `main` function is where the primary execution occurs. It begins by
-   checking command-line arguments to ensure the user has provided the necessary
-   inputs. The program uses `lxb_encoding_data_by_pre_name` to retrieve encoding
-   information based on user input, and if either input is invalid, it calls the
-   `FAILED` macro.
+### Decoder and Encoder Initialization
 
-4. **Initialization of Encoder and Decoder**  
-   Both the encoder and decoder are initialized with their respective encoding
-   data. The decoder will convert input bytes into code points (abstract
-   character representations), while the encoder converts these code points back
-   into byte sequences of the target encoding.
+Next, the code initializes the decode and encode contexts using the retrieved encoding data.
 
-   ```c
-   status = lxb_encoding_decode_init(&decode, from, cp, sizeof(cp) / sizeof(lxb_codepoint_t));
-   ```
+```c
+/* Initialization decode */
+status = lxb_encoding_decode_init(&decode, from, cp,
+                                  sizeof(cp) / sizeof(lxb_codepoint_t));
+if (status != LXB_STATUS_OK) {
+    FAILED(false, "Failed to initialization decoder");
+}
 
-5. **Processing Input Data**  
-   The program reads data from `stdin` in a loop until all input is processed.
-   The decode operation converts the input byte sequence into code points, which
-   are then passed to the encoder to convert into the target encoding. The
-   `fwrite` function is employed to write the output to `stdout`.
+status = lxb_encoding_decode_replace_set(&decode,
+      LXB_ENCODING_REPLACEMENT_BUFFER, LXB_ENCODING_REPLACEMENT_BUFFER_LEN);
+if (status != LXB_STATUS_OK) {
+    FAILED(false, "Failed to set replacement code point for decoder");
+}
 
-   ```c
-   size = fread(inbuf, 1, sizeof(inbuf), stdin);
-   ```
+/* Initialization encode */
+status = lxb_encoding_encode_init(&encode, to, outbuf, sizeof(outbuf));
+if (status != LXB_STATUS_OK) {
+    FAILED(false, "Failed to initialization encoder");
+}
 
-6. **Finalization**  
-   After all input has been processed, the program ensures that any remaining
-   decoded data is encoded and written to the output. Special care is taken for
-   the `iso-2022-jp` encoding, which may require specific handling to finalize
-   the conversion.
+if (to->encoding == LXB_ENCODING_UTF_8) {
+    status = lxb_encoding_encode_replace_set(&encode,
+             LXB_ENCODING_REPLACEMENT_BYTES, LXB_ENCODING_REPLACEMENT_SIZE);
+}
+else {
+    status = lxb_encoding_encode_replace_set(&encode, (lxb_char_t *) "?", 1);
+}
 
-   ```c
-   (void) lxb_encoding_encode_finish(&encode);
-   ```
+if (status != LXB_STATUS_OK) {
+    FAILED(false, "Failed to set replacement bytes for encoder");
+}
+```
 
-## Conclusion
+The `lxb_encoding_decode_init` and `lxb_encoding_encode_init` functions initialize the decoder and encoder contexts, respectively. The replacements are set to handle invalid sequences during decoding and encoding.
 
-The `from_to` example illustrates how to adeptly handle encoding conversions in
-C using the `lexbor` library. By providing a structured way to manage different
-encodings and offering clear error handling, this example serves as a
-foundational component in the development of applications that require text data
-manipulation across various encodings. The modular approach allows enhancements
-to be easily integrated, such as supporting additional encodings or modifying
-the input/output methods.
+### Data Decoding and Encoding Loop
+
+The core of the program reads data from standard input, decodes it, and then encodes the resulting code points using the specified encoding.
+
+```c
+do {
+    /* Read standard input */
+    size = fread(inbuf, 1, sizeof(inbuf), stdin);
+    if (size != sizeof(inbuf)) {
+        if (feof(stdin)) {
+            loop = false;
+        }
+        else {
+            FAILED(false, "Failed to read stdin");
+        }
+    }
+
+    /* Decode incoming data */
+    data = (const lxb_char_t *) inbuf;
+    end = data + size;
+
+    do {
+        /* Decode */
+        decode_status = from->decode(&decode, &data, end);
+
+        cp_ref = cp;
+        cp_end = cp + lxb_encoding_decode_buf_used(&decode);
+
+        do {
+            encode_status = to->encode(&encode, &cp_ref, cp_end);
+            if (encode_status == LXB_STATUS_ERROR) {
+                cp_ref++;
+                encode_status = LXB_STATUS_SMALL_BUFFER;
+            }
+
+            size = lxb_encoding_encode_buf_used(&encode);
+
+            /* The printf function cannot print \x00, it can be in UTF-16 */
+            if (fwrite(outbuf, 1, size, stdout) != size) {
+                FAILED(false, "Failed to write data to stdout");
+            }
+
+            lxb_encoding_encode_buf_used_set(&encode, 0);
+        }
+        while (encode_status == LXB_STATUS_SMALL_BUFFER);
+
+        lxb_encoding_decode_buf_used_set(&decode, 0);
+    }
+    while (decode_status == LXB_STATUS_SMALL_BUFFER);
+}
+while (loop);
+```
+
+This segment reads the input in chunks, decodes each chunk, and encodes the result. The loop handles the possibility that the buffers might be too small to hold the decoded or encoded data entirely at once.
+
+### Finalization of Decoding and Encoding
+
+After the input is fully processed, the program finalizes the decoding and encoding operations to ensure all data is correctly handled.
+
+```c
+/* End of file */
+/* In this moment encoder and decoder out buffer is empty */
+
+/* First: finish decoding */
+(void) lxb_encoding_decode_finish(&decode);
+
+if (lxb_encoding_decode_buf_used(&decode)) {
+    cp_ref = cp;
+    cp_end = cp + lxb_encoding_decode_buf_used(&decode);
+
+    (void) to->encode(&encode, &cp_ref, cp_end);
+    size = lxb_encoding_encode_buf_used(&encode);
+
+    if (fwrite(outbuf, 1, size, stdout) != size) {
+        FAILED(false, "Failed to write data to stdout");
+    }
+}
+
+/* Second: finish encoding */
+(void) lxb_encoding_encode_finish(&encode);
+size = lxb_encoding_encode_buf_used(&encode);
+
+if (size != 0) {
+    if (fwrite(outbuf, 1, size, stdout) != size) {
+        FAILED(false, "Failed to write data to stdout");
+    }
+}
+```
+
+The `lxb_encoding_decode_finish` and `lxb_encoding_encode_finish` functions ensure that any remaining data in the buffers is processed and outputted.
+
+## Notes
+
+- It is crucial to handle buffer sizes and potential overflows carefully to avoid data loss.
+- Setting replacement characters or byte sequences helps manage invalid encoding sequences gracefully.
+- Properly finalizing decoding and encoding processes ensures that all input data is correctly processed.
+
+## Summary
+
+This example illustrates how to use the `lexbor` library to convert data between different character encodings. It handles reading from standard input, decoding using one encoding, and then encoding to another, while managing buffer sizes and invalid sequences. Understanding this code helps users leverage lexbor's powerful encoding functionalities in their own applications.

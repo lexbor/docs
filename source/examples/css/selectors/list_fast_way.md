@@ -1,83 +1,147 @@
-# CSS Selectors Parsing Example
+# Understanding Fast CSS Selector Parsing with `lexbor`: Example
 
-This article explains the functionality present in the `list_fast_way.c` source
-file of the lexbor CSS library, illustrating how to parse CSS selectors
-effectively. The primary goal of the code is to demonstrate the parsing of
-various CSS selectors and report the results, including any parsing warnings
-that may arise.
+This article provides a detailed explanation of the `lexbor/css/selectors/list_fast_way.c`
+example from the `lexbor` library, focusing on its intermediate-to-advanced
+aspects. The example demonstrates how to efficiently parse and process CSS selectors
+using `lexbor`. We will look into the key sections, including initialization,
+parsing, and serialization of selectors, highlighting the intent and logic behind
+these implementations.
 
-## Code Structure Overview
+## Key Code Sections
 
-The entire program is structured around a single function `main`, which is the
-entry point when the program is executed. Several components of the code are
-critical to understanding how it prepares for and executes CSS selector parsing.
+### Initialization of Memory and Parser
 
-### Including Required Headers
+The example starts with the initialization of memory and parser objects. Here are the
+relevant portions of the code:
 
-The program begins by including `lexbor/css/css.h`, which is essential as it
-provides the functions, types, and structures required for working with the
-lexbor CSS parser.
+```c
+lxb_css_memory_t *memory;
+lxb_css_parser_t *parser;
 
-### Callback Function
+/* Memory for all parsed structures. */
+memory = lxb_css_memory_create();
+status = lxb_css_memory_init(memory, 128);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
 
-The `callback` function is defined to handle logging messages that arise during
-the CSS parsing process. It takes in data and its length, printing the message
-using `printf`. This function is a straightforward implementation that merely
-outputs the parsed messages but can be extended for more complex handlers if
-needed.
+/* Create parser. */
+parser = lxb_css_parser_create();
+status = lxb_css_parser_init(parser, NULL);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
+```
 
-### Main Function Logic
+The `lxb_css_memory_create` and `lxb_css_memory_init` functions are used to create and
+initialize a memory pool that will be used for storing parsed structures. The parser is
+created with `lxb_css_parser_create` and initialized with `lxb_css_parser_init`. These
+steps ensure that memory management is handled efficiently.
 
-Inside the `main` function, the following key operations are performed:
+### Memory Binding to Parser
 
-1. **Memory Setup:** 
-   - A memory object is created using `lxb_css_memory_create`, which acts as a
-     buffer for all parsed structures.
-   - Initialization of memory is conducted with `lxb_css_memory_init`, setting
-     aside an initial block of 128 bytes.
+One crucial aspect is binding the memory pool to the parser, preventing redundant memory
+allocations. The following lines achieve this:
 
-2. **Parser Initialization:** 
-   - A CSS parser object is instantiated with `lxb_css_parser_create` and
-     initialized using `lxb_css_parser_init`.
+```c
+/* Bind memory to parser */
+lxb_css_parser_memory_set(parser, memory);
+```
 
-3. **Binding the Memory and Selectors:**
-   - It is crucial to bind the created memory object to the parser to prevent
-     memory allocation issues during parsing. This is achieved using
-     `lxb_css_parser_memory_set`.
-   - Similarly, a selectors object is created and initialized. This object must
-     also be bound to the parser, so its data can be managed correctly while
-     parsing CSS selectors.
+By binding the memory object to the parser using `lxb_css_parser_memory_set`, the example
+ensures that all parsed structures share the same memory pool, promoting efficiency and
+preventing memory fragmentation.
 
-### Parsing CSS Selectors
+### Creating and Binding Selectors
 
-The program defines a static array of CSS selectors to be parsed. Each selector
-is processed in a loop, where:
+Selectors are created and bound to the parser, ensuring streamlined parsing operations:
 
-- The parser attempts to parse each selector using `lxb_css_selectors_parse`.
-- The output is assessed to determine if parsing was successful or if there were
-  any warnings or errors. Any issues are logged using the `callback` function,
-  which provides informative feedback.
+```c
+lxb_css_selectors_t *selectors;
+selectors = lxb_css_selectors_create();
+status = lxb_css_selectors_init(selectors);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
+lxb_css_parser_selectors_set(parser, selectors);
+```
 
-### Resource Cleanup
+The selectors object is created and initialized through `lxb_css_selectors_create` and
+`lxb_css_selectors_init`. Binding the selectors to the parser with 
+`lxb_css_parser_selectors_set` prevents the creation of new selectors objects on each
+parsing operation.
 
-After all parsing operations, the program ensures to destroy the selectors and
-parser resources, calling `lxb_css_selectors_destroy` and
-`lxb_css_parser_destroy`. This step is crucial in managing memory and avoiding
-leaks in longer-running applications.
+### Parsing Selectors
 
-### Serialization of Results
+The central part of the example involves parsing the CSS selectors provided in an array:
 
-Finally, the parsed selector lists are serialized and printed. For each
-selector, the program checks if any parsing results were generated by the
-`lxb_css_selector_serialize_list` function. If a selector results in an empty
-list, it is noted accordingly.
+```c
+const char *slctrs[] = { ":not()", "div #hash [refs=i]", "div.class", ... };
 
-### Conclusion
+for (i = 0; slctrs[i] != NULL; i++) {
+    lists[i] = lxb_css_selectors_parse(parser, (const lxb_char_t *) slctrs[i],
+                                       strlen(slctrs[i]));
+    if (parser->status != LXB_STATUS_OK) {
+        /* Handle parse error */
+    } else {
+        /* Handle parse success */
+    }
+}
+```
 
-The `list_fast_way.c` example serves as a practical guide for developers looking
-to understand how to parse CSS selectors using the `lexbor` library. By
-emphasizing memory management, proper initialization, and error handling, this
-example lays a solid foundation for further applications of the library in
-real-world projects. The code harnesses the flexibility of lexbor while
-maintaining clarity and efficiency in parsing operations, making it an
-invaluable resource for CSS-related development.
+The array `slctrs` contains various CSS selectors to parse. The `lxb_css_selectors_parse`
+function is called for each selector, and its result is stored in the `lists` array. The
+parser's status is checked to determine if the parsing was successful.
+
+### Log Serialization
+
+In case of errors or warnings during parsing, the logs are serialized and printed:
+
+```c
+(void) lxb_css_log_serialize(parser->log, callback, NULL, indent, indent_length);
+```
+
+The `lxb_css_log_serialize` function serializes the log information, using a `callback`
+to output the serialized data. This helps in diagnosing issues during the parsing process.
+
+### Cleanup Resources
+
+Once parsing is complete, the resources associated with the parser and selectors are
+destroyed:
+
+```c
+(void) lxb_css_selectors_destroy(selectors, true);
+(void) lxb_css_parser_destroy(parser, true);
+```
+
+Destroying these resources ensures that any allocated memory is properly freed, preventing
+memory leaks.
+
+### Outputting Results
+
+The parsed selector lists are then serialized and outputted:
+
+```c
+for (i = 0; slctrs[i] != NULL; i++) {
+    if (lists[i] != NULL) {
+        (void) lxb_css_selector_serialize_list(lists[i], callback, NULL);
+    }
+}
+```
+
+Each parsed selector list is serialized using `lxb_css_selector_serialize_list`, and the
+results are printed. This demonstrates the outcomes of the parsing operations.
+
+## Notes
+
+- Binding memory and selectors to the parser improves efficiency and prevents
+  redundant memory allocations.
+- Proper error handling and log serialization provide insights into parsing issues.
+- Resource cleanup is essential to prevent memory leaks.
+
+## Summary
+
+This example illustrates efficient parsing of CSS selectors using the `lexbor` library by
+binding memory and selectors to the parser, parsing various selectors, handling errors,
+and serializing the results. Understanding these techniques is valuable for developers
+looking to leverage `lexbor` for high-performance CSS parsing in their applications.

@@ -1,83 +1,90 @@
-# Punycode Encoding Example
+# Punycode Encoding: Example
 
-This article discusses the code example found in the file
-[lexbor/punycode/encode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/punycode/encode.c),
-which demonstrates how to encode a string using the Punycode algorithm with the
-`lexbor` library. Punycode is a way to represent Internationalized Domain Names
-(IDNs) using only ASCII characters. This code facilitates reading input data,
-manages memory allocation dynamically, and encodes the input using a callback
-function to handle the output.
+This article explains the operation of the `lexbor/punycode/encode.c` example from the `lexbor` library. The intent of this example is to demonstrate how to read input from standard input (stdin), handle dynamic memory allocation for growing input, and utilize the `lexbor` Punycode encoding capabilities.
 
-## Code Explanation
+## Key Code Sections
 
-The main function plays a central role in this example. It starts by defining
-several variables for handling the buffer, input data, and status codes. An
-important portion of the code is responsible for memory management, particularly
-the allocation and potential reallocation of memory needed to store the input.
+### Input Handling and Memory Allocation
 
-### Memory Allocation
-
-The first crucial step involves allocating memory for the buffer, which will
-hold the input data. The `lexbor_malloc` function is called to allocate memory
-equivalent to the size of `inbuf`. If the allocation fails, an error message is
-printed, and the program exits with `EXIT_FAILURE`.
+The example code begins by allocating a buffer and reading input data from stdin. It dynamically adjusts the size of the buffer as needed.
 
 ```c
+char inbuf[4096];
+lxb_char_t *buf, *end, *p, *tmp;
+
 buf = lexbor_malloc(sizeof(inbuf));
 if (buf == NULL) {
     printf("Failed memory allocation.\n");
     return EXIT_FAILURE;
 }
+
+p = buf;
+end = buf + sizeof(inbuf);
 ```
 
-### Reading Input
+The `buf`, `p`, and `end` pointers manage the input data and the buffer's current size. The initial buffer allocation is done using `lexbor_malloc`.
 
-The program uses a loop to read input from standard input using `fread`. It
-attempts to read up to `sizeof(inbuf)` bytes into `inbuf`. After reading, it
-checks if the end of the file is reached and appropriately modifies the loop
-control variable.
+### Data Reading Loop
+
+The example reads input in chunks and handles the dynamic buffer resizing if the input exceeds the initial buffer size.
 
 ```c
-size = fread(inbuf, 1, sizeof(inbuf), stdin);
-if (size != sizeof(inbuf)) {
-    if (feof(stdin)) {
-        loop = false;
+do {
+    size = fread(inbuf, 1, sizeof(inbuf), stdin);
+    if (size != sizeof(inbuf)) {
+        if (feof(stdin)) {
+            loop = false;
+        }
+        else {
+            return EXIT_FAILURE;
+        }
     }
-    else {
-        return EXIT_FAILURE;
+
+    if (p + size > end) {
+        nsize = (end - buf) * 3;
+
+        tmp = lexbor_realloc(buf, nsize);
+        if (tmp == NULL) {
+            printf("Failed memory reallocation.\n");
+            goto failed;
+        }
+
+        p = tmp + (p - buf);
+        buf = tmp;
+        end = tmp + nsize;
+    }
+
+    memcpy(p, inbuf, size);
+    p += size;
+}
+while (loop);
+```
+
+The loop uses `fread` to read chunks of data. If the buffer is about to exceed its current capacity, it reallocates memory using `lexbor_realloc`, ensuring enough space for the additional input data.
+
+### Trimming Newline Characters
+
+After reading the input, the example trims any trailing newline characters.
+
+```c
+if (p - buf > 0) {
+    if (p[-1] == '\n') {
+        p -= 1;
+    }
+}
+
+if (p - buf > 0) {
+    if (p[-1] == '\r') {
+        p -= 1;
     }
 }
 ```
 
-### Handling Buffer Overflow
+This logic ensures that the input data is sanitized and free of newline characters before processing.
 
-Another significant section of the code checks whether the size of the input
-exceeds the buffer's capacity. If it does, it reallocates memory for the buffer
-using `lexbor_realloc`, aiming to increase its size by a multiple of three. This
-is a proactive approach to accommodating larger inputs.
+### Encoding via Punycode
 
-```c
-if (p + size > end) {
-    nsize = (end - buf) * 3;
-
-    tmp = lexbor_realloc(buf, nsize);
-    if (tmp == NULL) {
-        printf("Failed memory reallocation.\n");
-        goto failed;
-    }
-
-    p = tmp + (p - buf);
-    buf = tmp;
-    end = tmp + nsize;
-}
-```
-
-### Encoding Input
-
-Once the input is collected and appropriately buffered, the code trims any
-trailing newline or carriage return characters. It then calls the
-`lxb_punycode_encode` function, passing the buffer and the length of the data,
-as well as a callback function to handle the encoded output.
+The core functionality of the example is the Punycode encoding, which is achieved through the call to `lxb_punycode_encode`.
 
 ```c
 status = lxb_punycode_encode(buf, p - buf, callback, NULL);
@@ -87,9 +94,11 @@ if (status != LXB_STATUS_OK) {
 }
 ```
 
-The callback function `callback` is defined later in the file. It simply prints
-the encoded data back to standard output, handling any Unicode to ASCII
-conversions that may be necessary.
+The `lxb_punycode_encode` function performs the encoding, and the `callback` function handles the encoded output.
+
+### Output Callback
+
+The `callback` function is responsible for outputting the encoded data. It is invoked by `lxb_punycode_encode`.
 
 ```c
 static lxb_status_t
@@ -101,25 +110,15 @@ callback(const lxb_char_t *data, size_t len, void *ctx, bool unchanged)
 }
 ```
 
-### Cleanup and Error Handling
+By using `printf`, the callback outputs the encoded Punycode data to stdout.
 
-Throughout the code, error handling is emphasized. If any memory operation
-fails, the program exits gracefully by freeing any allocated memory before
-termination. This ensures that the application does not lead to memory leaks.
+## Notes
 
-```c
-failed:
-    lexbor_free(buf);
-    return EXIT_FAILURE;
-```
+- The example demonstrates the handling of dynamic memory allocation with `lexbor_malloc` and `lexbor_realloc`.
+- Proper input sanitization is performed by trimming trailing newline characters.
+- `lxb_punycode_encode` is used for Punycode encoding, highlighting `lexbor`'s encoding functions.
+- The `callback` function is crucial for handling encoded output.
 
-## Conclusion
+## Summary
 
-This article provides a comprehensive overview of the
-[lexbor/punycode/encode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/punycode/encode.c)
-example, illustrating how to implement Punycode encoding in C. The example
-highlights important practices such as dynamic memory management, error
-handling, and the use of callback functions, which are all vital when dealing
-with input and output in systems programming. By following this structured
-approach, developers can efficiently utilize the `lexbor` library to handle
-Internationalized Domain Names.
+This example illustrates how to read, resize buffers, and sanitize input data from stdin, along with utilizing `lexbor`'s Punycode encoding capabilities. Understanding these concepts is essential for effectively using the `lexbor` library for text processing tasks.

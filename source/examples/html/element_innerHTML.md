@@ -1,38 +1,26 @@
-# Setting innerHTML Example
+# Setting `innerHTML` Property in Lexbor: Example
 
-This article will explain the `innerHTML` manipulation in the context of the
-`lexbor` HTML parser, as illustrated in the source file
-[lexbor/html/element_innerHTML.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/element_innerHTML.c).
-This example demonstrates how to parse HTML content, modify an element's inner
-HTML, and serialize the result.
+This example in the file `lexbor/html/element_innerHTML.c` demonstrates how to use the `lexbor` library to parse an HTML document, set the `innerHTML` of a body element, and serialize the resulting DOM tree. The intent of this code is to highlight key operations in manipulating the DOM using `lexbor`, such as document parsing, element selection, and updating the DOM tree.
 
-## Code Overview
+## Key Code Sections
 
-The code starts with the inclusion of the necessary header file, `base.h`, which
-likely contains the essential definitions and functions for the `lexbor` library.
-The `main` function serves as the entry point for the execution of this program.
+### Parsing HTML Document
 
-### HTML Parsing
-
-The program begins by defining a simple HTML string containing a `<div>` with a
-nested `<span>` element. The length of this string is calculated using
-`sizeof(html) - 1` to exclude the null terminator from the count. The predefined
-HTML string is as follows:
+First, we start by parsing the initial HTML document. The `parse` function reads the HTML string and constructs the corresponding DOM tree.
 
 ```c
 static const lxb_char_t html[] = "<div><span>blah-blah-blah</div>";
+size_t html_len = sizeof(html) - 1;
+
+/* Parse */
+document = parse(html, html_len);
 ```
 
-Next, the `parse` function is called with the HTML string and its length. This
-function processes the HTML and generates a document object model (DOM),
-representing the structure of the HTML document in memory.
+Here, `html` contains our initial HTML code. `html_len` determines the length of this string (excluding the null terminator). Then, the `parse` function returns a `document` representing our HTML document.
 
-### Printing the Parsed HTML
+### Printing the Parsed Document
 
-The program checks the output of the `parse` function and prints the original
-HTML and the resulting DOM tree. This is accomplished with the `PRINT` macro,
-which appears to be a utility for outputting messages. The serialized DOM is
-obtained using the `serialize` function on the document's root node:
+Next, the parsed HTML document is printed for verification.
 
 ```c
 PRINT("HTML:");
@@ -41,45 +29,64 @@ PRINT("\nTree after parse:");
 serialize(lxb_dom_interface_node(document));
 ```
 
-### Inner HTML Modification
+This section outputs the original HTML string and the serialized DOM tree after parsing. The `serialize` function converts the DOM tree back to a string and prints it for inspection.
 
-Subsequently, a second HTML string is defined, which will be set as the inner
-HTML of the body element. This inner HTML is specified as follows:
+### Obtaining the `body` Element
+
+After parsing, we obtain the `body` element from the document for further manipulation.
+
+```c
+/* Get BODY element */
+body = lxb_html_document_body_element(document);
+```
+
+This retrieves the `body` element of the parsed document, which is required to set its `innerHTML`.
+
+### Setting Inner HTML
+
+We then set the `innerHTML` of the `body` element to a new HTML string. 
 
 ```c
 static const lxb_char_t inner[] = "<ul><li>1<li>2<li>3</ul>";
-```
+size_t inner_len = sizeof(inner) - 1;
 
-The program retrieves the body element of the document using
-`lxb_html_document_body_element(document)`. The inner HTML of the body is then
-set using the `lxb_html_element_inner_html_set` function, which takes the body
-element and the inner HTML string along with its length as arguments:
-
-```c
 element = lxb_html_element_inner_html_set(lxb_html_interface_element(body),
                                           inner, inner_len);
+if (element == NULL) {
+    FAILED("Failed to parse innerHTML");
+}
 ```
 
-If the `element` is `NULL`, indicating a failure in setting the inner HTML, a
-failure message is printed through the `FAILED` macro.
+Here, `inner` contains the new HTML to be set as the `innerHTML` of the `body` element. `inner_len` gives the length of this string. The `lxb_html_element_inner_html_set` function updates the `innerHTML` of the targeted element. An error is reported if the function fails.
 
-### Final Output
+### Printing the Updated Document
 
-After setting the inner HTML, the program serializes the modified DOM tree and
-prints the result. This demonstrates the changes made by the inner HTML
-operation. Finally, the code cleans up by destroying the document to release
-resources allocated for the DOM.
+Finally, the modified DOM tree is serialized and printed.
 
 ```c
 PRINT("\nTree after innerHTML set:");
 serialize(lxb_dom_interface_node(document));
+```
+
+This helps verify that the new `innerHTML` has been correctly applied to the `body` element.
+
+### Cleaning Up
+
+The last step is to clean up and free the allocated memory for the document.
+
+```c
+/* Destroy all */
 lxb_html_document_destroy(document);
 ```
 
-## Conclusion
+This ensures that all resources used by the document are properly released.
 
-The example provided illustrates how to parse an HTML string, modify an
-element's inner HTML content, and serialize the resulting DOM structure using
-`lexbor`'s capabilities. This demonstrates an essential functionality often used
-in web development for DOM manipulation, showcasing the ease of use of the
-`lexbor` library for such tasks.
+## Notes
+
+- The `parse` function is expected to correctly handle the input HTML and generate a DOM tree.
+- The function `lxb_html_element_inner_html_set` is used to set the `innerHTML` of an element and returns the modified element or `NULL` if an error occurs.
+- Using `serialize` to print the DOM tree before and after modification is a good practice to verify changes made to the DOM.
+
+## Summary
+
+This example demonstrates the essential steps for manipulating an HTML document using the `lexbor` library: parsing the document, selecting elements, updating the `innerHTML`, and serializing the DOM tree. By following this process, developers can effectively manage the DOM structure of HTML documents using `lexbor`.

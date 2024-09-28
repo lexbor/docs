@@ -1,61 +1,95 @@
-# HTML Parsing and Serialization Example
+# Parsing and Serializing HTML: Example
 
-This example demonstrates how to create an HTML parser using the `lexbor` library,
-parse simple HTML strings into document objects, and serialize those documents
-back to a readable format. The code is found in the source file
-[lexbor/html/parse.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/parse.c).
+This article explains the purpose and functionality of a code example from the `lexbor` library, specifically located in the `lexbor/html/parse.c` file. The example demonstrates how to initialize an HTML parser, parse HTML strings into document objects, serialize those documents, and destroy the allocated resources properly. We will break down the code and discuss the important aspects and rationale behind each significant section.
 
-## Code Overview
+## Key Code Sections
 
-The program begins by including the necessary header files and defining the main
-function, which is the entry point for execution. It declares several variables
-that will be needed throughout the parsing process, including the status of the
-parser, pointers to HTML document objects, and the HTML strings to be parsed.
+### Initialization
 
-## Initialization
+The first step is to initialize the HTML parser. This is done using the `lxb_html_parser_create` and `lxb_html_parser_init` functions. 
 
-First, the HTML parser is created with `lxb_html_parser_create()`, which
-allocates memory for the parser. It is essential to check that the parser was
-created successfully. The program initializes the parser with
-`lxb_html_parser_init(parser)`, and again checks for successful initialization.
-If there is a failure at either point, a failure message is printed, and the
-process is terminated. This aspect of the code ensures that the parser is
-correctly set up before proceeding further.
+```c
+parser = lxb_html_parser_create();
+status = lxb_html_parser_init(parser);
 
-## Parsing HTML
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to create HTML parser");
+}
+```
 
-Next, the program prepares two simple HTML snippets for parsing: `html_one` and
-`html_two`. These strings represent basic HTML structures containing a `div`
-with a `p` element. The lengths of these strings are calculated to facilitate
-parsing. 
+Here, `lxb_html_parser_create` allocates memory for the parser, while `lxb_html_parser_init` initializes it. The status is checked to ensure the parser is created successfully.
 
-The parsing occurs with `lxb_html_parse(parser, html_one, html_one_len)`, which
-attempts to parse the first HTML string and store the resulting document object
-in `doc_one`. A similar approach is taken for `doc_two`. In both cases, it is
-crucial to verify that the parsing was successful—if either document object is
-`NULL`, the program reports a failure.
+### Parsing HTML Strings
 
-## Serialization
+Once the parser is initialized, the example proceeds to parse two HTML strings into document objects.
 
-Once both documents are successfully created, the program proceeds to serialize
-them. The method `lxb_html_serialize_pretty_tree_cb()` is called for each
-document. This function is responsible for converting the document object back
-into a structured HTML format, with an option for pretty printing. The first
-argument converts the document into a DOM node interface, while the remaining
-arguments provide options for serialization. Again, the program checks the
-status to ensure serialization succeeded.
+```c
+doc_one = lxb_html_parse(parser, html_one, html_one_len);
+if (doc_one == NULL) {
+    FAILED("Failed to create Document object");
+}
 
-## Cleanup
+doc_two = lxb_html_parse(parser, html_two, html_two_len);
+if (doc_two == NULL) {
+    FAILED("Failed to create Document object");
+}
+```
 
-After serialization, it is important to clean up resources. The program destroys
-the parser and the HTML document objects with `lxb_html_parser_destroy()` and
-`lxb_html_document_destroy()`, respectively. This step prevents memory leaks and
-ensures that all allocated resources are properly released.
+The `lxb_html_parse` function takes the parser, an HTML string, and its length as parameters, and returns a document object. It is important to check if the document object is created successfully before proceeding.
 
-## Conclusion
+### Destroying the Parser
 
-This example is a clear demonstration of the workflow when utilizing the lexbor
-library for HTML parsing and serialization. By handling initialization, parsing,
-serialization, and cleanup, the program effectively showcases how to work with
-HTML documents in a structured manner. The checks for status at each stage
-ensure robustness, making it easier to identify issues during development.
+After parsing, the parser is no longer needed and should be destroyed to free resources.
+
+```c
+lxb_html_parser_destroy(parser);
+```
+
+This is done using the `lxb_html_parser_destroy` function.
+
+### Serialization
+
+The parsed documents are then serialized to produce a human-readable representation of the HTML tree.
+
+```c
+status = lxb_html_serialize_pretty_tree_cb(lxb_dom_interface_node(doc_one),
+                                           LXB_HTML_SERIALIZE_OPT_UNDEF,
+                                           0, serializer_callback, NULL);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to serialization HTML tree");
+}
+
+printf("\nSecond Document:\n");
+
+status = lxb_html_serialize_pretty_tree_cb(lxb_dom_interface_node(doc_two),
+                                           LXB_HTML_SERIALIZE_OPT_UNDEF,
+                                           0, serializer_callback, NULL);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to serialization HTML tree");
+}
+```
+
+The `lxb_html_serialize_pretty_tree_cb` function is used to serialize the document object. It takes the root node of the document and a callback function (`serializer_callback`) to handle the serialization process. The status is checked to ensure the serialization is successful.
+
+### Cleaning Up
+
+Finally, the document objects are destroyed to free the allocated memory.
+
+```c
+lxb_html_document_destroy(doc_one);
+lxb_html_document_destroy(doc_two);
+```
+
+This is done using the `lxb_html_document_destroy` function.
+
+## Notes
+
+- The `lxb_html_parser_create` and `lxb_html_parser_init` functions are essential for setting up the parser.
+- Always check the return values of parser and document creation functions to ensure they are successful.
+- The parser should be destroyed after parsing to free resources.
+- Proper serialization of the document objects involves using a callback function to handle the output.
+- Document objects must be destroyed to avoid memory leaks.
+
+## Summary
+
+This example from the `lexbor/html/parse.c` file showcases the process of initializing an HTML parser, parsing HTML strings, serializing the parsed documents, and managing memory by destroying the parser and document objects. These steps are crucial for efficient HTML parsing and manipulation when using the `lexbor` library. Understanding this example helps users to correctly implement and handle HTML parsing and serialization in their own applications, ensuring both functionality and performance.

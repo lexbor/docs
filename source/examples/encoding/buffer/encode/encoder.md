@@ -1,79 +1,12 @@
-# Encoder Example
+# Encoding Data with Escaped Sequences: Example
 
-This article provides an explanation of the `encoder.c` source file located in
-the `lexbor/encoding/buffer/encode` directory. The intent of the code is to
-implement a command-line utility that encodes input data based on the specified
-character encoding name. The encoder processes Standard Input, converts it based
-on escape sequences into code points, and outputs the encoded data to Standard
-Output.
+In this example, found in the file `lexbor/encoding/buffer/encode/encoder.c`, we delve into an implementation that reads input data, processes any escaped sequences, and encodes the data using the specified character encoding. The purpose of this code is to demonstrate how the `lexbor` library can be used to handle textual data with escaped sequences and convert it to various encodings. This write-up explains key parts of the program, focusing on the logic and usage of `lexbor` functions.
 
-## Code Structure and Major Sections
+## Key Code Sections
 
-### Header and Includes
+### Command Line Arguments Handling
 
-At the beginning of the file, there are several include statements that bring in
-necessary libraries:
-
-```c
-#include <string.h>
-#include <stdio.h>
-#include <lexbor/encoding/encoding.h>
-#include <lexbor/encoding/encode.h>
-```
-
-These headers allow access to string manipulation functions, standard
-input/output functionalities, and the defined encoding structures and functions
-within the `lexbor` library.
-
-### Error Handling
-
-The `FAILED` macro is defined to streamline error handling within the code. It
-prints an error message and usage instructions when an issue occurs:
-
-```c
-#define FAILED(with_usage, ...)                                                \
-    do {                                                                       \
-        fprintf(stderr, __VA_ARGS__);                                          \
-        fprintf(stderr, "\n");                                                 \
-                                                                               \
-        if (with_usage) {                                                      \
-            usage();                                                           \
-        }                                                                      \
-                                                                               \
-        exit(EXIT_FAILURE);                                                    \
-    }                                                                          \
-    while (0)
-```
-
-This macro takes a boolean flag to determine if usage instructions should be
-displayed before exiting. This ensures that any critical failures can inform
-users about incorrect command usage.
-
-### Usage Function
-
-The `usage` function provides a simple guide on how to run the encoder, listing
-available encodings. It helps users understand the valid options to include when
-calling the program:
-
-```c
-static void usage(void)
-{
-    printf("Usage: encoder <encoding name>\n\n");
-    printf("Available encodings:\n");
-    // List of encodings...
-}
-```
-
-### Main Function
-
-The `main` function is the core of the program, where execution begins. It
-handles command-line arguments, initializes encoding setups, reads from Standard
-Input, and writes the encoded data to Standard Output. 
-
-#### Command-Line Argument Handling
-
-The program expects one argument - the encoding name. If this is not provided,
-the `usage` function is invoked:
+The program starts with a basic check for command line arguments, where it expects exactly one argument specifying the desired encoding.
 
 ```c
 if (argc != 2) {
@@ -82,67 +15,94 @@ if (argc != 2) {
 }
 ```
 
-#### Encoding Initialization
+This section ensures that the user provides an encoding name, and if not, it shows usage instructions and exits.
 
-The encoding is determined using the `lxb_encoding_data_by_pre_name` function,
-which fetches the encoding data associated with the provided name. If it fails,
-it reports an error:
+### Fetching and Initializing Encoding
+
+The encoding is determined from the user-provided argument, and the encoder is initialized accordingly.
 
 ```c
 encoding = lxb_encoding_data_by_pre_name((const lxb_char_t *) argv[1], strlen(argv[1]));
 if (encoding == NULL) {
     FAILED(true, "Failed to get encoding from name: %s\n", argv[1]);
 }
-```
 
-After determining the encoding, the encoder is initialized with
-`lxb_encoding_encode_init`:
-
-```c
 status = lxb_encoding_encode_init(&encode, encoding, outbuf, sizeof(outbuf));
-if (status != LXB_STATUS_OK) {
-    FAILED(false, "Failed to initialization encoder");
+if (status != Lxb_STATUS_OK) {
+    FAILED(false, "Failed to initialize encoder");
 }
 ```
 
-This sets up a buffer for output based on the specified encoding type.
+Here, `lxb_encoding_data_by_pre_name` retrieves the encoding data, and `lxb_encoding_encode_init` initializes the encoding context.
 
-### Data Encoding Loop
+### Setting Replacement Bytes for Encoder
 
-The heart of the encoding process is found in a `do-while` loop that reads from
-stdin and encodes the input data:
+Depending on the encoding specified, replacement bytes are set. This is crucial for handling invalid or unencodable sequences.
+
+```c
+if (encoding->encoding == Lxb_ENCODING_UTF_8) {
+    status = lxb_encoding_encode_replace_set(&encode, LXB_ENCODING_REPLACEMENT_BYTES, LXB_ENCODING_REPLACEMENT_SIZE);
+}
+else {
+    status = lxb_encoding_encode_replace_set(&encode, (lxb_char_t *) "?", 1);
+}
+
+if (status != LXB_STATUS_OK) {
+    FAILED(false, "Failed to set replacement bytes for encoder");
+}
+```
+
+UTF-8 has specific replacement bytes, while other encodings use a generic question mark.
+
+### Processing Input Data
+
+The program reads data from standard input in chunks of 4096 bytes, processes each chunk, and converts it into code points.
+
+```c
+read_size = fread(inbuf, 1, sizeof(inbuf), stdin);
+if (read_size != sizeof(inbuf)) {
+    if (feof(stdin)) {
+        loop = false;
+    }
+    else {
+        FAILED(false, "Failed to read stdin");
+    }
+}
+
+data = (const lxb_char_t *) inbuf;
+end = data + read_size;
+cp_end = escaped_to_codepoint(data, end, cp, &state, &cp_rep, loop == false);
+```
+
+This part handles reading input, processes potential partial reads due to end-of-file, and calls the `escaped_to_codepoint` function to process the escaped sequences into code points.
+
+### Encoding and Output
+
+After converting to code points, the data is encoded and written to standard output.
 
 ```c
 do {
-    read_size = fread(inbuf, 1, sizeof(inbuf), stdin);
-    // Encoding logic...
-} while (loop);
-```
+    status = encoding->encode(&encode, &cp_ref, cp_end);
+    read_size = lxb_encoding_encode_buf_used(&encode);
 
-If the end of the file is reached on standard input (`feof(stdin)`), the loop
-breaks, indicating that no more data is available.
+    if (fwrite(outbuf, 1, read_size, stdout) != read_size) {
+        FAILED(false, "Failed to write data to stdout");
+    }
 
-#### Escaped Code Points Conversion
-
-The `escaped_to_codepoint` function handles the conversion of escape sequences
-(e.g., '\x41' for 'A') into code points that can be processed. The logic checks
-for valid escape sequences and builds the code points accordingly. If a broken
-sequence is detected, it triggers an error:
-
-```c
-static const lxb_codepoint_t * escaped_to_codepoint(const lxb_char_t *data, ...
-if (*state != 0) {
-    // Handle escape sequence state...
-    // Process each character to build the codepoint...
+    lxb_encoding_encode_buf_used_set(&encode, 0);
 }
+while (status == LXB_STATUS_SMALL_BUFFER);
 ```
 
-### Finalizing and Outputting
+This loop ensures that all data is properly encoded and outputted, even handling cases where the buffer might be too small on the first pass.
 
-After encoding, the program finalizes the encoded output and writes any
-remaining data to stdout. This is done using:
+### Finalizing Encoding
+
+At the end of processing, the encoder is finalized to flush any remaining data.
 
 ```c
+(void) lxb_encoding_encode_finish(&encode);
+
 read_size = lxb_encoding_encode_buf_used(&encode);
 if (read_size != 0) {
     if (fwrite(outbuf, 1, read_size, stdout) != read_size) {
@@ -151,14 +111,14 @@ if (read_size != 0) {
 }
 ```
 
-This ensures that any data that has not yet been flushed from the buffer is
-written out before the program exits.
+This ensures that any leftover data in the encoder’s internal buffer is written out.
 
-## Conclusion
+## Notes
 
-The `encoder.c` file is a functional implementation of an encoding utility using
-the `lexbor` library. It effectively handles various character encodings,
-processes input data in a loop, and provides useful output, making it a useful
-tool for developers working with different text encodings. The awareness of
-error handling and usage guidance further enhances its usability in command-line
-environments.
+1. **Error Handling**: The macro `FAILED` helps in providing consistent error messages and exits on failure.
+2. **Escaped Sequence Processing**: The function `escaped_to_codepoint` is crucial for converting escaped sequences like `\xNN` and `\uNNNN` into code points.
+3. **Buffer Management**: Proper buffer management ensures that encoding processes can handle partial reads and writes effectively.
+
+## Summary
+
+This example demonstrates how to use the `lexbor` library to handle input data with escaped sequences, converting it to the specified encoding. It showcases the critical steps for initializing encoders, processing input data, handling partial reads, and finalizing output. Understanding this example is essential for those looking to leverage `lexbor` for complex text encoding tasks in their applications.

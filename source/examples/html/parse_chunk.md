@@ -1,108 +1,91 @@
-# HTML Chunk Parsing Example
+# HTML Chunks Parsing: Example
 
-This article provides an overview of the HTML chunk parsing example implemented
-in the source file
-[lexbor/html/parse_chunk.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/parse_chunk.c).
-The example demonstrates how to utilize the `lexbor` HTML parsing library to
-handle HTML data in incremental chunks. By breaking the input into smaller
-pieces, it showcases the parser's versatility and ability to manage partial data
-streams effectively.
+In this article, we will delve into the `lexbor/html/parse_chunk.c` file, which is designed to demonstrate how to parse HTML in chunks using the `lexbor` library. This approach is useful for handling HTML data that arrives in parts, such as from network streams. We will examine key sections of the code to understand its functionality and the useful features of the `lexbor` library.
 
-## Code Overview
-
-The main function serves as the entry point for the program. Here, several
-significant components of the `lexbor` library are employed, such as creating a
-parser, managing HTML documents, and serializing the parsed content.
+## Key Code Sections
 
 ### Initialization
 
-The first step involves initializing the parser:
+The example begins with initializing the HTML parser provided by `lexbor`. Let's take a closer look at the relevant code:
 
 ```c
+lxb_html_parser_t *parser;
+lxb_status_t status;
+
 parser = lxb_html_parser_create();
 status = lxb_html_parser_init(parser);
+
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to create HTML parser");
+}
 ```
 
-In this section, `lxb_html_parser_create()` is called to create a new HTML
-parser instance. It's crucial to check if the parser was successfully created by
-examining `status`. If initialization fails, a failure message is displayed.
+In this section, the `lxb_html_parser_create` function is called to allocate memory for the parser, and then `lxb_html_parser_init` is used to initialize it. Both functions must succeed for the parsing process to proceed.
 
 ### Parsing Chunks
 
-After initialization, the code prepares to parse the HTML content chunk by
-chunk:
+The core of this example is the parsing of HTML in chunks. HTML data is split into parts, stored in an array, and processed in a loop:
 
 ```c
+static const lxb_char_t html[][64] = {
+    "<!DOCT","YPE htm","l>","<html><head>",
+    "<ti","tle>HTML chunks parsing</","title>",
+    "</head><bod","y><div cla","ss=","\"bestofclass", "\">",
+    "good for me","</div>","\0"
+};
+
 document = lxb_html_parse_chunk_begin(parser);
-```
+if (document == NULL) {
+    FAILED("Failed to create Document object");
+}
 
-This line initializes parsing by creating a document object that will hold the
-parsed data. If the document object is not successfully created, an error
-message is emitted, halting further execution.
-
-The program then enters a loop to process the defined HTML chunks stored in a
-static array:
-
-```c
 for (size_t i = 0; html[i][0] != '\0'; i++) {
-    status = lxb_html_parse_chunk_process(parser, html[i],
-                                          strlen((const char *) html[i]));
+    status = lxb_html_parse_chunk_process(parser, html[i], strlen((const char *)html[i]));
     if (status != LXB_STATUS_OK) {
         FAILED("Failed to parse HTML chunk");
     }
 }
-```
 
-Here, `lxb_html_parse_chunk_process()` is called for each chunk of HTML until
-the end of the array is reached. The function takes two parameters: the parser
-instance and the length of each HTML chunk. If parsing any chunk fails, it
-reports the error via the `FAILED` macro.
-
-### Finishing the Parsing
-
-After processing all the chunks, the parsing is concluded with:
-
-```c
 status = lxb_html_parse_chunk_end(parser);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to parse HTML");
+}
 ```
 
-This function finalizes the parsing operation. Like the other stages, it checks
-if the operation succeeded, and handles any errors accordingly.
+Here, `lxb_html_parse_chunk_begin` initiates chunk-based parsing and returns a `document` object, allowing the `lexbor` library to start processing the HTML data. Each chunk from the `html` array is then processed sequentially with `lxb_html_parse_chunk_process`. Finally, `lxb_html_parse_chunk_end` finalizes the parsing operation.
 
 ### Serialization
 
-Once the parsing is complete, the document's contents need to be serialized:
+After parsing, the DOM tree is serialized back to HTML format:
 
 ```c
 status = lxb_html_serialize_pretty_tree_cb(lxb_dom_interface_node(document),
                                            LXB_HTML_SERIALIZE_OPT_UNDEF,
                                            0, serializer_callback, NULL);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to serialize HTML tree");
+}
 ```
 
-This line serializes the parsed HTML tree into a human-readable format. The
-`lxb_dom_interface_node(document)` retrieves the root node of the parsed
-document for serialization. The use of the callback function allows for
-customization in how the output is processed.
+The `lxb_html_serialize_pretty_tree_cb` function is responsible for converting the parsed document structure back to HTML text, providing an option for pretty-printed output. A user-defined `serializer_callback` handles the serialized output.
 
 ### Cleanup
 
-Finally, resource management is handled to prevent memory leaks:
+Proper cleanup is essential to prevent memory leaks:
 
 ```c
 lxb_html_document_destroy(document);
 lxb_html_parser_destroy(parser);
 ```
 
-These calls ensure that the allocated parser and document objects are properly
-destroyed, freeing resources that are no longer needed.
+The document and parser are destroyed, freeing the associated resources.
 
-## Conclusion
+## Notes
 
-The example provided in
-[lexbor/html/parse_chunk.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/parse_chunk.c)
-is a straightforward illustration of how to parse HTML data incrementally with
-the `lexbor` library. By breaking the input into manageable chunks, the parser can
-efficiently handle larger HTML documents and offers developers flexibility when
-processing dynamic or streamed data. This method is particularly useful in web
-environments where HTML content may not always be available as a single,
-complete document.
+- **Chunk Processing**: The example demonstrates how to handle partially received HTML data, which is particularly useful for streaming scenarios.
+- **Error Handling**: Proper error checking is performed throughout the example, ensuring that issues are caught and reported early.
+- **Serialization**: The ability to serialize the DOM tree back to HTML is useful for various post-processing tasks.
+
+## Summary
+
+The `lexbor/html/parse_chunk.c` example provides a clear illustration of how to use the `lexbor` library to parse HTML data in chunks. This functionality is essential for applications dealing with streaming data or other scenarios where HTML content is received incrementally. Understanding and utilizing these examples can greatly enhance the robustness and efficiency of your HTML processing tasks.

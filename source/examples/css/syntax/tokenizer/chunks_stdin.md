@@ -1,51 +1,34 @@
-# CSS Syntax Tokenizer Example
+# Tokenizing CSS from Standard Input: Example
 
-This article explains the implementation of a CSS syntax tokenizer in the file
-[lexbor/css/syntax/tokenizer/chunks_stdin.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/syntax/tokenizer/chunks_stdin.c).
-The code demonstrates how to read CSS data from standard input, tokenize it, and
-output the identified token types along with their serialized representations.
+The file `lexbor/css/syntax/tokenizer/chunks_stdin.c` demonstrates how to tokenize CSS data read from standard input using the `lexbor` library. This article will delve into the key parts of this example, explaining the purpose and workings of each section.
 
-## Overview
+## Key Code Sections
 
-The main purpose of this example is to showcase the mechanics of the
-`lxb_css_syntax_tokenizer`, a component provided by the `lexbor` library for
-parsing CSS syntax. The example leverages standard input (stdin) to read CSS
-input, processes the tokens through the tokenizer, and outputs details about
-each token to the console.
+### Callback for Token Serialization
 
-## Code Breakdown
-
-### Includes and Definitions
-
-At the beginning of the file, necessary headers are included, such as
-`lexbor/css/css.h`, which contains the definitions and interfaces for the CSS
-parser. A small buffer size of 32 bytes is defined with `#define BUFFER_SIZE
-32`, which limits the amount of data read from stdin at one time, making it
-suitable for demonstration purposes.
-
-### Callback Function
-
-The `callback` function is defined to handle the serialized output of the
-tokens:
+The function `callback` is used to handle the serialized tokens. It simply prints the token data to the standard output.
 
 ```c
-lxb_status_t callback(const lxb_char_t *data, size_t len, void *ctx) {
+lxb_status_t
+callback(const lxb_char_t *data, size_t len, void *ctx)
+{
     printf("%s", (const char *) data);
+
     return LXB_STATUS_OK;
 }
 ```
 
-This function prints the serialized token data to the console and returns a
-status indicating success. It serves as a simple mechanism to display token
-information during parsing.
+This demonstrates a basic usage of `lxb_css_syntax_token_serialize`, indicating how tokens will be rendered and processed.
 
-### Chunk Callback Function
+### Handling Input in Chunks
 
-The `chunk_cb` function reads chunks of CSS data into a buffer and sets up the
-tokenizer to consume these chunks:
+The function `chunk_cb` reads data from standard input into a buffer, allowing the tokenizer to process it in chunks. This is particularly useful for handling large inputs gracefully.
 
 ```c
-lxb_status_t chunk_cb(lxb_css_syntax_tokenizer_t *tkz, const lxb_char_t **data, const lxb_char_t **end, void *ctx) {
+lxb_status_t
+chunk_cb(lxb_css_syntax_tokenizer_t *tkz, const lxb_char_t **data,
+         const lxb_char_t **end, void *ctx)
+{
     size_t size;
     lxb_char_t *buff = ctx;
 
@@ -53,7 +36,8 @@ lxb_status_t chunk_cb(lxb_css_syntax_tokenizer_t *tkz, const lxb_char_t **data, 
     if (size != BUFFER_SIZE) {
         if (feof(stdin)) {
             tkz->eof = true;
-        } else {
+        }
+        else {
             return EXIT_FAILURE;
         }
     }
@@ -65,19 +49,16 @@ lxb_status_t chunk_cb(lxb_css_syntax_tokenizer_t *tkz, const lxb_char_t **data, 
 }
 ```
 
-The function first attempts to read a buffer full of CSS data from stdin. If the
-end of input is reached, it marks the tokenizer's end-of-file (EOF) state. If an
-error occurs during reading, it returns a failure status. The function
-effectively prepares the data for the tokenizer by updating the pointed `data`
-and `end` pointers.
+This function fills a buffer with a fixed size (`BUFFER_SIZE`) from `stdin`, managing the end-of-file condition by setting `tkz->eof` when necessary. This function returns `LXB_STATUS_OK` if reading proceeds without errors.
 
-### Main Function
+### Tokenizing the Input
 
-The `main` function orchestrates the initialization and the execution of the CSS
-syntax tokenizer:
+The `main` function initializes the CSS tokenizer, sets the chunk callback, and processes tokens in a loop until the end-of-file token is encountered. 
 
 ```c
-int main(int argc, const char *argv[]) {
+int
+main(int argc, const char *argv[])
+{
     lxb_status_t status;
     lxb_css_syntax_token_t *token;
     lxb_css_syntax_tokenizer_t *tkz;
@@ -93,57 +74,46 @@ int main(int argc, const char *argv[]) {
     }
 
     lxb_css_syntax_tokenizer_chunk_cb_set(tkz, chunk_cb, inbuf);
-```
 
-This section starts by creating and initializing a tokenizer instance. If
-initialization fails, it gracefully exits the process. Notably, it sets the
-chunk callback function, associating it with the previously defined `chunk_cb`
-and the input buffer `inbuf`.
+    do {
+        token = lxb_css_syntax_token(tkz);
+        if (token == NULL) {
+            PRINT("Failed to parse CSS");
+            goto failed;
+        }
 
-#### Token Processing Loop
+        name = lxb_css_syntax_token_type_name_by_id(token->type);
+        printf("%s: ", (const char *) name);
 
-The main loop processes tokens until the EOF is reached:
+        lxb_css_syntax_token_serialize(token, callback, NULL);
+        printf("\n");
 
-```c
-do {
-    token = lxb_css_syntax_token(tkz);
-    if (token == NULL) {
-        PRINT("Failed to parse CSS");
-        goto failed;
+        type = lxb_css_syntax_token_type(token);
+
+        lxb_css_syntax_token_consume(tkz);
     }
+    while (type != LXB_CSS_SYNTAX_TOKEN__EOF);
 
-    name = lxb_css_syntax_token_type_name_by_id(token->type);
-    printf("%s: ", (const char *) name);
+    lxb_css_syntax_tokenizer_destroy(tkz);
 
-    lxb_css_syntax_token_serialize(token, callback, NULL);
-    printf("\n");
-    
-    type = lxb_css_syntax_token_type(token);
-    lxb_css_syntax_token_consume(tkz);
-} while (type != LXB_CSS_SYNTAX_TOKEN__EOF);
+    return EXIT_SUCCESS;
+
+failed:
+
+    lxb_css_syntax_tokenizer_destroy(tkz);
+
+    return EXIT_FAILURE;
+}
 ```
 
-In this loop, it retrieves the next token from the tokenizer and checks for
-parsing errors. If a token is successfully obtained, it retrieves and prints the
-token's type name, serializes the token using the earlier defined `callback`,
-and then consumes the token to prepare for the next cycle. This loop continues
-until an EOF token is encountered.
+Here, the tokenizer is created and initialized, and the chunk callback is set with a buffer for data. The loop continues to fetch tokens, prints their names and serialized content, and consumes each token until the end-of-file token is reached.
 
-### Cleanup
+## Notes
 
-At the end of the function, the tokenizer is destroyed to free up allocated
-resources:
+- **Buffer Size**: The buffer size (`BUFFER_SIZE`) is set to 32 to demonstrate handling small chunks of data. This size can be adjusted based on specific needs.
+- **Error Handling**: The example includes basic error handling, with appropriate messages and clean-up.
+- **EOF Management**: The end-of-file is managed using `tkz->eof`, ensuring the tokenizer knows when no more data is available.
 
-```c
-lxb_css_syntax_tokenizer_destroy(tkz);
-```
+## Summary
 
-If any failures occur at various stages, the code ensures proper cleanup to
-avoid memory leaks.
-
-## Conclusion
-
-This example illustrates how to implement a simple CSS syntax tokenizer using
-the `lexbor` library, allowing for parsing CSS input from stdin and outputting
-token information. Anyone looking to understand or extend CSS parsing
-functionality can use this code as a foundation for further development.
+This example illustrates how to tokenize CSS data read from standard input, demonstrating key aspects of using the `lexbor` library. It covers initialization, setting up a chunk callback function, handling tokens, and managing end-of-file conditions. Understanding these steps is crucial for effectively working with `lexbor` to tokenize CSS or other similar structured data inputs.

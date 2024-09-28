@@ -1,145 +1,144 @@
-# Element Attributes Example
+# Handling Element Attributes with `lexbor`: Example
 
-This article explains the implementation found in
-[lexbor/html/element_attributes.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/element_attributes.c),
-which demonstrates how to manipulate HTML element attributes using the `lexbor`
-library. The example outlines parsing an HTML snippet, finding an element, and
-performing various operations involving element attributes, such as adding,
-checking existence, retrieving, modifying, and removing attributes from an
-element.
+This article explores the `lexbor/html/element_attributes.c` example, which demonstrates parsing an HTML document, manipulating DOM elements, and their attributes using the `lexbor` library. The example focuses on setting, getting, checking for existence, iterating over, changing, and finally removing attributes of a DOM element within a parsed HTML document.
 
-## Code Overview
+## Key Code Sections
 
-The code begins by including necessary headers and defining the main function,
-which initializes variables for handling the document and its components. The
-use of `lxb_status_t` for tracking the status of operations is essential
-throughout the code.
-
-### HTML Parsing
-
-The code defines a static HTML string:
+### Parsing the HTML Document
 
 ```c
 static const lxb_char_t html[] = "<div id=my-best-id></div>";
-```
+size_t html_len = sizeof(html) - 1;
 
-A document is parsed from this HTML string with:
-
-```c
+/* Parse */
 document = parse(html, html_len);
 ```
 
-After parsing, the code outputs the structure of the DOM tree to the console
-using a `serialize` function, allowing developers to visualize the parsed HTML
-elements.
+The HTML document defined as a static string is parsed using the `parse` function that constructs an `lxb_html_document_t` object. This is the initial step, setting up the environment for further DOM manipulations.
 
-### Collection Creation
-
-Next, a DOM collection is created to hold references to found elements:
+### Creating and Using a Collection
 
 ```c
+/* Create Collection for elements */
 collection = lxb_dom_collection_make(&document->dom_document, 16);
+if (collection == NULL) {
+    FAILED("Failed to create collection");
+}
 ```
 
-If the collection creation fails, an error message is printed, and the program
-exits.
+A `lxb_dom_collection_t` is created to store elements found during searching. This is essential for working with multiple elements efficiently. The collection is initialized with a pre-defined capacity of 16 elements.
 
-### Searching for Elements
-
-To find the `<div>` element in the DOM, the code first obtains the body element
-and then calls:
+### Finding and Accessing Elements
 
 ```c
-status = lxb_dom_elements_by_tag_name(element, collection, (const lxb_char_t *) "div", 3);
+/* Get BODY element (root for search) */
+body = lxb_html_document_body_element(document);
+element = lxb_dom_interface_element(body);
+
+/* Find DIV element */
+status = lxb_dom_elements_by_tag_name(element, collection,
+                                      (const lxb_char_t *) "div", 3);
+
+if (status != LXB_STATUS_OK || lxb_dom_collection_length(collection) == 0) {
+    FAILED("Failed to find DIV element");
+}
 ```
 
-This line searches for all `<div>` elements under the specified parent element.
-A check for successful status and the collection's length follows, ensuring that
-at least one `<div>` is found.
+Here, the `body` element serves as the root for the search. The `lxb_dom_elements_by_tag_name` function searches for all `div` tags and stores them in the collection. Error checks ensure that the `div` elements are found successfully.
 
-### Adding an Attribute
-
-Once the element is identified, a new attribute is added using:
+### Setting and Appending Attributes
 
 ```c
-attr = lxb_dom_element_set_attribute(element, name, name_size, (const lxb_char_t *) "oh God", 6);
+attr = lxb_dom_element_set_attribute(element, name, name_size,
+                                     (const lxb_char_t *) "oh God", 6);
+if (attr == NULL) {
+    FAILED("Failed to create and append new attribute");
+}
 ```
 
-In this case, the attribute named "my-name" is appended with a value of "oh
-God." If the attribute creation fails, an error message is displayed.
+A new attribute is appended to the `div` element using `lxb_dom_element_set_attribute`. The attribute name is "my-name" and its value is "oh God". The function creates the attribute if it doesn't already exist and appends it to the element.
 
 ### Checking Attribute Existence
 
-The program checks if the newly added attribute exists:
-
 ```c
 is_exist = lxb_dom_element_has_attribute(element, name, name_size);
+
+if (is_exist) {
+    PRINT("\nElement has attribute \"%s\": true", (const char *) name);
+}
+else {
+    PRINT("\nElement has attribute \"%s\": false", (const char *) name);
+}
 ```
 
-A printed message confirms whether the attribute is present or not based on the
-check.
+The `lxb_dom_element_has_attribute` checks whether the given attribute exists on the element. The result is printed accordingly.
 
-### Retrieving Attribute Values
-
-The next operation retrieves the value of the specified attribute:
+### Retrieving Attribute Value
 
 ```c
 value = lxb_dom_element_get_attribute(element, name, name_size, &value_len);
+if (value == NULL) {
+    FAILED("Failed to get attribute value by qualified name");
+}
+
+PRINT("Get attribute value by qualified name \"%s\": %.*s",
+      (const char *) name, (int) value_len, value);
 ```
 
-If successful, it prints the value associated with the "my-name" attribute.
+`lxb_dom_element_get_attribute` retrieves the value of the specified attribute. If the attribute is found, its value and length are returned and printed. This section shows how to access the values of element attributes.
 
-### Iterating Through Attributes
-
-The code then demonstrates how to iterate through all attributes of the element:
+### Iterating Over Attributes
 
 ```c
+/* Iterator */
+PRINT("\nGet element attributes by iterator:");
 attr = lxb_dom_element_first_attribute(element);
+
+while (attr != NULL) {
+    tmp = lxb_dom_attr_qualified_name(attr, &tmp_len);
+    printf("Name: %s", tmp);
+
+    tmp = lxb_dom_attr_value(attr, &tmp_len);
+    if (tmp != NULL) {
+        printf("; Value: %s\n", tmp);
+    }
+    else {
+        printf("\n");
+    }
+
+    attr = lxb_dom_element_next_attribute(attr);
+}
 ```
 
-This iterates through attributes using a `while` loop, printing each attribute's
-name and value until there are no more attributes in the collection.
+Using an iterator, this section retrieves and prints all attributes of the element. `lxb_dom_element_first_attribute` gets the first attribute, and `lxb_dom_element_next_attribute` progresses through the list.
 
-### Modifying an Attribute Value
-
-To change the value of an existing attribute, the code retrieves the attribute
-by name:
+### Changing Attribute Value
 
 ```c
 attr = lxb_dom_element_attr_by_name(element, name, name_size);
-```
-
-Then, it updates the value to "new value" using:
-
-```c
 status = lxb_dom_attr_set_value(attr, (const lxb_char_t *) "new value", 9);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to change attribute value");
+}
 ```
 
-### Removing an Attribute
+Changing an attribute's value involves first retrieving the attribute using `lxb_dom_element_attr_by_name` and then setting the value with `lxb_dom_attr_set_value`. Error checking ensures that the operation is successful.
 
-Finally, the example concludes with the removal of the newly added attribute:
+### Removing Attributes
 
 ```c
+/* Remove new attribute by name */
 lxb_dom_element_remove_attribute(element, name, name_size);
 ```
 
-This operation is followed by a serialized output of the DOM tree again,
-allowing the developer to observe changes.
+The final operation removes the specified attribute from the element using `lxb_dom_element_remove_attribute`. This demonstrates the library's capabilities for cleaning up or updating the DOM.
 
-### Cleanup
+## Notes
 
-The code ensures proper resource management by destroying the collection and the
-document at the end of the main function to prevent memory leaks:
+- Proper error handling is crucial when manipulating the DOM to ensure robust and predictable behavior.
+- Iterating over attributes can provide useful insights into the current state of an element's attributes, useful for debugging or further manipulation.
+- Changing and removing attributes dynamically allows for flexible DOM updates.
 
-```c
-lxb_dom_collection_destroy(collection, true);
-lxb_html_document_destroy(document);
-```
+## Summary
 
-## Conclusion
-
-The `element_attributes.c` example illustrates fundamental operations in DOM
-manipulation provided by the `lexbor` library. The code efficiently demonstrates
-how to parse HTML, locate and manipulate elements, manage attributes, and ensure
-appropriate cleanup of resources, making it a valuable reference for web
-developers working with the `lexbor` framework.
+This example demonstrates how to create, manipulate, and manage element attributes using the `lexbor` library, covering parsing HTML, finding elements, setting, retrieving, iterating over, changing, and removing attributes. These operations form the basis for extensive DOM manipulations in web development and highlight the power and flexibility of `lexbor` for such tasks. Understanding these fundamentals is essential for effectively utilizing `lexbor` in complex web applications.

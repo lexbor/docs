@@ -1,145 +1,86 @@
-# UTF-8 Decoding Example
+# Decoding UTF-8 to Code Points: Example
 
-This article explains a code example from
-[lexbor/encoding/single/decode/decode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/decode/decode.c),
-which demonstrates how to decode a UTF-8 string into its respective code points
-using the `lexbor` library.
+The example provided in `lexbor/encoding/single/decode/decode.c` demonstrates
+how to use the `lexbor` library to decode a UTF-8 string into its respective Unicode
+code points. This process involves initializing a decoder, processing each character
+in the string, and handling the decoding results.
 
-## Introduction
+## Key Code Sections
 
-The primary purpose of this code is to decode a UTF-8 encoded string,
-specifically the phrase "Привет, мир!" (which means "Hello, world!" in Russian),
-into individual Unicode code points. It showcases the initialization of the
-decoder, the processing of the input string, and outputting the results in a
-formatted manner.
+### Buffer Preparation
 
-## Code Explanation
-
-### Include the Required Header
-
-The necessary header file is included at the beginning of the code:
-
-```c
-#include <lexbor/encoding/encoding.h>
-```
-
-This header provides the necessary declarations for working with encoding
-functionalities offered by lexbor.
-
-### Error Handling Macro
-
-The code defines a macro for error handling:
-
-```c
-#define FAILED(...)                                                            \
-    do {                                                                       \
-        fprintf(stderr, __VA_ARGS__);                                          \
-        fprintf(stderr, "\n");                                                 \
-        exit(EXIT_FAILURE);                                                    \
-    }                                                                          \
-    while (0)
-```
-
-This macro outputs an error message to the standard error stream and exits the
-program if a failure condition is met. It streamlines error handling throughout
-the code.
-
-### Main Function
-
-The `main` function serves as the entry point of the program:
-
-```c
-int main(int argc, const char *argv[])
-{
-    ...
-}
-```
-
-### Variable Declarations
-
-Several variables are declared to handle the decoding process, including:
-
-- `lxb_codepoint_t cp;`: Stores the current code point.
-- `lxb_status_t status;`: Holds the status of operations.
-- `lxb_encoding_decode_t decode;`: The decoder instance.
-- `const lxb_encoding_data_t *encoding;`: Pointer to the encoding data.
-- `const lxb_char_t *pos;`: Pointer to track the current position in the input
-  data.
-
-### Preparing the Input Buffer
-
-The input UTF-8 string is initialized, along with a pointer to the end of the
-string:
+The example starts by defining the input string in UTF-8 and preparing pointers to
+iterate through this string:
 
 ```c
 const lxb_char_t *data = (const lxb_char_t *) "Привет, мир!";
 const lxb_char_t *end = data + strlen((char *) data);
 ```
 
-The `strlen` function determines the length of the string to establish the end
-of the data.
-
-### Setting Up the Encoding
-
-The program retrieves UTF-8 encoding data with:
-
-```c
-encoding = lxb_encoding_data(LXB_ENCODING_UTF_8);
-```
-
-This function sets up the necessary encoding data for subsequent decoding
-operations.
+Here, `data` points to the start of the UTF-8 encoded string, and `end` points to
+the address just after the last character of the string. This setup is essential
+for the following decoding process.
 
 ### Initializing the Decoder
 
-The decoder is initialized with:
+Next, the example code initializes the decoder for UTF-8:
 
 ```c
-status = lxb_encoding_decode_init_single(&decode, encoding);
+const lxb_encoding_data_t *encoding;
+encoding = lxb_encoding_data(LXB_ENCODING_UTF_8);
+
+lxb_status_t status = lxb_encoding_decode_init_single(&decode, encoding);
 if (status != LXB_STATUS_OK) {
     FAILED("Failed to init decoder");
 }
 ```
 
-If the initialization fails, the program invokes the `FAILED` macro to print the
-error and exit.
+Here, `lxb_encoding_data` retrieves the data structure for the specified encoding.
+Then, `lxb_encoding_decode_init_single` initializes the decoding process using
+this encoding. The function checks for successful initialization and exits if it
+fails.
 
-### Decoding Loop
+### Decoding the String
 
-Following initialization, the program enters a loop to decode each character in
-the input string:
+The core decoding loop processes each character in the input string:
 
 ```c
 while (data < end) {
-    ...
+    pos = data;
+
+    cp = encoding->decode_single(&decode, &data, end);
+    if (cp > LXB_ENCODING_DECODE_MAX_CODEPOINT) {
+        continue;
+    }
+
+    printf("%.*s: 0x%04X\n", (int) (data - pos), pos, cp);
 }
 ```
 
-Inside the loop, the current position (`pos`) is recorded, and the decoding
-function is called:
+In each iteration of the loop:
+- `pos` captures the current pointer position in the string.
+- `decode_single` processes the next character, updating `data` to point to the
+  next position.
+- If `cp` (code point) is valid, it prints the UTF-8 character and its
+  corresponding code point.
 
-```c
-cp = encoding->decode_single(&decode, &data, end);
-```
+The loop continues until `data` reaches the `end` of the string, effectively
+decoding and printing every character.
 
-This line decodes a single UTF-8 character, advancing the input pointer `data`
-as needed. The result is checked against a maximum allowable code point value,
-although in this example, that condition is expected never to occur.
+## Notes
 
-### Outputting the Results
+- The example is hardcoded to decode a specific UTF-8 string (`"Привет, мир!"`).
+- The `decode_single` function is used for simplicity, suitable for decoding one
+  character at a time.
+- Error handling is minimal, assuming that code points will always be valid for
+  the given string.
 
-For each decoded character, the code prints the results to the standard output:
+## Summary
 
-```c
-printf("%.*s: 0x%04X\n", (int) (data - pos), pos, cp);
-```
-
-This formatted output provides both the original UTF-8 character (as a
-substring) and its corresponding Unicode code point in hexadecimal format.
-
-## Conclusion
-
-The example demonstrates a straightforward approach to decoding a UTF-8 string
-into Unicode code points using the `lexbor` library. It effectively showcases
-initialization, error handling, and character decoding, providing a practical
-illustration of working with character encodings in C.
+This example from `lexbor/encoding/single/decode/decode.c` demonstrates the basic
+process of decoding a UTF-8 encoded string into Unicode code points using the lexbor
+library. It initializes the decoder for UTF-8, iterates through the string, and
+prints each character with its corresponding Unicode code point. This showcases
+the practicality and ease of using the `lexbor` library for encoding-related tasks,
+highlighting essential steps like buffer preparation, decoder initialization,
+and the decoding process itself.

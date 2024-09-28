@@ -1,121 +1,164 @@
-# Tokenization and Attribute Extraction Example
+# Parsing HTML Tag Attributes: Example
 
-This article explains the code found in the `tag_attributes.c` file of the
-lexbor project, which focuses on the tokenization of HTML content and the
-extraction of attributes from tokens. The primary purpose of this code is to
-parse a small fragment of HTML and output the attributes associated with each
-token.
+The example code found in `lexbor/html/tokenizer/tag_attributes.c` demonstrates how to use the `lexbor` library to tokenize an HTML string and retrieve the attributes of HTML tags. This will help to understand how to parse HTML data using the `lexbor` library and handle token attributes. Below, I will break down the important sections of the code and explain them in detail.
 
-## Overview
-
-The `tag_attributes.c` file implements a simple HTML tokenizer. It initializes a
-tokenizer instance, feeds it some HTML data, and uses a callback function to
-process and display the attributes of parsed tokens. The tokenizer effectively
-handles different HTML tags and their attributes while logging any potential
-errors that may occur during the process.
-
-## Code Breakdown
-
-### Includes and Macros
-
-The file begins with including necessary header files:
-
-```c
-#include "lexbor/html/tokenizer.h"
-#include "lexbor/html/token_attr.h"
-```
-
-These headers provide definitions and functionalities related to HTML
-tokenization and attribute handling.
-
-The `FAILED` macro is defined to streamline error handling throughout the code.
-This macro takes a format string and variable arguments, prints the error
-message to standard error, and exits the program if an issue arises.
+## Key Code Sections
 
 ### Token Callback Function
 
-The core of the token processing logic is in the `token_callback` function:
+The `token_callback` function is registered as a callback to process tokens as they are parsed. Here's the function:
 
 ```c
 static lxb_html_token_t *
 token_callback(lxb_html_tokenizer_t *tkz, lxb_html_token_t *token, void *ctx)
-```
+{
+    const lxb_char_t *tag, *name;
+    lxb_html_token_attr_t *attr;
 
-This function is called whenever a token is completed. It first checks if the
-token is a text node or has no attributes:
+    attr = token->attr_first;
 
-```c
-if (token->tag_id == LXB_TAG__TEXT || attr == NULL) {
+    /* Skip all #text or without attributes tokens */
+    if (token->tag_id == LXB_TAG__TEXT || attr == NULL) {
+        return token;
+    }
+
+    tag = lxb_tag_name_by_id(token->tag_id, NULL);
+    if (tag == NULL) {
+        FAILED("Failed to get token name");
+    }
+
+    printf("\"%s\" attributes:\n", tag);
+
+    while (attr != NULL) {
+        name = lxb_html_token_attr_name(attr, NULL);
+
+        if (name != NULL) {
+            printf("    Name: %s; ", name);
+        }
+        else {
+            /* This can only happen for the DOCTYPE token. */
+            printf("    Name: <NOT SET>; \n");
+        }
+
+        if (attr->value != NULL) {
+            printf("Value: %.*s\n", (int) attr->value_size, attr->value);
+        }
+        else {
+            printf("Value: <NOT SET>\n");
+        }
+
+        attr = attr->next;
+    }
+
     return token;
 }
 ```
 
-If the token is a text node or has no attributes, the function returns
-immediately without further processing. Otherwise, it retrieves the name of the
-tag associated with the token using `lxb_tag_name_by_id`. A failure at this
-point will invoke the `FAILED` macro:
-
-```c
-tag = lxb_tag_name_by_id(token->tag_id, NULL);
-if (tag == NULL) {
-    FAILED("Failed to get token name");
-}
-```
-
-Assuming the tag name retrieval is successful, it prints out the tag's
-attributes. The `while` loop iterates through the list of attributes associated
-with the token:
-
-```c
-while (attr != NULL) {
-    name = lxb_html_token_attr_name(attr, NULL);
-```
-
-For each attribute found, it checks if the name is valid; if not, it
-acknowledges the situation by noting that the name is not set, particularly
-handling tokens like `DOCTYPE`. The associated values of the attributes are
-likewise printed if they exist.
+The function retrieves and prints the attributes of each token:
+- **Checking Token Type and Attributes**: It first checks if the token is a text node (`LXB_TAG__TEXT`) or if it has no attributes (`attr == NULL`) and skips processing if so.
+- **Getting Tag Name**: Uses `lxb_tag_name_by_id` to get the tag's name.
+- **Iterating Attributes**: Loops through the token's attributes, printing their names and values.
+- **Handling Null Values**: If an attribute name or value is not set, it handles this case gracefully.
 
 ### Main Function
 
-The `main` function orchestrates the entire process:
+The `main` function initializes the tokenizer, sets up the callback, and processes the HTML string.
 
 ```c
-int main(int argc, const char *argv[])
+int
+main(int argc, const char *argv[])
+{
+    lxb_status_t status;
+    lxb_html_tokenizer_t *tkz;
+
+    const lxb_char_t data[] = "<div id=one-id class=silent ref='some &copy; a'>"
+                              "<option-one enabled>"
+                              "<option-two enabled='&#81'>"
+                              "</div>";
+
+    printf("HTML:\n%s\n\n", (char *) data);
+    printf("Result:\n");
+
+    tkz = lxb_html_tokenizer_create();
+    status = lxb_html_tokenizer_init(tkz);
+    if (status != LXB_STATUS_OK) {
+        FAILED("Failed to create tokenizer object");
+    }
+
+    /* Set callback for token */
+    lxb_html_tokenizer_callback_token_done_set(tkz, token_callback, NULL);
+
+    status = lxb_html_tokenizer_begin(tkz);
+    if (status != LXB_STATUS_OK) {
+        FAILED("Failed to prepare tokenizer object for parsing");
+    }
+
+    status = lxb_html_tokenizer_chunk(tkz, data, (sizeof(data) - 1));
+    if (status != LXB_STATUS_OK) {
+        FAILED("Failed to parse the html data");
+    }
+
+    status = lxb_html_tokenizer_end(tkz);
+    if (status != LXB_STATUS_OK) {
+        FAILED("Failed to ending of parsing the html data");
+    }
+
+    lxb_html_tokenizer_destroy(tkz);
+
+    return 0;
+}
 ```
 
-This function initializes the tokenizer and sets up the HTML string for parsing.
-The HTML fragment being parsed includes a `div` tag with several attributes and
-nested `option` tags. It first prints the HTML string to the console:
-
-```c
-const lxb_char_t data[] = "<div id=one-id class=silent ref='some &copy; a'>"
-                          "<option-one enabled>"
-                          "<option-two enabled='&#81'>";
-```
-
-Next, it creates and initializes the tokenizer:
+### Setting Up the Tokenizer
 
 ```c
 tkz = lxb_html_tokenizer_create();
 status = lxb_html_tokenizer_init(tkz);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to create tokenizer object");
+}
 ```
 
-In case of an error during the tokenizer's creation or initialization, it
-utilizes the `FAILED` macro to handle the error appropriately.
+This section creates and initializes the tokenizer. Proper error handling ensures that the function exits if the tokenizer setup fails.
 
-The callback function for token completion is set, and the tokenizer begins
-processing the HTML data. It processes the input by calling
-`lxb_html_tokenizer_chunk`, and if any issues arise during these stages, the
-`FAILED` macro is utilized once more to identify failures in parsing.
+### Setting the Callback
 
-Finally, the tokenizer is destroyed, freeing any resources it allocated during
-its execution, and the program returns 0, indicating a successful run.
+```c
+lxb_html_tokenizer_callback_token_done_set(tkz, token_callback, NULL);
+```
 
-## Conclusion
+Here, the `token_callback` is set to be called whenever a token is fully parsed. This is central to processing each HTML token the tokenizer identifies.
 
-This example illustrates the process of HTML tokenization using the lexbor
-library. By implementing a callback to handle parsed tokens, the code
-effectively extracts and displays attribute names and values from the given HTML
-fragment. It showcases the ability to manage errors gracefully while providing
-informative output for attribute processing within tokens.
+### Processing the HTML
+
+```c
+status = lxb_html_tokenizer_chunk(tkz, data, (sizeof(data) - 1));
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to parse the html data");
+}
+
+status = lxb_html_tokenizer_end(tkz);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to ending of parsing the html data");
+}
+```
+
+These lines pass the HTML data to the tokenizer in chunks and signify the end of the data stream. Error checking ensures that any issues in those stages are caught.
+
+### Destroying the Tokenizer
+
+```c
+lxb_html_tokenizer_destroy(tkz);
+```
+
+Finally, the tokenizer is destroyed to free resources.
+
+## Notes
+
+- **Error Handling**: The `FAILED` macro ensures that errors are caught and reported, and the application exits gracefully.
+- **Callback Flexibility**: Using a callback function allows for custom processing of tokens.
+- **Attribute Handling**: The tokenizer efficiently retrieves and iterates through token attributes.
+
+## Summary
+
+This example from the `lexbor` library showcases the process of tokenizing HTML and handling tag attributes. It highlights the efficient use of callback functions and robust error checking, demonstrating essential practices in HTML parsing. Understanding and using these techniques is fundamental for developers working with HTML parsing and manipulation using the `lexbor` library.

@@ -1,141 +1,138 @@
-# Events Insert Example
+# Demonstrating Event Insertions in HTML with CSS: Example
 
-This article explains the C code found in
-[lexbor/styles/events_insert.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/events_insert.c),
-which demonstrates the process of manipulating HTML documents and applying CSS
-styles using the `lexbor` library. The code operates on a simple HTML structure
-and applies specific styles based on a CSS stylesheet.
+This article elaborates on the `lexbor/styles/events_insert.c` file from the `lexbor` library. It details how to parse an HTML document, attach a CSS stylesheet to it, and dynamically insert new elements, demonstrating how styles are applied. This example illustrates `lexbor`'s ability to manipulate both HTML and CSS effectively.
 
-## Overview
-
-The provided code initializes an HTML document representation, parses a
-predefined HTML string, applies a CSS stylesheet, and manipulates the DOM to
-insert a new HTML element. Here's a breakdown of the major sections of the code.
-
-## Code Breakdown
-
-### Includes and Definitions
-
-The code begins with the inclusion of necessary header files from the `lexbor`
-library, which are essential for HTML, CSS, and selector functionalities:
-
-```c
-#include <lexbor/html/html.h>
-#include <lexbor/css/css.h>
-#include <lexbor/selectors/selectors.h>
-```
-
-These headers allow access to functions and data structures needed to create and
-manipulate HTML and CSS documents.
+## Key Code Sections
 
 ### Callback Function
 
-A callback function named `callback` is implemented to handle data output when
-invoked. This function prints data received from serialized output processes:
+The example begins with a callback function used for serializing and printing the HTML and CSS data.
 
 ```c
-lxb_status_t callback(const lxb_char_t *data, size_t len, void *ctx) {
+lxb_status_t
+callback(const lxb_char_t *data, size_t len, void *ctx)
+{
     printf("%.*s", (int) len, (const char *) data);
     return LXB_STATUS_OK;
 }
 ```
 
-Its purpose is to print formatted strings, assisting in visual output of the
-document processes.
+This function simply prints a piece of data and returns a status code indicating success. It is used later for serializing and outputting HTML and CSS content.
 
-### Main Function
+### HTML and CSS Initialization
 
-The `main` function encapsulates the program logic. It starts by defining
-various variables and static data for HTML and CSS. 
+Next, the main function initializes HTML and CSS data as well as other necessary variables.
 
 ```c
-static const lexbor_str_t html = lexbor_str("<div class=father>...</div>");
-static const lexbor_str_t slctrs = lexbor_str("div.father {...}");
+static const lexbor_str_t html = lexbor_str("<div class=father><p class=best>a</p><p>b</p><s>c</s></div>");
+static const lexbor_str_t slctrs = lexbor_str("div.father {width: 30%} div.father p.best {width: 20px; height: 10pt}");
 ```
 
-Here, `html` contains a `<div>` with class "father" and some child elements,
-while `slctrs` defines CSS rules for styling the div and its child paragraphs.
+#### Creating and Parsing HTML Document
 
-### Document Creation and Parsing
-
-An HTML document is created using:
+The example demonstrates how to create and parse an HTML document from a string.
 
 ```c
 document = lxb_html_document_create();
-```
+if (document == NULL) {
+    return EXIT_FAILURE;
+}
 
-The document is then parsed with the defined HTML string:
-
-```c
 status = lxb_html_document_parse(document, html.data, html.length);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
 ```
 
-If any operation fails, the program exits to ensure that no subsequent
-operations are performed on an invalid document structure.
+The `lxb_html_document_create` function initializes an empty HTML document, and `lxb_html_document_parse` populates it with the provided HTML string.
 
-### CSS Initialization and Parsing
+### Initializing CSS
 
-Next, the code initializes the CSS subsystem of the document:
+The example proceeds to initialize CSS-related objects and memory structures for the document.
 
 ```c
 status = lxb_html_document_css_init(document);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
 ```
 
-After this initialization, a CSS parser is created and initialized. The CSS
-stylesheet is parsed and attached to the HTML document:
+This ensures that the document is prepared to handle CSS styles.
+
+#### Creating and Attaching CSS Stylesheet
+
+A CSS parser is created and initialized, followed by parsing and attaching the stylesheet to the document.
 
 ```c
+parser = lxb_css_parser_create();
+status = lxb_css_parser_init(parser, NULL);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
+
 sst = lxb_css_stylesheet_parse(parser, slctrs.data, slctrs.length);
+if (sst == NULL) {
+    return EXIT_FAILURE;
+}
+
 status = lxb_html_document_stylesheet_attach(document, sst);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
 ```
 
-At this stage, all elements in the document receive styles defined in the
-stylesheet.
+These steps ensure that styles defined in the stylesheet are applied to the document elements accordingly.
 
-### Element Creation and Attribute Setting
+### Finding and Modifying Elements
 
-The code then seeks to manipulate the DOM by creating a new paragraph element
-(`<p>`). This process involves setting attributes that apply styles from the
-stylesheet:
+The example shows how to use CSS selectors to find elements and then add a new element with specific attributes.
 
 ```c
+collection = lxb_dom_collection_make(lxb_dom_interface_document(document), 16);
+status = lxb_dom_node_by_class_name(lxb_dom_interface_node(document), collection, father_str.data, father_str.length);
+div = lxb_html_interface_element(lxb_dom_collection_node(collection, 0));
+
 np = lxb_html_document_create_element(document, p_str.data, p_str.length, NULL);
 attr = lxb_dom_element_set_attribute(lxb_dom_interface_element(np), class_str.data, class_str.length, best_str.data, best_str.length);
-```
-
-Here, the element is given a class of "best" for styling purposes, followed by
-another attribute for inline styling.
-
-### Inserting the New Element
-
-Once the new element is fully prepared with the appropriate attributes, it is
-appended to the "father" div:
-
-```c
+attr = lxb_dom_element_set_attribute(lxb_dom_interface_element(np), style_name.data, style_name.length, style_value.data, style_value.length);
 lxb_html_element_insert_child(div, np);
 ```
 
-This action makes it part of the document's tree structure, and consequently, it
-inherits styling based on CSS rules.
+- **Collection Initialization**: Creating a collection and storing elements matching the "father" class.
+- **New Element Insertion**: Creating a new `<p>` element with class "best" and inline style settings, and appending it to the `<div>` with the "father" class.
 
-### Final Serialization and Resource Cleanup
+### Serialization and Result Verification
 
-The program serializes the new element and produces output that reflects the
-changes made:
+The inserted element and the modified HTML are serialized and printed to verify the results.
 
 ```c
 status = lxb_html_serialize_cb(lxb_dom_interface_node(np), callback, NULL);
+status = lxb_html_serialize_tree_cb(lxb_dom_interface_node(document), callback, NULL);
+status = lxb_html_element_style_serialize(np, LXB_HTML_ELEMENT_OPT_UNDEF, callback, NULL);
 ```
 
-Finally, all allocated resources are cleaned up to prevent memory leaks by
-destroying collections, stylesheets, and the document itself.
+Each function call outputs the current state of the HTML and the styles applied to the inserted element, ensuring correctness.
 
-## Conclusion
+### Resource Cleanup
 
-The code in
-[lexbor/styles/events_insert.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/events_insert.c)
-illustrates an effective use of the `lexbor` library to manipulate HTML and apply
-CSS. By parsing, creating elements, setting attributes, and attaching styles, it
-provides a clear example of dynamic document editing and processing. This
-showcases both the capabilities and convenience of the `lexbor` framework in
-handling web technologies programmatically.
+Finally, resources allocated during execution are appropriately cleaned up.
+
+```c
+(void) lxb_dom_collection_destroy(collection, true);
+(void) lxb_css_stylesheet_destroy(sst, true);
+(void) lxb_css_parser_destroy(parser, true);
+(void) lxb_html_document_destroy(document);
+```
+
+Proper resource management is crucial to prevent memory leaks and other issues.
+
+## Notes
+
+- **Proper Initialization**: Ensure HTML and CSS objects are initialized correctly before use.
+- **CSS Parsing**: Proper parsing and attachment of stylesheets are essential to apply styles.
+- **Dynamic Modifications**: The example illustrates dynamic insertion and modification of elements in a DOM and verifying applied styles.
+- **Resource Management**: Always clean up resources to maintain application stability and performance.
+
+## Summary
+
+This example demonstrates how to use the `lexbor` library to dynamically create, modify, and style HTML documents by applying CSS styles. These operations are essential for web developers and engineers who need to manipulate and style DOM elements dynamically. Understanding this example can help developers harness the power of `lexbor` for efficient HTML and CSS manipulation.

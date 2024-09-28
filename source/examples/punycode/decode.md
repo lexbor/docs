@@ -1,108 +1,121 @@
-# Punycode Decoding Example
+# Decoding Punycode: Example
 
-This article explains the implementation of a Punycode decoding utility found in
-the
-[lexbor/punycode/decode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/punycode/decode.c)
-file. The code example facilitates the decoding of encoded domain names into
-their regular representation, which is critical for handling internationalized
-domain names (IDNs). 
+This article delves into the `lexbor/punycode/decode.c` example file from the `lexbor` library. The example demonstrates how to decode Punycode-encoded data, a mechanism used primarily for representing Unicode characters in ASCII. This is particularly useful for encoding international domain names (IDNs).
 
-## Overview
+The example shows how to use the `lexbor` library to read Punycode from standard input, process it, and output the decoded Unicode characters to standard output. This explanation will walk through the critical parts and logic of the code, focusing on the proper usage of `lexbor` functions and data types.
 
-The core function of this program reads input from standard input, decodes it
-using the `lexbor` library's Punycode functionality, and outputs the decoded
-string to standard output. Below, we detail the main components of the code,
-their functionality, and the logic behind the operations.
+## Key Code Sections
 
-## Main Function
+### Memory Allocation and Input Handling
 
-The `main` function serves as the entry point of the program. It sets up the
-necessary variables and handles the reading, reallocating, and decoding of data.
-
-### Variable Declarations
-
-The program begins by declaring several important variables:
-
-- `loop`: A boolean flag to control the reading loop.
-- `size` and `nsize`: Size variables for managing buffer sizes.
-- `status`: A variable to hold the status returned by functions.
-- `inbuf`: A temporary buffer for reading input.
-- Pointers `buf`, `end`, `p`, and `tmp`: For managing dynamic memory.
-
-### Memory Allocation
-
-Memory is allocated for `buf` using `lexbor_malloc`, which allocates space equal
-to the size of `inbuf`. If memory allocation fails, the program outputs an error
-message and exits with `EXIT_FAILURE`.
-
-### Reading Input
-
-The program enters a `do-while` loop to read from standard input:
+The code begins by preparing the memory allocation for reading chunks of data and processing it.
 
 ```c
-size = fread(inbuf, 1, sizeof(inbuf), stdin);
-```
+char inbuf[4096];
+lxb_char_t *buf, *end, *p, *tmp;
 
-If the read operation does not return the full buffer size, it checks if the end
-of the file (EOF) is reached or if an error occurred. In either case, the
-program handles these conditions appropriately.
-
-### Buffer Management
-
-Before storing more data into `buf`, the program checks if there is enough
-space:
-
-```c
-if (p + size > end) {
-    nsize = (end - buf) * 3;
-    tmp = lexbor_realloc(buf, nsize);
-    ...
+buf = lexbor_malloc(sizeof(inbuf));
+if (buf == NULL) {
+    printf("Failed memory allocation.\n");
+    return EXIT_FAILURE;
 }
 ```
 
-If there isn't sufficient space, it reallocates memory to increase the buffer
-size by threefold. If this operation fails, an error message is displayed and
-the program jumps to the `failed` label to free allocated memory and exit.
+Here, a buffer `inbuf` of size 4096 bytes is allocated to handle chunks of input. Using `lexbor_malloc`, a memory block is allocated to `buf` to store the input data processed.
 
-### Input Cleaning
+### Reading Input Loop
 
-After reading input, the program checks and trims any trailing newline (`\n`) or
-carriage return (`\r`) characters for proper formatting before decoding begins.
+The program reads from standard input in chunks, reallocating memory as necessary.
 
-### Decoding Process
+```c
+do {
+    size = fread(inbuf, 1, sizeof(inbuf), stdin);
+    if (size != sizeof(inbuf)) {
+        if (feof(stdin)) {
+            loop = false;
+        }
+        else {
+            return EXIT_FAILURE;
+        }
+    }
 
-The actual decoding is performed by the `lxb_punycode_decode` function, which
-takes the prepared buffer and calls a callback function:
+    if (p + size > end) {
+        nsize = (end - buf) * 3;
+
+        tmp = lexbor_realloc(buf, nsize);
+        if (tmp == NULL) {
+            printf("Failed memory reallocation.\n");
+            goto failed;
+        }
+
+        p = tmp + (p - buf);
+        buf = tmp;
+        end = tmp + nsize;
+    }
+
+    memcpy(p, inbuf, size);
+    p += size;
+} while (loop);
+```
+
+This loop reads data into the `inbuf` array. When `p` (the current position pointer) exceeds the end of the buffer, it reallocates a larger buffer to ensure all data can fit. The code carefully adjusts pointers to reflect new memory allocations, ensuring data isn't lost during reallocation.
+
+### Buffer Trimming
+
+Typically, the input might have trailing newline or carriage return characters, which are removed before decoding.
+
+```c
+if (p - buf > 0) {
+    if (p[-1] == '\n') {
+        p -= 1;
+    }
+}
+
+if (p - buf > 0) {
+    if (p[-1] == '\r') {
+        p -= 1;
+    }
+}
+```
+
+This step ensures that the buffer does not pass newline or carriage return characters to the decoder, which could introduce errors in decoding.
+
+### Decoding Punycode
+
+The main functionality involves calling the `lxb_punycode_decode` function from the `lexbor` library.
 
 ```c
 status = lxb_punycode_decode(buf, p - buf, callback, NULL);
+if (status != LXB_STATUS_OK) {
+    printf("Failed decode.\n");
+    goto failed;
+}
 ```
 
-This function executes the decoding, and if it fails, an error message is
-printed, and cleanup is performed.
+The `lxb_punycode_decode` function handles the decoding. The provided `callback` function is called for each chunk of decoded Unicode data. 
 
-### Output and Cleanup
+### Callback Function
 
-Once decoding is successful, the program prints a newline for formatting and
-then frees the allocated memory before exiting successfully.
-
-## Callback Function
-
-The `callback` function is defined to handle the output of each decoded segment.
-It receives the decoded data and its length, printing it to standard output:
+The callback receives decoded chunks and prints them.
 
 ```c
-printf("%.*s", (int) len, (const char *) data);
+static lxb_status_t
+callback(const lxb_char_t *data, size_t len, void *ctx)
+{
+    printf("%.*s", (int) len, (const char *) data);
+
+    return LXB_STATUS_OK;
+}
 ```
 
-This function is simple yet crucial, as it formats and handles how the decoded
-data is displayed.
+This function ensures that the decoded data is properly output. It uses the `printf` formatting to handle the potentially large and complex data chunks.
 
-## Conclusion
+## Notes
 
-This example demonstrates how to utilize the `lexbor` library for Punycode
-decoding in C. The program handles memory management, input reading, and
-decoding efficiently while ensuring robustness against common issues like memory
-allocation failures. Through this utility, developers can work with
-internationalized domain names effectively, translating them into human-readable
-forms.
+- Correct memory management is crucial in this implementation, managing both allocation and reallocation gracefully with proper error handling.
+- Removing trailing newline and carriage return characters before processing is essential to maintain data integrity.
+- The callback mechanism allows for flexible and modular handling of decoded data.
+
+## Summary
+
+This `lexbor` example highlights how to effectively handle memory management, input processing, and the decoding of Punycode data using the `lexbor` library. The critical concepts include managing input buffer allocations, dynamically growing buffer sizes, and invoking the `lxb_punycode_decode` function with a callback for processing decoded data. By understanding and implementing these principles, developers can efficiently handle Punycode data in their applications, leveraging `lexbor`'s powerful capabilities.

@@ -1,94 +1,12 @@
-# Encoding Decoder Example
+# Encoding Text Data with `lexbor`: Example
 
-In this article, we will explore the encoding decoder example found in the file
-[lexbor/encoding/single/decode/decoder.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/decode/decoder.c).
-This code demonstrates how to decode input data from standard input according to
-a specified character encoding. It provides a useful utility for developers
-needing to handle various text encodings in their applications.
+The example source file `lexbor/encoding/single/decode/decoder.c` provides an in-depth look at using the `lexbor` library to decode text data from various character encodings. The primary intent of this example is to demonstrate how to initialize a decoding context, read data from standard input, and correctly handle the decoding process using the `lexbor` library. This example targets developers aiming to understand the library's capabilities for text decoding and error handling.
 
-## Code Overview
+## Key Code Sections
 
-The main function of this code is to read data from standard input, decode it
-according to the specified encoding, and print the corresponding Unicode values.
-It uses the `lexbor` library to facilitate this process.
+### Command-Line Argument Parsing and Usage
 
-### Header and Includes
-
-At the beginning of the file, we find the licensing information and the
-inclusion of the `lexbor` encoding header:
-
-```c
-#include <lexbor/encoding/encoding.h>
-```
-
-This inclusion allows access to functions and definitions related to text
-encoding and decoding.
-
-### Error Handling Macro
-
-A macro named `FAILED` is defined to streamline error management:
-
-```c
-#define FAILED(with_usage, ...)                                                \
-    do {                                                                       \
-        fprintf(stderr, __VA_ARGS__);                                          \
-        fprintf(stderr, "\n");                                                 \
-                                                                               \
-        if (with_usage) {                                                      \
-            usage();                                                           \
-        }                                                                      \
-                                                                               \
-        exit(EXIT_FAILURE);                                                    \
-    }                                                                          \
-    while (0)
-```
-
-This macro takes a condition (`with_usage`) and, upon failure, prints an error
-message to standard error, optionally displays usage instructions, and exits the
-program with a failure status. This convenient encapsulation enhances code
-readability and maintainability.
-
-### Usage Function
-
-Next, the `usage` function is defined:
-
-```c
-static void usage(void)
-{
-    printf("Usage: decoder <encoding name>\n\n");
-    printf("Available encodings:\n");
-    ...
-}
-```
-
-This function provides users with information about how to use the decoder
-program and lists the available character encodings that can be specified as
-command-line arguments.
-
-### Main Function Structure
-
-The `main` function begins with some variable declarations:
-
-```c
-int main(int argc, const char *argv[])
-{
-    size_t read_size;
-    lxb_status_t status;
-    lxb_codepoint_t cp = 0x0000;
-    lxb_encoding_decode_t decode;
-    const lxb_encoding_data_t *encoding;
-```
-
-**Variable Description:**
-- `read_size`: To store the number of bytes read from standard input.
-- `status`: To capture the success or failure of encoding operations.
-- `cp`: A variable representing the code point being processed.
-- `decode`: A structure for managing the decoding state.
-- `encoding`: A pointer to the encoding data determined by user input.
-
-#### Input Validation
-
-The program first checks for the correct number of command-line arguments:
+The program begins by checking if the correct number of command-line arguments is provided. If not, it displays the usage information and exits.
 
 ```c
 if (argc != 2) {
@@ -97,64 +15,80 @@ if (argc != 2) {
 }
 ```
 
-If no encoding is specified, it invokes the `usage` function and exits
-gracefully.
+The `usage` function prints the expected usage of the program, including the list of supported encodings. This helps users understand how to properly invoke the decoder and which encodings are available.
 
-#### Encoding Detection
+### Encoding Initialization
 
-Next, the program attempts to identify the desired encoding based on the
-provided name:
+The encoding provided by the user as a command-line argument is determined using the `lxb_encoding_data_by_pre_name` function.
 
 ```c
-encoding = lxb_encoding_data_by_pre_name((const lxb_char_t *) argv[1],
-                                         strlen(argv[1]));
+encoding = lxb_encoding_data_by_pre_name((const lxb_char_t *) argv[1], strlen(argv[1]));
 if (encoding == NULL) {
     FAILED(true, "Failed to get encoding from name: %s\n\n", argv[1]);
 }
-```
 
-If the specified encoding is not recognized, it triggers the `FAILED` macro,
-providing feedback to the user.
-
-#### Decoder Initialization
-
-The decoder is then initialized:
-
-```c
 status = lxb_encoding_decode_init_single(&decode, encoding);
 if (status != LXB_STATUS_OK) {
     FAILED(false, "Failed to init decoder");
 }
 ```
 
-This step configures the decoder to use the chosen encoding. If the
-initialization fails, the program prints an error and exits.
+Here, the program retrieves the encoding data associated with the user-provided name. If the encoding is invalid, the program exits with an error message. Once the encoding data is obtained, it initializes the decoder object with `lxb_encoding_decode_init_single`. Proper initialization is crucial for subsequently processing the incoming data.
 
-### Data Reading and Decoding Loop
+### Reading from Standard Input
 
-The program enters a loop to read from standard input:
+The main decoding loop reads data from standard input in blocks and decodes them using the initialized decoder.
 
 ```c
 do {
     read_size = fread(inbuf, 1, sizeof(inbuf), stdin);
-    ...
-    while (data < end) {
-        cp = encoding->decode_single(&decode, &data, end);
-        ...
+    if (read_size != sizeof(inbuf)) {
+        if (feof(stdin)) {
+            loop = false;
+        }
+        else {
+            FAILED(false, "Failed to read stdin");
+        }
     }
+     
+    data = (const lxb_char_t *) inbuf;
+    end = data + read_size;
+    
+    // Decoding happens here
 } while (loop);
 ```
 
-Within this loop:
-- Data is read into a buffer (`inbuf`).
-- Each code point is decoded using the `decode_single` method.
-- Based on the value of `cp`, different output formats are printed for Unicode
-  and ASCII characters.
+The input data is read in chunks and processed in a loop. The `fread()` function reads up to `sizeof(inbuf)` bytes from the standard input. If the read size is different (and the end of the file is not reached), it indicates an error.
 
-### Output and Continuation
+### Decoding Loop
 
-Finally, the program checks if the decoding process requires continuation,
-outputting a replacement character where necessary:
+Inside the decoding loop, the program calls the decoder's `decode_single` method to decode individual characters.
+
+```c
+while (data < end) {
+    cp = encoding->decode_single(&decode, &data, end);
+    if (cp > LXB_ENCODING_DECODE_MAX_CODEPOINT) {
+        if (cp == LXB_ENCODING_DECODE_CONTINUE) {
+            break;
+        }
+        printf("\\u%04X", LXB_ENCODING_REPLACEMENT_CODEPOINT);
+        continue;
+    }
+
+    if (cp >= 0x00A0) {
+        printf("\\u%04X", cp);
+    }
+    else {
+        printf("\\x%02X", cp);
+    }
+}
+```
+
+Here, `decode_single` decodes characters from the input buffer and manages input pointer `data`. Special handling is implemented for cases when the code point indicates a continuation (`LXB_ENCODING_DECODE_CONTINUE`) or an invalid character. Valid Unicode characters are printed in `\u` format, while ASCII characters are printed in `\x` format.
+
+### Handling Remaining Unfinished Decodings
+
+After the loop, if there's an indication that decoding was incomplete (i.e., if `cp` equals `LXB_ENCODING_DECODE_CONTINUE`), the program outputs a Unicode replacement character.
 
 ```c
 if (cp == LXB_ENCODING_DECODE_CONTINUE) {
@@ -162,9 +96,14 @@ if (cp == LXB_ENCODING_DECODE_CONTINUE) {
 }
 ```
 
-### Conclusion
+This ensures that any unfinished multi-byte sequences are handled gracefully.
 
-By effectively using the `lexbor` library's encoding functionalities, this code
-provides a flexible and powerful example of how to decode various text encodings
-from standard input. Developers can adapt this example for their applications,
-thereby enhancing their ability to handle encoded text data efficiently.
+## Notes
+
+1. **Error Handling**: The macro `FAILED` is used extensively to simplify error messages and includes conditional usage guidance.
+2. **Buffer Management**: The program efficiently manages input data using a fixed-size buffer, ensuring that large input streams are handled correctly.
+3. **Decoding Logic**: The implementation highlights robust decoding logic that appropriately handles different character encoding cases, including Unicode and ASCII conversions.
+
+## Summary
+
+This decoding example from the `lexbor` library demonstrates essential techniques for initializing encoding contexts, reading and decoding text data, and handling various edge cases. Being equipped with such knowledge allows developers to leverage `lexbor` for efficient and accurate character encoding transformation tasks across different applications.

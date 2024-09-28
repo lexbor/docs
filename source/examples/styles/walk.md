@@ -1,85 +1,168 @@
-# CSS Style Walking Example
+# Walking Through CSS Properties of an HTML Element: Example
 
-This article explains the functionality and structure of the code found in
-[lexbor/styles/walk.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/walk.c).
-The example focuses on parsing an HTML document, attaching CSS styles to an
-element, and traversing the applied styles. The primary goal of this example is
-to demonstrate how to manipulate the Document Object Model (DOM) and apply CSS
-styling in the `lexbor` library.
+The example code file `lexbor/styles/walk.c` demonstrates how to utilize the `lexbor`
+library to parse an HTML document, attach CSS stylesheets, and iterate over the
+CSS properties of specific HTML elements. This article will explain the code in
+detail, focusing on important sections and functions used within the `lexbor`
+ecosystem.
 
-## Overview of the Code
+## Key Code Sections
 
-The provided code is organized into several key sections. Each section serves a
-significant purpose within the program, which includes parsing HTML, creating a
-CSS parser, and navigating through the styles associated with specific HTML
-elements.
+### Callbacks for CSS Property Serialization
 
-### Include Directives and Function Prototypes
+```c
+static lxb_status_t
+callback(const lxb_char_t *data, size_t len, void *ctx)
+{
+    printf("%.*s", (int) len, (const char *) data);
+    return LXB_STATUS_OK;
+}
+```
 
-The code begins by including essential header files from the `lexbor` library,
-specifically for HTML and CSS functionalities. It defines two primary callback
-functions:
+The `callback` function is used as a generic print callback during CSS property 
+serialization. It takes text data and its length, then prints it. This function 
+will be passed to `lexbor` serialization functions to output the serialized CSS code.
 
-1. **callback**: This function is executed to print serialized CSS data.
-2. **walk_cb**: This function is intended to be called for each CSS style
-   declaration when walking through the styles applied to an HTML element.
+### Walking and Printing CSS Declarations
 
-### Main Functionality
+```c
+static lxb_status_t
+walk_cb(lxb_html_element_t *element, const lxb_css_rule_declaration_t *declr,
+        void *ctx, lxb_css_selector_specificity_t spec, bool is_weak)
+{
+    // ... Code to serialize and print declaration and properties ...
 
-The `main` function encompasses the workflow of the program, starting with the
-initialization of the HTML document and CSS objects. Here's a detailed breakdown
-of its sections:
+    printf("    Primary: %s\n", (is_weak) ? "false" : "true");
+    printf("    Specificity (priority): %d %d %d %d %d\n",
+           lxb_css_selector_sp_i(spec), lxb_css_selector_sp_s(spec),
+           lxb_css_selector_sp_a(spec), lxb_css_selector_sp_b(spec),
+           lxb_css_selector_sp_c(spec));
 
-1. **Document Creation**: The code allocates memory for a new HTML document
-   using `lxb_html_document_create()`. If it fails, the program exits with an
-   error.
+    return LXB_STATUS_OK;
+}
+```
 
-2. **CSS Initialization**: The HTML document initiates its CSS functionality
-   through `lxb_html_document_css_init()`. Similar to document creation, any
-   failure leads to program termination.
+The `walk_cb` function is a callback provided to the function that walks through 
+CSS properties. It receives each `lxb_css_rule_declaration_t` object and 
+serialized its name and value using the `callback` function. It also prints 
+the specificity and whether the rule is weak.
 
-3. **HTML Parsing**: The program parses a static HTML string containing a
-   `<div>` element using `lxb_html_document_parse()`. Again, error handling
-   ensures that the program only proceeds if parsing is successful.
+```c
+lxb_css_rule_declaration_serialize(declr, callback, NULL);
+lxb_css_property_serialize_name(declr->u.user, declr->type, callback, NULL);
+lxb_css_property_serialize(declr->u.user, declr->type, callback, NULL);
+```
 
-4. **CSS Parsing**: A CSS parser is created and initialized. The program then
-   attempts to parse a set of CSS selectors and styles. Successful parsing leads
-   to the association of the stylesheet with the HTML document.
+The above code sections call `lexbor` library functions to serialize various 
+CSS rule components using our previously defined `callback`.
 
-5. **DOM Node Selection**: The program searches for HTML elements using the CSS
-   class name through `lxb_dom_node_by_class_name()`. If no elements are found
-   or if an error occurs, the program appropriately exits.
+### Initialize HTML Document
 
-6. **Style Walking**: The function `lxb_html_element_style_walk()` is called to
-   iterate over the styles applied to the `<div>` element selected earlier. The
-   `walk_cb` function is employed as a callback, allowing printing of style
-   information.
+```c
+document = lxb_html_document_create();
+if (document == NULL) {
+    return EXIT_FAILURE;
+}
 
-### Walking Through Styles
+status = lxb_html_document_css_init(document);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
 
-In the `walk_cb` callback function, several actions take place:
+status = lxb_html_document_parse(document, html.data, html.length);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
+```
 
-- The CSS rule declaration is serialized and printed using
-  `lxb_css_rule_declaration_serialize()`.
-- The name and value of each property in the style declaration are serialized
-  and printed through `lxb_css_property_serialize_name()` and
-  `lxb_css_property_serialize()`. This provides complete visibility into the CSS
-  properties applied to the `<div>`.
-- The specificity of each CSS rule, including various parameters that determine
-  the importance and origin of the styles, is printed.
+Here, an HTML document is created and initialized for CSS handling. The HTML 
+data is then parsed into the document structure.
+
+### Parse and Attach Stylesheet
+
+```c
+parser = lxb_css_parser_create();
+status = lxb_css_parser_init(parser, NULL);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
+
+sst = lxb_css_stylesheet_parse(parser, slctrs.data, slctrs.length);
+if (sst == NULL) {
+    return EXIT_FAILURE;
+}
+
+status = lxb_html_document_stylesheet_attach(document, sst);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
+```
+
+A CSS parser and stylesheet object are created. The stylesheet is parsed from 
+CSS text and attached to the HTML document, allowing style rules to be applied 
+to its elements.
+
+### Find Element by Class Name
+
+```c
+collection = lxb_dom_collection_make(lxb_dom_interface_document(document), 16);
+if (collection == NULL) {
+    return EXIT_FAILURE;
+}
+
+status = lxb_dom_node_by_class_name(lxb_dom_interface_node(document),
+                                    collection, father_str.data, father_str.length);
+if (status != LXB_STATUS_OK || lxb_dom_collection_length(collection) == 0) {
+    return EXIT_FAILURE;
+}
+
+div = lxb_html_interface_element(lxb_dom_collection_node(collection, 0));
+```
+
+The DOM is queried for elements with a specific class name, and the first match 
+is retrieved and cast to an `lxb_html_element_t` type. This element is used 
+later for style walking.
+
+### Walk Through Element's Styles
+
+```c
+status = lxb_html_element_style_walk(div, walk_cb, NULL, true);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
+```
+
+The `lxb_html_element_style_walk` function walks through all CSS declarations 
+applied to the specific element (`div` in this case) and calls `walk_cb` for 
+each declaration.
 
 ### Resource Cleanup
 
-Finally, the program ensures that all allocated resources are correctly
-destroyed using respective cleanup functions for DOM collections, stylesheets,
-parsers, and the HTML document itself. This step is crucial for preventing
-memory leaks and ensuring efficient resource management.
+```c
+(void) lxb_dom_collection_destroy(collection, true);
+(void) lxb_css_stylesheet_destroy(sst, true);
+(void) lxb_css_parser_destroy(parser, true);
+(void) lxb_html_document_destroy(document);
+```
 
-## Conclusion
+Cleaning up created resources properly is crucial to avoid memory leaks. This 
+section of the code ensures everything allocated is properly released.
 
-This code example highlights the integration of HTML parsing and CSS styling
-using the `lexbor` library. By utilizing the provided functions and callback
-methods, developers can effectively manipulate and inspect styles associated
-with HTML elements. The careful arrangement of initialization, parsing, walking
-through styles, and resource cleanup demonstrates best practices in managing
-dynamic web content.
+## Notes
+
+1. **Utilization of callbacks**: Callbacks are heavily used for printing 
+   during serialization operations.
+2. **Specificity calculations**: The code shows how to extract and print 
+   specificity details of CSS selectors.
+3. **Resource management**: Emphasizes the importance of creating and 
+   destroying resources in `lexbor`.
+
+## Summary
+
+This example illustrates the process of creating and parsing an HTML document, 
+attaching CSS stylesheets, and iterating through CSS properties of specific 
+HTML elements using `lexbor`. The detailed walkthrough highlights key 
+functionalities such as serialization callbacks and specificity calculations, 
+providing a comprehensive look at how to manage styles in documents with this 
+library. For `lexbor` users, mastering these techniques is essential for 
+effective manipulation and examination of CSS properties in web documents.

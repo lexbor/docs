@@ -1,74 +1,124 @@
-# CSS Style Attribute Example
+# Parsing Inline CSS Styles: Example
 
-This article provides an in-depth explanation of a code example found in the
-[lexbor/styles/attribute_style.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/attribute_style.c)
-file. The purpose of this code is to demonstrate how to create an HTML document,
-parse a specific HTML element, retrieve its CSS style properties, and then
-serialize those properties for output. 
+This article provides an in-depth explanation of an example program available in the file `lexbor/styles/attribute_style.c`, which demonstrates how to parse inline CSS styles within HTML elements using the `lexbor` library. The example focuses specifically on extracting and serializing the `width` and `height` CSS properties from a `<div>` element. This task involves HTML parsing, CSS preprocessing, and style extraction using various functions provided by `lexbor`.
 
-## Code Breakdown
+## Key Code Sections
 
-### Header Files and Function Definition
+### Creating the HTML Document
 
-The code begins with necessary includes, specifically `base.h`, along with
-lexbor's HTML and CSS header files. This setup ensures that all necessary
-functions related to HTML document handling and CSS processing are available. 
+The first core part of the code initializes an HTML document using `lexbor`.
 
-The `callback` function serves as a utility to print CSS property declarations.
-It takes a character pointer `data`, the length of data `len`, and a context
-pointer `ctx`. It uses `printf` to output the string, formatting it based on the
-provided length. This function is fundamental for logging purposes throughout
-the serialization process.
+```c
+lxb_html_document_t *doc;
 
-### Main Function
+doc = lxb_html_document_create();
+if (doc == NULL) {
+    FAILED("Failed to create HTML Document");
+}
 
-The `main` function is where the primary logic occurs:
+status = lxb_html_document_css_init(doc);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to CSS initialization");
+}
+```
 
-1. **Document Creation**: The first step is to create a new HTML document using
-   `lxb_html_document_create()`. If the document fails to create, it reports an
-   error and halts execution using the `FAILED` macro.
+**Explanation**:  
+This section creates an HTML document object `doc` using `lxb_html_document_create()`, and checks for successful creation. Following that, it initializes the CSS subsystem of the document with `lxb_html_document_css_init(doc)`, which is necessary before performing any CSS-related operations.
 
-2. **CSS Initialization**: Following document creation,
-   `lxb_html_document_css_init(doc)` initializes the CSS environment for the
-   document. Again, a failure results in termination.
+### Parsing the HTML Content
 
-3. **HTML Parsing**: The code employs `lxb_html_document_parse(doc, html.data,
-   html.length)` to parse a static HTML string that contains a `<div>` with CSS
-   inline styles. The inline styles include various widths and heights in
-   different units. This parsing step builds the DOM structure of the HTML.
+Next, the HTML content is parsed to fill the document with nodes.
 
-4. **Element Retrieval**: A `lxb_dom_collection_t` is initialized to hold
-   results. The function `lxb_dom_node_by_tag_name()` retrieves elements by
-   their tag name, specifically targeting the `<div>` tag. If retrieval fails,
-   execution is halted.
+```c
+static const lexbor_str_t html = lexbor_str(
+    "<div style='width: 10px; width: 123%; height: 20pt !important; height: 10px'></div>"
+);
 
-5. **CSS Property Access**: The example seeks to extract specific style
-   properties from the `<div>`. It retrieves the `width` property by name and
-   the `height` property by its corresponding ID using
-   `lxb_html_element_style_by_name` and `lxb_html_element_style_by_id`,
-   respectively. Errors during this stage lead to failure messages.
+status = lxb_html_document_parse(doc, html.data, html.length);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to parse HTML");
+}
+```
 
-### Serialization and Output
+**Explanation**:  
+This section defines a static HTML string and uses `lxb_html_document_parse()` to parse this HTML content and populate the `doc` with the corresponding DOM tree structure. The function takes the document pointer and the raw HTML data along with its length.
 
-After acquiring the width and height styles, the example moves to serialize
-these properties. The `lxb_css_rule_declaration_serialize()` function is called
-twice, once for each property, passing the `callback` function to handle output.
-The results are printed to the console, showcasing the values for both
-properties.
+### Finding the `<div>` Element
 
-### Cleanup
+With the document populated, the code proceeds to find the specific `<div>` element.
 
-The `lxb_dom_collection_destroy()` function cleans up the DOM collection used to
-store the `<div>` elements, while `lxb_html_document_destroy(doc)` releases the
-memory allocated for the document. This cleanup ensures no memory leaks occur
-during program execution.
+```c
+static const lexbor_str_t str_div = lexbor_str("div");
+lxb_dom_collection_t collection;
 
-## Conclusion
+memset(&collection, 0, sizeof(lxb_dom_collection_t));
 
-This code example illustrates how to manipulate and retrieve CSS properties from
-an HTML element using the `lexbor` library. It covers creating an HTML document,
-parsing content, accessing specific elements, and outputting style properties,
-providing a comprehensive look at handling HTML and CSS in C with lexbor. The
-example highlights the importance of proper resource management and error
-reporting within such operations, which is essential for building robust
-applications.
+status = lxb_dom_node_by_tag_name(lxb_dom_interface_node(doc), &collection,
+                                  str_div.data, str_div.length);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to get element by name");
+}
+```
+
+**Explanation**:  
+This code initializes a DOM collection to gather all nodes with the tag name `div`. It uses the `lxb_dom_node_by_tag_name()` function, which searches the DOM tree starting from the document node and fills the collection with the matching nodes.
+
+### Extracting the CSS Styles
+
+Here, the specific CSS properties `width` and `height` are extracted from the found `<div>` element.
+
+```c
+const lxb_css_rule_declaration_t *width, *height;
+static const lexbor_str_t str_width = lexbor_str("width");
+
+div = lxb_dom_collection_element(&collection, 0);
+if (div == NULL) {
+    FAILED("Failed to get element by name");
+}
+
+width = lxb_html_element_style_by_name(lxb_html_interface_element(div),
+                                       str_width.data, str_width.length);
+if (width == NULL) {
+    FAILED("Failed to get style by name");
+}
+
+height = lxb_html_element_style_by_id(lxb_html_interface_element(div),
+                                      LXB_CSS_PROPERTY_HEIGHT);
+if (height == NULL) {
+    FAILED("Failed to get style by id");
+}
+```
+
+**Explanation**:  
+`lxb_dom_collection_element(&collection, 0)` retrieves the first `<div>` node in the collection. The `lxb_html_element_style_by_name()` function fetches the CSS rule for the style property `width` by name, while `lxb_html_element_style_by_id()` retrieves the rule for the `height` property using a predefined constant `LXB_CSS_PROPERTY_HEIGHT`. Both functions operate on an HTML element interface.
+
+### Serializing the CSS Declarations
+
+Finally, the retrieved CSS declarations are serialized back to strings for printing.
+
+```c
+status = lxb_css_rule_declaration_serialize(width, callback, NULL);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to serialize width declaration");
+}
+
+printf("\n");
+
+status = lxb_css_rule_declaration_serialize(height, callback, NULL);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to serialize height declaration");
+}
+```
+
+**Explanation**:  
+The `lxb_css_rule_declaration_serialize()` function is employed to serialize the CSS rule declarations for `width` and `height`. The `callback` function defined at the outset is used to handle the serialized output, which is printed to the console. This demonstrates the final step of extracting and exporting CSS property values.
+
+## Notes
+
+- The `lxb_html_document_css_init()` is crucial for preparing the document object to handle CSS-specific tasks.
+- Proper error handling ensures the robustness of the code, exiting gracefully if any of the critical steps fail.
+- Initialization of the DOM collection and searching nodes with `lxb_dom_node_by_tag_name()` showcases the flexibility of `lexbor` in DOM traversal and manipulation.
+
+## Summary
+
+This example demonstrates the process of initialization, parsing, and CSS extraction using the `lexbor` library. By leveraging various `lexbor` functions, the example showcases practical use cases for HTML and CSS manipulation. The ability to decode, search, and serialize CSS properties within HTML documents is highly beneficial for applications involving web scraping, automated style audits, or dynamic content adjustments. Understanding these core functionalities can significantly enhance a developer's toolkit in handling complex HTML and CSS scenarios.

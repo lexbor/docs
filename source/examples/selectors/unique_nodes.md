@@ -1,85 +1,147 @@
-# CSS Selectors and HTML Node Selection Example
+# Parsing HTML and CSS Selectors in lexbor: Example
 
-This article discusses the functionality of the `unique_nodes.c` source file,
-which implements a basic example of parsing HTML and CSS selectors using the
-`lexbor` library. The example illustrates how to create an HTML document, parse
-CSS selectors, and find nodes within the document that match those selectors.
+This example in `lexbor/selectors/unique_nodes.c` demonstrates how to use the
+`lexbor` library to parse HTML content, process CSS selectors, and find HTML
+nodes that match the parsed selectors. The key parts of this example include
+initializing various lexbor structures, parsing HTML and CSS, serializing the
+parsed structures, and finding matching nodes in the HTML document. This example
+serves as a comprehensive demonstration for developers looking to understand the
+integration of HTML and CSS parsing and selection using lexbor.
 
-## Key Components
+## Key Code Sections
 
-### HTML and CSS Data
+### Callback Functions
 
-At the beginning of the main function, HTML and CSS data are defined. The HTML
-consists of a `<div>` containing two `<p>` elements, while the CSS contains
-several selectors, including class selectors, id selectors, and pseudo-class
-selectors. This data is crucial as it lays the groundwork for the subsequent
-parsing and node selection processes.
+Two callback functions are defined for handling data serialization and node
+finding:
 
-### Creating an HTML Document
+```c
+lxb_status_t callback(const lxb_char_t *data, size_t len, void *ctx) {
+    printf("%.*s", (int) len, (const char *) data);
+    return LXB_STATUS_OK;
+}
 
-The code then creates an HTML document using `lxb_html_document_create()` and
-populates it with the previously defined HTML data. The
-`lxb_html_document_parse()` function is called to parse the HTML data into a
-structured format. If parsing fails, the program exits with a failure status.
-This step transforms the provided HTML string into a DOM (Document Object Model)
-representation that can be interacted with programmatically.
+lxb_status_t find_callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *ctx) {
+    unsigned *count = ctx;
+    *count += 1;
+    printf("%u) ", *count);
+    (void) lxb_html_serialize_cb(node, callback, NULL);
+    printf("\n");
+    return LXB_STATUS_OK;
+}
+```
 
-### Creating a CSS Parser
+- `callback`: This function is used for serializing data to be printed to stdout.
+  It takes a data block and its length and prints the content.
+- `find_callback`: This function is called whenever a matching HTML node is found.
+  It increments a counter and serializes the found node.
 
-Following the creation of the HTML document, a CSS parser is instantiated with
-`lxb_css_parser_create()`. This is complemented by an initialization call to
-`lxb_css_parser_init()`. The parser is necessary for interpreting the CSS
-selectors provided in the string format. The proper functioning of the parsing
-depends on successful initialization, and any failure at this stage leads to an
-exit.
+### HTML Document Creation and Parsing
 
-### CSS Selector Processing
+The code initializes and parses the HTML document:
 
-A CSS selector object is created using `lxb_css_selectors_create()`, and
-similarly initialized to prepare for parsing operations. It is important to note
-that the program avoids creating new selector objects each time the parser is
-called by setting the CSS selectors on the parser with
-`lxb_css_parser_selectors_set()`. This optimization ensures efficient memory
-usage and performance.
+```c
+static const lxb_char_t html[] = "<div><p class='x z'> </p><p id='y'>abc</p></div>";
+document = lxb_html_document_create();
+status = lxb_html_document_parse(document, html, sizeof(html) / sizeof(lxb_char_t) - 1);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
+body = lxb_dom_interface_node(document);
+```
 
-### Parsing the Selectors
+- The HTML source string is defined and parsed into an `lxb_html_document_t`.
+- If parsing is successful, the document's root node is retrieved.
 
-The CSS selectors are parsed using `lxb_css_selectors_parse()`, which generates
-a list of selectors ready for matching with the document's nodes. If parsing
-fails, the program exits. This list is critical for the next steps, allowing the
-program to identify nodes that match the defined selectors.
+### CSS Parser and Selector Initialization
 
-### Serializing HTML and Selectors
+The CSS parsing and selector creation are handled as follows:
 
-The program outputs the serialized format of the HTML document using
-`lxb_html_serialize_pretty_deep_cb()`, which calls a callback function to print
-each node. This is useful for visual verification of the document structure.
-Similarly, the selectors are serialized with
-`lxb_css_selector_serialize_list_chain()`, enabling the user to see which
-selectors have been parsed and are ready for matching.
+```c
+parser = lxb_css_parser_create();
+status = lxb_css_parser_init(parser, NULL);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
 
-### Finding HTML Nodes
+css_selectors = lxb_css_selectors_create();
+status = lxb_css_selectors_init(css_selectors);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
 
-The core functionality of this example is encapsulated in the
-`lxb_selectors_find()` function, which takes the selectors and attempts to match
-them against the nodes in the document's body. A callback function,
-`find_callback`, is provided to handle each found node, incrementing a count and
-processing each matched node individually. If any part of this process fails,
-the program suitably returns an error status.
+lxb_css_parser_selectors_set(parser, css_selectors);
+```
+
+- A CSS parser and CSS selector are created and initialized.
+- The CSS parser is configured to use the previously created CSS selector.
+
+### Parsing CSS Selectors
+
+CSS selectors from a string are parsed and logged:
+
+```c
+static const lxb_char_t slctrs[] = ".x, div:has(p[id=Y i]), p.x, p:blank, div";
+list = lxb_css_selectors_parse(parser, slctrs,
+                               (sizeof(slctrs) / sizeof(lxb_char_t)) - 1);
+if (list == NULL) {
+    return EXIT_FAILURE;
+}
+```
+
+- The selectors defined in the string are parsed into an `lxb_css_selector_list_t`.
+- If parsing fails, the program exits with an error.
+
+### Serializing and Finding Nodes
+
+The HTML content and CSS selectors are serialized, and matching nodes are found:
+
+```c
+printf("HTML:\n");
+(void) lxb_html_serialize_pretty_deep_cb(body, 0, 0, callback, NULL);
+printf("\n");
+
+printf("Selectors: ");
+(void) lxb_css_selector_serialize_list_chain(list, callback, NULL);
+printf("\n");
+
+count = 0;
+lxb_selectors_opt_set(selectors, LXB_SELECTORS_OPT_MATCH_FIRST);
+status = lxb_selectors_find(selectors, body, list, find_callback, &count);
+if (status != LXB_STATUS_OK) {
+    return EXIT_FAILURE;
+}
+```
+
+- The HTML content is serialized and printed.
+- The parsed CSS selector list is serialized and printed.
+- The `lxb_selectors_find` function is used to find matching HTML nodes based on
+  the parsed selectors and the `find_callback` function is called for each match.
 
 ### Cleanup
 
-Finally, the program ensures that all allocated resources are correctly disposed
-of. Various destroy functions are called for the selectors, CSS parser, and the
-HTML document to prevent memory leaks. This step is essential in any robust
-application to maintain system performance and reliability.
+Finally, the initialized structures are destroyed to free resources:
 
-## Conclusion
+```c
+(void) lxb_selectors_destroy(selectors, true);
+(void) lxb_css_parser_destroy(parser, true);
+(void) lxb_css_memory_destroy(list->memory, true);
+(void) lxb_css_selectors_destroy(css_selectors, true);
+(void) lxb_html_document_destroy(document);
+```
 
-The `unique_nodes.c` example illustrates a practical application of the lexbor
-library to handle HTML documents and CSS selectors. By showcasing the entire
-lifecycle from parsing HTML to finding nodes based on CSS selectors, this
-example serves as an informative foundation for developers looking to work with
-document structures and styles in C using the `lexbor` library. The implemented
-logic emphasizes efficiency and clarity, ensuring that the handling of selectors
-and nodes is both effective and straightforward.
+- This ensures that all allocated resources are properly cleaned up.
+
+## Notes
+
+- The sample uses multiple `lexbor` subsystems: HTML, CSS, and selectors.
+- Proper error handling is employed after each initialization and parsing step.
+- The example demonstrates both parsing and serialization tasks.
+
+## Summary
+
+This example illustrates how to integrate various `lexbor` subsystems to parse
+and process HTML and CSS content. Understanding these interactions is essential
+for developers looking to build robust applications that manipulate web content.
+This example emphasizes resource management and error checking strategies,
+providing a solid foundation for more complex tasks in `lexbor`.

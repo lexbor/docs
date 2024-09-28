@@ -1,75 +1,112 @@
-# Encoding Unicode Code Points to UTF-8 Example
+# Encode and Validate Unicode Code Points: Example
 
-This example demonstrates how to validate and encode Unicode code points into a
-UTF-8 byte string using the `lexbor` library. The functionality is encapsulated
-within a C program located in the
-[lexbor/encoding/single/encode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/encode/validate.c)
-file. The purpose of this code is to illustrate the encoding of a set of given
-code points, handling exceptions for those that are invalid by replacing them
-with a predefined replacement character.
+This article explains the code from the `lexbor` library in the file `lexbor/encoding/single/encode/validate.c`. The example demonstrates how to encode a sequence of Unicode code points into a UTF-8 byte string and handle validation of those points, especially focusing on dealing with invalid Unicode code points.
 
-## Overview of the Code
+The example code shows how to use the `lexbor` library to encode an array of Unicode code points into UTF-8. It includes the crucial steps of initializing the encoder, iterating through the Unicode code points, encoding each point, handling errors, replacing invalid code points, and finally, outputting the encoded string.
 
-The code begins by including the necessary header files from the `lexbor` library,
-specifically targeting encoding functionality. It subsequently defines a macro
-for error handling, which outputs an error message to `stderr` and exits the
-program with a failure status.
-
-### Variable Declarations
-
-The `main` function sets up various variables needed for the encoding process:
-
-- `len`: This variable stores the length of the encoded string.
-- `status`: Utilized for capturing the status of encoding operations.
-- `encode`: An instance of `lxb_encoding_encode_t`, used to manage encoding
-  context.
-- `encoding`: A pointer to the appropriate encoding data.
-- `pos`: A pointer that tracks the current position in the output buffer.
+## Key Code Sections
 
 ### Buffer Preparation
 
-A buffer (`buffer`) of 1024 `lxb_char_t` elements is defined to hold the
-resulting UTF-8 byte string. Pointers are initialized to manage the writing
-process into this buffer safely.
+The code prepares the buffer that will hold the encoded UTF-8 byte string:
 
-### Unicode Code Points
+```c
+/* Prepare buffer */
+lxb_char_t buffer[1024];
+lxb_char_t *data = buffer;
+const lxb_char_t *end = data + sizeof(buffer);
+```
 
-An array of Unicode code points is declared, which includes both valid and an
-intentionally invalid code point (`0x110000`). This is to illustrate how the
-code handles bad input during encoding.
+Here, `buffer` is a fixed-size array where the encoded UTF-8 data will be stored. `data` is a pointer that will be adjusted as data is written into the buffer, and `end` marks the endpoint of the buffer to prevent overflow.
 
-### Encoding Initialization
+### Defining Unicode Code Points
 
-The code retrieves the UTF-8 encoding data using
-`lxb_encoding_data(LXB_ENCODING_UTF_8)` and initializes the encoding context
-with `lxb_encoding_encode_init_single(&encode, encoding)`. If this
-initialization fails, an error message is reported, and the program exits.
+A set of Unicode code points, including an invalid one, is defined for encoding:
 
-### Encoding Loop
+```c
+/* Unicode code points for encoding */
+lxb_codepoint_t cps[] = {0x041F, 0x0440, 0x0438, 0x0432, 0x0435, 0x0442,
+                         0x002C, 
+                         0x110000, /* <-- bad code point */
+                         0x0020, 0x043C, 0x0438, 0x0440, 0x0021, 0};
+```
 
-The core functionality is encapsulated in a loop that processes each code point
-from the `cps` array:
+This array includes a mix of valid Unicode code points and an intentionally invalid code point (`0x110000`). The `0` at the end signifies the end of the array.
 
-1. **Position Tracking**: The position pointer `pos` is reset to the current
-   data pointer at the start of the loop iteration.
-2. **Encoding**: Each code point is encoded using the `encode_single` method.
-   The returned `len` represents the number of bytes written to the buffer.
-3. **Error Handling**: If `len` indicates a problem (less than
-   `LXB_ENCODING_ENCODE_OK`), the code checks for buffer size issues (though
-   this example does not expect to encounter this). If the code point is
-   invalid, it prints an error message along with a replacement character
-   output, handling the invalid code point scenario gracefully.
-4. **Output**: For valid code points, the program prints the code point and its
-   corresponding UTF-8 representation.
+### Initialize Encoder
 
-### Finalization
+An encoder for the UTF-8 encoding is initialized:
 
-After processing all code points, the program terminates the string by setting
-the last byte of the buffer to `0x00`. It then prints the final UTF-8 result.
+```c
+encoding = lxb_encoding_data(LXB_ENCODING_UTF_8);
 
-## Conclusion
+status = lxb_encoding_encode_init_single(&encode, encoding);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to init encoder");
+}
+```
 
-The program effectively showcases how to handle Unicode encoding with proper
-error management for invalid inputs. This example is particularly useful for
-developers using the `lexbor` library to manage character encodings, providing
-insight on validating and encoding procedures in C.
+The `lxb_encoding_data` function fetches the encoding data structure for UTF-8, and `lxb_encoding_encode_init_single` initializes the single-byte encoder context. An error check ensures that the encoder was initialized successfully.
+
+### Encoding and Validation
+
+The code iterates over the Unicode code points array to validate and encode each point:
+
+```c
+for (size_t i = 0; cps[i] != 0; i++) {
+    pos = data;
+
+    len = encoding->encode_single(&encode, &data, end, cps[i]);
+
+    if (len < LXB_ENCODING_ENCODE_OK) {
+        if (len == LXB_ENCODING_ENCODE_SMALL_BUFFER) {
+            break;
+        }
+
+        printf("Bad code point: 0x%04X; Replaced to: %s (0x%04X)\n",
+               cps[i], LXB_ENCODING_REPLACEMENT_BYTES,
+               LXB_ENCODING_REPLACEMENT_CODEPOINT);
+
+        memcpy(data, LXB_ENCODING_REPLACEMENT_BYTES,
+               LXB_ENCODING_REPLACEMENT_SIZE);
+
+        data += LXB_ENCODING_REPLACEMENT_SIZE;
+
+        continue;
+    }
+
+    printf("0x%04X: %.*s\n", cps[i], len, pos);
+}
+```
+
+For each code point:
+
+1. `pos` marks the initial position in the buffer.
+2. `encoding->encode_single` attempts to encode the current code point.
+3. If the return value `len` indicates an error:
+    - It checks if the buffer is too small (the code handles it theoretically, though it never occurs here due to enough buffer space).
+    - For invalid code points, it replaces them with a predefined replacement character (commonly `0xFFFD` in UTF-8).
+4. If the encoding is successful, `len` specifies the number of bytes written.
+
+### Final Output
+
+The result is terminated with a null character and printed:
+
+```c
+/* Terminate string */
+*data = 0x00;
+
+printf("\nResult: %s\n", (char *) buffer);
+```
+
+This step ensures the buffer is a valid C string and outputs the final encoded string.
+
+## Notes
+
+- The example uses `lexbor`'s encoding library for UTF-8 encoding.
+- Error handling is implemented to manage invalid Unicode code points.
+- The buffer is large enough to handle the encoded output, avoiding buffer overflow concerns in this context.
+
+## Summary
+
+This example demonstrates the usage of the `lexbor` library for encoding Unicode code points into UTF-8, handling errors gracefully, and replacing invalid code points. It highlights lexbor's flexibility and robustness in dealing with text encoding tasks, proving indispensable for applications needing precise control over encoding processes. By understanding this example, developers can leverage lexbor's capabilities for their encoding needs, ensuring correct handling and encoding of text data.

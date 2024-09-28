@@ -1,19 +1,19 @@
-# Getting Elements by Class Name Example
+# Querying Elements by Class Name: Example
 
-In this article, we will explore the implementation details and functionality of
-the `elements_by_class_name` example, found in the
-[lexbor/html/elements_by_class_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/elements_by_class_name.c)
-source file. The code demonstrates how to parse an HTML string and retrieve
-elements with a specific class name using the `lexbor` library. This example is
-essential for developers seeking to manipulate and query DOM elements in a
-structured manner.
+File: `lexbor/html/elements_by_class_name.c`
 
-## Overview
+This example demonstrates how to use the `lexbor` library to parse an HTML
+document and retrieve all elements with a specific class name. The example
+focuses on finding elements with the class name `"best"` from a given HTML
+string and serializing them for output.
 
-The `main` function begins by initializing variables, including `status`,
-`element`, `document`, and `collection`. It then assigns an HTML string to the
-`html` variable, which contains multiple `<div>` elements with various class
-names. The length of the HTML string is calculated and stored in `html_size`.
+## Key Code Sections
+
+### Parsing the HTML Document
+
+The first step involves parsing a hard-coded HTML string into a
+`lxb_html_document_t` object that can be manipulated through the `lexbor`
+library.
 
 ```c
 const lxb_char_t html[] = "<div class=\"best blue some\"><span></div>"
@@ -21,25 +21,19 @@ const lxb_char_t html[] = "<div class=\"best blue some\"><span></div>"
     "<div class=\"red best grep\"></div>"
     "<div class=\"red c++ best\"></div>";
 
-size_t html_size = sizeof(html) - 1;
+size_t html_szie = sizeof(html) - 1;
+
+document = parse(html, html_szie);
 ```
 
-## Parsing the HTML Document
+Here, the HTML string contains multiple `<div>` elements with different class
+names. The `parse` function is used to convert this HTML string into a
+`document` object, which can then be queried.
 
-Next, the code invokes the `parse` function to parse the HTML string and create
-a DOM document. This document serves as the basis for subsequent operations on
-the DOM elements contained within the HTML.
+### Creating a Collection
 
-```c
-document = parse(html, html_size);
-```
-
-## Creating a Collection for DOM Elements
-
-Once the document is obtained, the next step is to create a collection to hold
-the elements retrieved by class name. The `lxb_dom_collection_make` function is
-called with the document's DOM and an initial capacity of 128. If the collection
-cannot be created, an error message is triggered.
+To store the elements that match a specific query, a collection object is
+created using `lxb_dom_collection_make`.
 
 ```c
 collection = lxb_dom_collection_make(&document->dom_document, 128);
@@ -48,12 +42,13 @@ if (collection == NULL) {
 }
 ```
 
-## Retrieving Elements by Class Name
+The collection is initialized with a capacity of 128 elements, a reasonable
+default size for various use cases.
 
-The `lxb_dom_elements_by_class_name` function enables the search for elements
-with a specified class name. In this instance, it looks for elements with the
-class name "best". The function leverages the interface of the document's body
-to initiate the retrieval process and populate the `collection`.
+### Querying by Class Name
+
+The core functionality of this example is querying the parsed document by a
+specific class name using `lxb_dom_elements_by_class_name`.
 
 ```c
 status = lxb_dom_elements_by_class_name(lxb_dom_interface_element(document->body),
@@ -63,21 +58,15 @@ if (status != LXB_STATUS_OK) {
 }
 ```
 
-After ensuring the retrieval is successful, the code proceeds to print the
-original HTML and details about the found elements.
+Here, the function `lxb_dom_elements_by_class_name` is called with the root
+element of the document's body, the collection to store results, the class name
+`"best"` (as a `const lxb_char_t *`), and the length of the class name (which is
+`4`). This function searches for all elements with the class name `"best"` and
+stores them in the collection.
 
-```c
-PRINT("HTML:");
-PRINT("%s", (const char *) html);
-PRINT("\nFind all 'div' elements by class name 'best'.");
-PRINT("Elements found:");
-```
+### Serializing and Printing the Results
 
-## Serializing and Printing Found Elements
-
-A loop iterates through the collection of found elements, invoking the
-`serialize_node` function to output each element's details. This demonstrates
-how easy it is to interact with the elements returned by the class name query.
+Once the elements are found, they are iterated over and serialized for output.
 
 ```c
 for (size_t i = 0; i < lxb_dom_collection_length(collection); i++) {
@@ -86,21 +75,34 @@ for (size_t i = 0; i < lxb_dom_collection_length(collection); i++) {
 }
 ```
 
-## Cleanup
+Each element in the collection is retrieved using
+`lxb_dom_collection_element` and passed to the `serialize_node` function, which
+handles the process of serialization into a string format for printing.
 
-Finally, the `collection` and `document` are cleaned up to free allocated
-resources. This step is crucial for managing memory within the application,
-especially when dealing with large or complex documents.
+### Cleaning Up
+
+Finally, the collection and document are properly destroyed to free up memory.
 
 ```c
 lxb_dom_collection_destroy(collection, true);
 lxb_html_document_destroy(document);
 ```
 
-## Conclusion
+## Notes
 
-The `elements_by_class_name` example illustrates how to use the `lexbor` library
-to parse HTML content, search for elements by class name, and efficiently manage
-those elements. The critical sections of the code demonstrate proper document
-handling, error management, and systematic cleanup, providing a solid foundation
-for developers exploring DOM manipulation within C.
+- **Memory Management**: Proper memory management is crucial. Ensure that all
+  created objects are destroyed to prevent memory leaks.
+- **Error Handling**: Always check the return status of functions, especially
+  those that create objects or perform searches, to handle errors gracefully.
+- **Collection Size**: The initial size of the collection can be adjusted based
+  on the expected number of elements to optimize performance.
+
+## Summary
+
+This example illustrates how to effectively use the `lexbor` library for
+searching and manipulating elements in an HTML document. By understanding how to
+parse the document, query elements by class name, and handle them appropriately,
+you can leverage `lexbor` for various web scraping or HTML manipulation tasks.
+The key takeaway is the efficient and accurate way `lexbor` allows querying and
+handling elements based on class names, showcasing its robust capabilities for
+document object model manipulation.

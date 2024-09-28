@@ -1,89 +1,169 @@
-# CSS Syntax Parser Example
+# Parsing CSS Syntax from File: Example
 
-This article provides an overview of the code located in
-[lexbor/css/syntax/structure_parse_file.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/syntax/structure_parse_file.c),
-which implements a CSS syntax parser using the `lexbor` library. The primary goal
-of this code is to parse CSS syntax rules and declarations, handling various
-states and transitions within the parsing process.
+This example demonstrates how to parse a CSS file and interpret its syntax using the `lexbor` library. The provided C code, located in `lexbor/css/syntax/structure_parse_file.c`, reads a CSS file, parses its content, and handles different CSS rules and declarations. The primary aim of this example is to show the steps involved in setting up a `lexbor` CSS parser, defining necessary callbacks, and executing the parsing process. This detailed explanation walks through the key functionality and sophisticated use of the `lexbor` library functions and data types.
 
-## Code Overview
+## Key Code Sections
 
-The code starts with the inclusion of headers that bring in necessary
-definitions and functions from the `lexbor` library. It defines multiple functions
-and callback structures that manage the parsing of different CSS constructs.
-Central to the code is the `main` function, which serves as the entry point of
-the application.
+### Initialization and Main Function
 
-### Main Function
+At the heart of the program is the `main()` function, which initializes the CSS parser and reads the CSS input file.
 
-The `main` function performs several key operations:
+```c
+int
+main(int argc, const char *argv[])
+{
+    size_t css_len;
+    lxb_char_t *css;
+    lxb_status_t status;
+    lxb_css_parser_t *parser;
+    const lxb_char_t *fl;
 
-1. **Argument Validation**: It checks if the number of command-line arguments is
-   correct. If not, it prints usage instructions and exits the program.
-   
-2. **File Reading**: It reads a CSS file specified by the user and stores its
-   contents into a variable `css`. If this reading fails, the program exits with
-   an error message.
+    if (argc != 2) {
+        fprintf(stderr, "Usage:\n");
+        fprintf(stderr, "\tstructure_parse_file <file>\n");
+        FAILED("Invalid number of arguments");
+    }
 
-3. **Parser Initialization**: It creates and initializes a CSS parser instance.
-   If the initialization fails, the program reports an error and exits.
+    fl = (const lxb_char_t *) argv[1];
 
-4. **Parsing Execution**: The `css_parse` function is called with the parser and
-   the CSS data to carry out the parsing process.
+    css = lexbor_fs_file_easy_read(fl, &css_len);
+    if (css == NULL) {
+        FAILED("Failed to read CSS file");
+    }
 
-5. **Cleanup**: After the parsing is done, it releases allocated resources and
-   exits with success or failure status based on the parsing outcome.
+    parser = lxb_css_parser_create();
+    status = lxb_css_parser_init(parser, NULL);
+    if (status != LXB_STATUS_OK) {
+        FAILED("Failed to create CSS Parser");
+    }
 
-### CSS Parsing Implementation
+    status = css_parse(parser, css, css_len);
 
-The `css_parse` function is crucial as it sets up the parsing buffer and pushes
-the initial parsing rules onto a stack. Here's a breakdown of its functionality:
+    (void) lexbor_free(css);
+    (void) lxb_css_parser_destroy(parser, true);
 
-- **Set Buffer**: The parsing buffer of the parser is set with the provided CSS
-  data and its length.
-  
-- **Push Rules**: The function uses the `lxb_css_syntax_parser_list_rules_push`
-  to initiate the parsing of list rules, which is a fundamental construct in
-  CSS. It expects a pointer to a set of callback functions that manage how the
-  list of rules is processed.
+    if (status != LXB_STATUS_OK) {
+        FAILED("Failed to parse CSS");
+    }
 
-- **Run Parser**: Finally, it triggers the parsing process with
-  `lxb_css_syntax_parser_run`, which advances through the tokens available in
-  the CSS data.
+    return EXIT_SUCCESS;
+}
+```
 
-### Callback Functions
+In this segment, the program reads a CSS file, initializes the CSS parser, and invokes the `css_parse` function to start parsing.
 
-The code defines a series of callback functions that manage specific CSS rules,
-states, and declarations:
+### Parsing Function
 
-- **State Management**: Functions like `css_list_rules_state`,
-  `css_at_rule_state`, and `css_declarations_name` handle specific parser
-  states. Each of these functions typically logs the current processing step and
-  processes tokens of interest. They return a success status after handling the
-  tokens.
+The `css_parse` function sets the buffer and pushes the initial rule stack to begin parsing.
 
-- **Handling Blocks**: Functions such as `css_at_rule_block` and
-  `css_qualified_rule_block` manage blocks of CSS rules, utilizing the
-  `css_consule_tokens` function to process tokens within those blocks. These
-  functions also handle stack manipulations depending on the rule context, such
-  as pushing or popping a stack.
+```c
+static lxb_status_t
+css_parse(lxb_css_parser_t *parser, const lxb_char_t *data, size_t length)
+{
+    lxb_css_syntax_rule_t *stack;
 
-- **End States**: Functions like `css_list_rules_end` and `css_declarations_end`
-  signal the completion of various sections. These may log end messages or
-  perform any necessary cleanup.
+    lxb_css_parser_buffer_set(parser, data, length);
 
-### Additional Utility Functions
+    stack = lxb_css_syntax_parser_list_rules_push(parser, NULL, NULL,
+                                                  &css_list_rules,
+                                                  NULL, true,
+                                                  LXB_CSS_SYNTAX_TOKEN_UNDEF);
+    if (stack == NULL) {
+        return LXB_STATUS_ERROR;
+    }
 
-The utility function `css_consule_tokens` is noteworthy. It iterates through
-tokens and processes each one sequentially, calling
-`lxb_css_syntax_token_serialize`, which presumably serializes or logs the token
-data. This function also handles token consumption, facilitating smooth progress
-through the parsing state.
+    return lxb_css_syntax_parser_run(parser);
+}
+```
 
-### Conclusion
+Here, `lxb_css_parser_buffer_set` assigns the data to the parser, and `lxb_css_syntax_parser_list_rules_push` initializes the entry point for parsing, specifying callbacks for handling list rules.
 
-The code contained in `structure_parse_file.c` offers a comprehensive
-implementation of a CSS syntax parser with well-defined states and callbacks.
-The use of systematic error handling and resource management provides stability
-to the parsing process. By integrating these components, the `lexbor` library
-enhances its ability to interpret and manipulate CSS effectively.
+### Callback: Handling List Rules
+
+Callbacks manage the state transitions and actions for different parts of the CSS syntax. For example, the `css_list_rules_state` is invoked when starting to process a list of rules.
+
+```c
+static bool
+css_list_rules_state(lxb_css_parser_t *parser,
+                     const lxb_css_syntax_token_t *token, void *ctx)
+{
+    PRINT("Begin List Of Rules");
+
+    return lxb_css_parser_success(parser);
+}
+
+static bool
+css_list_rules_next(lxb_css_parser_t *parser,
+                    const lxb_css_syntax_token_t *token, void *ctx)
+{
+    PRINT("Next List Of Rules");
+
+    return lxb_css_parser_success(parser);
+}
+```
+
+These callbacks print messages indicating the start and continuation of rule listings in the CSS file and signify successful parsing.
+
+### Callback: Handling At-Rules
+
+At-rules (`@` rules) such as `@media` or `@keyframes` have dedicated callbacks. 
+
+```c
+static bool
+css_at_rule_state(lxb_css_parser_t *parser,
+                  const lxb_css_syntax_token_t *token, void *ctx)
+{
+    PRINT("Begin At-Rule Prelude");
+
+    css_consule_tokens(parser, token, ctx);
+
+    printf("\n\n");
+
+    return lxb_css_parser_success(parser);
+}
+
+static bool
+css_at_rule_block(lxb_css_parser_t *parser,
+                  const lxb_css_syntax_token_t *token, void *ctx)
+{
+    PRINT("Begin At-Rule Block");
+
+    css_consule_tokens(parser, token, ctx);
+
+    printf("\n\n");
+
+    return lxb_css_parser_success(parser);
+}
+```
+
+These functions print messages and consume tokens associated with at-rule prelude and block contexts. 
+
+### Consuming Tokens
+
+The `css_consule_tokens` function processes tokens used across many callbacks to parse the token stream effectively.
+
+```c
+lxb_inline void
+css_consule_tokens(lxb_css_parser_t *parser,
+                   const lxb_css_syntax_token_t *token, void *ctx)
+{
+    while (token != NULL && token->type != LXB_CSS_SYNTAX_TOKEN__END) {
+        (void) lxb_css_syntax_token_serialize(token, token_cb_f, ctx);
+
+        lxb_css_syntax_parser_consume(parser);
+        token = lxb_css_syntax_parser_token(parser);
+    }
+}
+```
+
+This loop continues consuming tokens until the end of token stream, serializing and printing each token.
+
+## Notes
+
+- **Initialization**: Correct initialization and cleanup of the parser are essential for avoiding memory leaks.
+- **Callback Mechanism**: The versatile use of callbacks for various states (e.g., at-rules, declarations) makes it easy to extend the parser functionality.
+- **Token Handling**: Efficient handling and processing of tokens ensure correct CSS parsing and interpretation.
+
+## Summary
+
+The example code in `lexbor/css/syntax/structure_parse_file.c` serves as an excellent illustration of parsing CSS files using the `lexbor` library. By walking through the setup, parsing mechanics, and token handling, one can gain a solid understanding of how to leverage `lexbor` for CSS parsing tasks. This example lays the foundation for more advanced CSS manipulation and analysis using `lexbor`.

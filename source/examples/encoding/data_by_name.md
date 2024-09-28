@@ -1,52 +1,46 @@
-# Encoding Data Retrieval Example
+# Retrieve Encoding Data by Name: Example
 
-This article provides an explanation of an example from the file
-[lexbor/encoding/data_by_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/data_by_name.c).
-The purpose of this code is to demonstrate how to retrieve encoding data by its
-name using the `lexbor` encoding library. The code illustrated here highlights the
-procedure for accessing character encoding information, specifically focusing on
-UTF-8.
+This example demonstrates how to retrieve encoding data by name using the `lexbor`
+library, as shown in the file `lexbor/encoding/data_by_name.c`. This code 
+illustrates the utilization of `lexbor` functions and data types to find specific 
+character encoding details based on a given encoding name.
 
-## Code Explanation
+The purpose of the example is to demonstrate 
+how to use the `lexbor` library to query character encoding information by 
+providing an encoding name. This example is helpful for understanding how to 
+interact with the encoding module of `lexbor`, which is crucial for various 
+tasks such as text processing, web scraping, or any application requiring 
+character set conversions.
 
-The program starts with the necessary `#include` directive, which includes the
-`lexbor` encoding library header file. This library provides the functionality
-needed to work with different character encodings.
+## Key Code Sections
 
-### Main Function
+### Finding Encoding Data by Name
 
-The `main` function serves as the entry point of the program:
-
-```c
-int main(int argc, const char *argv[])
-```
-
-Here, it accepts two parameters: the argument count `argc` and an array of
-argument strings `argv`. Although the parameters are not utilized in this
-example, they are typically included for potential command-line functionality.
-
-### Retrieving Encoding Data
-
-The key operation occurs in the following block:
+The main functionality of this example is encapsulated in the following lines:
 
 ```c
-const lxb_encoding_data_t *enc_data;
 enc_data = lxb_encoding_data_by_name((lxb_char_t *) "uTf-8", 5);
+if (enc_data == NULL) {
+    return EXIT_FAILURE;
+}
 ```
 
-In this segment, the variable `enc_data` is declared as a pointer to
-`lxb_encoding_data_t`, which represents the encoding data structure in `lexbor`.
-The function `lxb_encoding_data_by_name` is called with two arguments: the
-string "uTf-8" (with a deliberate mixed case) and the length of the string,
-which is `5`.
+Here, `lxb_encoding_data_by_name` is called with the encoding name "uTf-8" 
+and its length (5). This function is designed to return a pointer to
+`lxb_encoding_data_t` which contains information about the encoding. 
 
-This function attempts to retrieve encoding data corresponding to the specified
-name. If the name provided does not match any available encoding in the library,
-the function will return `NULL`.
+- **Function Call**: `lxb_encoding_data_by_name` converts the provided name 
+  to a canonical form and searches for its associated encoding data.
+- **Parameters**:
+  - `(lxb_char_t *) "uTf-8"`: The encoding name, cast to `lxb_char_t *`.
+  - `5`: The length of the encoding name.
+- **Return Value**: The function returns a pointer to `lxb_encoding_data_t`
+  if the encoding is found. If not, `NULL` is returned.
 
 ### Error Handling
 
-The next block of code provides basic error handling:
+After the encoding data is retrieved, the code checks if the returned pointer 
+is `NULL`:
 
 ```c
 if (enc_data == NULL) {
@@ -54,40 +48,37 @@ if (enc_data == NULL) {
 }
 ```
 
-If `enc_data` is `NULL`, the program terminates with a failure status. This is
-an important check to ensure that the encoding has been found before attempting
-to access any of its properties, thus preventing potential runtime errors.
+This ensures that the program handles the case where the encoding is not found 
+appropriately by exiting with `EXIT_FAILURE`.
 
-### Output Encoding Name
+### Printing Encoding Name
 
-Upon successful retrieval of the encoding data, the program proceeds to print
-the name of the encoding:
+If the encoding is found, the name of the encoding is printed out:
 
 ```c
 printf("%s\n", enc_data->name);
 ```
 
-This line outputs the name of the encoding that has been retrieved, which in
-this case would be "UTF-8", assuming the spelling was correct in the function
-call.
+`enc_data->name` holds the canonical encoding name. This line demonstrates 
+how to access and use the information within the `lxb_encoding_data_t` structure.
 
-### Exit Status
+## Notes
 
-Finally, the program completes its execution successfully:
+- **Case Insensitivity**: The function `lxb_encoding_data_by_name` is 
+  case-insensitive, as evidenced by the mixed-case input "uTf-8".
+- **Canonical Form**: The returned encoding name is ensured to be in 
+  a standard canonical form.
+- **Static Data**: The encoding names and their data are typically 
+  static and predefined within `lexbor`.
 
-```c
-return EXIT_SUCCESS;
-```
+## Summary
 
-This line returns a success status to the operating system, indicating that the
-program has run without any issues.
+This example highlights how to use the `lexbor` library to look up encoding 
+data by name. By invoking `lxb_encoding_data_by_name`, users can retrieve 
+information about specific encodings efficiently. Understanding this process 
+is vital for applications that handle diverse text encodings, ensuring proper 
+text interpretation and conversion.
 
-## Conclusion
-
-The example presented in
-[lexbor/encoding/data_by_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/data_by_name.c)
-effectively demonstrates how to access encoding data using the `lexbor` encoding
-library. It showcases the importance of error handling and provides a simple way
-to retrieve and display the name of a character encoding, using UTF-8 as a
-practical example. This code can serve as a foundational component for
-applications that require encoding information for text processing.
+For `lexbor` users, this example provides a clear and practical method to 
+interact with the library’s encoding functionalities, facilitating smooth 
+integration into larger projects requiring robust encoding support.

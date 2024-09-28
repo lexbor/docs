@@ -1,93 +1,199 @@
-# CSS Syntax Parsing Example
+# CSS Lexer with Colorized Output: Example
 
-This article provides an explanation of a code example from the source file
-[lexbor/css/syntax/simple_colorize.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/syntax/simple_colorize.c).
-The code implements a simple CSS parser that reads a CSS file, parses its
-content, and provides color-coded output for each type of CSS rule and
-declaration using ANSI escape codes.
+This example demonstrates how to use the `lexbor` library to parse a CSS file and provide colorized output based on the different types of CSS tokens encountered. The code is found in the `lexbor/css/syntax/simple_colorize.c` file. The primary objective of this example is to showcase how to set up a CSS parser, process different CSS rules, and colorize the output dynamically to reflect the structure of CSS syntax.
 
-## Structure of the Program
+## Key Code Sections
 
-The main function serves as the entry point of the program, where the user is
-expected to provide a CSS file as an argument. The program then reads this file
-into memory, initializes a CSS parser, and calls a function to parse the CSS
-content. 
+### Parsing Initialization
 
-### Key Components
+First, let's look at the initialization process for the CSS parser, file reading, and the initial call to the parsing function:
 
-1. **Initialization and File Handling**:
-   - The program checks for the correct number of command-line arguments.
-   - It leverages the `lexbor_fs_file_easy_read` function to read the CSS
-     content from the specified file into a buffer.
+```c
+if (argc != 2) {
+    fprintf(stderr, "Usage:\n");
+    fprintf(stderr, "\tcolorize <file>\n");
+    FAILED("Invalid number of arguments");
+}
 
-2. **CSS Parser Setup**:
-   - It creates an instance of a CSS parser using `lxb_css_parser_create`.
-   - The parser is then initialized with `lxb_css_parser_init`.
+fl = (const lxb_char_t *) argv[1];
 
-3. **CSS Parsing Function**:
-   - The function `css_parse` is called, which sets up the parsing context and
-     starts the rule parsing process.
+css = lexbor_fs_file_easy_read(fl, &css_len);
+if (css == NULL) {
+    FAILED("Failed to read CSS file");
+}
 
-4. **Token Handling**:
-   - Several callback functions are defined to handle the various types of CSS
-     syntax tokens, including qualified rules, at-rules, and declaration blocks.
+parser = lxb_css_parser_create();
+status = lxb_css_parser_init(parser, NULL);
+if (status != LXB_STATUS_OK) {
+    FAILED("Failed to create CSS Parser");
+}
 
-## Detailed Code Explanation
+status = css_parse(parser, css, css_len);
+```
 
-### CSS Parsing Function (`css_parse`)
+This part checks for a single command-line argument, reads the CSS file, initializes the `lexbor` CSS parser, and starts the parsing process using `css_parse`.
 
-The `css_parse` function initializes a context structure `css_ctx_t`, which
-tracks the current offset within the CSS data while parsing. It sets the parsing
-buffer using `lxb_css_parser_buffer_set` and begins the rule parsing using
-`lxb_css_syntax_parser_list_rules_push`.
+### `css_parse` Function
 
-The call to `lxb_css_syntax_parser_run` runs the parser, which processes the CSS
-tokens based on the rules specified. This function returns a status that
-indicates whether the parsing succeeded or failed.
+The main parsing logic is within the `css_parse` function:
 
-### Token Callbacks
+```c
+static lxb_status_t
+css_parse(lxb_css_parser_t *parser, const lxb_char_t *data, size_t length)
+{
+    css_ctx_t ctx;
+    lxb_css_syntax_rule_t *stack;
 
-The program defines various inline functions and callbacks to handle the output
-of tokens during parsing:
+    ctx.data = data;
+    ctx.offset = 0;
 
-- **`css_print_token`** and **`css_print_token_offset`**: These functions print
-  a CSS token along with proper formatting. They utilize ANSI escape codes to
-  change text color in the console output for better visualization.
+    lxb_css_parser_buffer_set(parser, data, length);
 
-### Rule Handling
+    stack = lxb_css_syntax_parser_list_rules_push(parser, NULL, NULL,
+                                                  &css_list_rules,
+                                                  &ctx, true,
+                                                  LXB_CSS_SYNTAX_TOKEN_UNDEF);
+    if (stack == NULL) {
+        return LXB_STATUS_ERROR;
+    }
 
-The parser is equipped with callbacks for handling different CSS rules:
+    printf("\n");
 
-- **`css_list_rules_state`**: This function handles the state of list rules and
-  is responsible for printing the state with a specific color.
-  
-- **`css_at_rule_state`** and **`css_at_rule_block`**: These handle at-rules and
-  their blocks, printing the corresponding tokens and managing the nested
-  structure of CSS.
-  
-- **`css_qualified_rule_state`** and **`css_qualified_rule_block`**: Manage the
-  parsing of qualified rules and their associated declaration blocks, printing
-  relevant information while maintaining contextual awareness of the current
-  location within the CSS input.
+    return lxb_css_syntax_parser_run(parser);
+}
+```
 
-### Declarations Handling
+This function sets up the parser buffer and pushes the initial parsing rules onto the stack using `lxb_css_syntax_parser_list_rules_push`. It then runs the parser by calling `lxb_css_syntax_parser_run`.
 
-The parsing of declarations involves several parts:
+### Callback Structures
 
-- **`css_declarations_name`** and **`css_declarations_value`**: Handle the CSS
-  property names and values, respectively, printing them in different colors to
-  distinguish visually between different parts of declarations.
+The following structures define callbacks for handling different CSS syntactic elements:
 
-### Memory Management
+```c
+static const lxb_css_syntax_cb_at_rule_t css_at_rule = {
+    .state = css_at_rule_state,
+    .block = css_at_rule_block,
+    .failed = lxb_css_state_failed,
+    .end = css_at_rule_end
+};
 
-The code ensures to clean up the allocated memory for the CSS data buffer and
-parser instance by calling `lexbor_free` and `lxb_css_parser_destroy`, which
-prevents memory leaks.
+static const lxb_css_syntax_cb_qualified_rule_t css_qualified_rule = {
+    .state = css_qualified_rule_state,
+    .block = css_qualified_rule_block,
+    .failed = lxb_css_state_failed,
+    .end = css_qualified_rule_end
+};
 
-## Conclusion
+static const lxb_css_syntax_cb_list_rules_t css_list_rules = {
+    .cb.state = css_list_rules_state,
+    .cb.failed = lxb_css_state_failed,
+    .cb.end = css_list_rules_end,
+    .next = css_list_rules_next,
+    .at_rule = &css_at_rule,
+    .qualified_rule = &css_qualified_rule
+};
+```
 
-This example illustrates how to implement a simple CSS parser that reads a file,
-processes its content into structured tokens, and outputs the result with visual
-cues. The use of callback functions and context structures allows for flexible
-and extendable parsing logic, suitable for more complex scenarios in CSS syntax
-processing.
+These structures define callbacks for handling different rules such as at-rules, qualified rules, and lists of rules. They point to specific functions that handle each part of the CSS token processing.
+
+### Handling Rules with Color
+
+Let's examine how specific rules are handled and colorized, starting with the at-rule state:
+
+```c
+static bool
+css_at_rule_state(lxb_css_parser_t *parser,
+                  const lxb_css_syntax_token_t *token, void *ctx)
+{
+    css_print_token_offset(token, ctx);
+
+    printf("\033[35m");
+    css_print_token(token, ctx);
+
+    lxb_css_syntax_parser_consume(parser);
+    token = lxb_css_syntax_parser_token(parser);
+
+    printf("\033[33m");
+
+    css_consule_tokens(parser, token, ctx);
+
+    printf("\033[39m");
+
+    return lxb_css_parser_success(parser);
+}
+```
+
+Here, the at-rule state function sets the color (using ANSI escape codes) and prints the token while consuming and processing subsequent tokens within an at-rule block.
+
+### Token Serialization
+
+The function `css_consule_tokens` is used to serialize and print tokens:
+
+```c
+lxb_inline void
+css_consule_tokens(lxb_css_parser_t *parser,
+                   const lxb_css_syntax_token_t *token, void *ctx)
+{
+    while (token != NULL && token->type != LXB_CSS_SYNTAX_TOKEN__END) {
+        (void) lxb_css_syntax_token_serialize(token, token_cb_f, ctx);
+
+        lxb_css_syntax_parser_consume(parser);
+        token = lxb_css_syntax_parser_token(parser);
+    }
+}
+```
+
+It continuously consumes and prints each token until the end of the input or a terminating token is reached.
+
+### Coloring Declaration Names and Values
+
+The following functions handle the coloring of CSS property names and values:
+
+```c
+static bool
+css_declarations_name(lxb_css_parser_t *parser,
+                      const lxb_css_syntax_token_t *token, void *ctx)
+{
+    css_print_token_offset(token, ctx);
+
+    printf("\033[31m");
+
+    css_consule_tokens(parser, token, ctx);
+
+    printf("\033[39m");
+
+    return lxb_css_parser_success(parser);
+}
+
+static bool
+css_declarations_value(lxb_css_parser_t *parser,
+                       const lxb_css_syntax_token_t *token, void *ctx)
+{
+    css_print_token_offset(token, ctx);
+
+    printf("\033[36m");
+
+    while (token != NULL && token->type != LXB_CSS_SYNTAX_TOKEN__END) {
+        (void) lxb_css_syntax_token_serialize(token, token_cb_f, ctx);
+
+        lxb_css_syntax_parser_consume(parser);
+        token = lxb_css_syntax_parser_token(parser);
+    }
+
+    printf("\033[39m");
+
+    return lxb_css_parser_success(parser);
+}
+```
+
+These functions respectively color CSS property names in red and their values in cyan.
+
+## Notes
+
+- **Color Codes**: The example uses ANSI escape codes (e.g., `\033[31m`) to color the output, which may not be supported on all terminals.
+- **Memory Management**: It is critical to properly destroy and free the parser and allocated memory to prevent leaks.
+- **Error Handling**: The example includes fundamental error handling mechanisms but may require enhancements for robustness in production systems.
+
+## Summary
+
+This example illustrates how to use the `lexbor` library effectively for parsing and colorizing CSS. The key takeaways include setting up the parser, defining callback structures to handle different CSS rules, and utilizing token serialization and ANSI escape codes for colored output. Understanding these principles helps leverage the `lexbor` library for more complex CSS parsing and processing tasks.
