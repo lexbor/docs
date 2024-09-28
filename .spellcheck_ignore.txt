@@ -51,9 +51,9 @@ js
 JSON
 keyring
 lexbor
-Lexbor
+`lexbor`
 LEXBOR
-Lexbor's
+`lexbor`'s
 lexbor's
 li
 lifecycle

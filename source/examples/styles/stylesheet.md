@@ -1,7 +1,7 @@
 # CSS Stylesheet Parsing and Application Example
 
 In this article, we will explore the implementation of CSS stylesheet parsing
-and application to HTML elements using the Lexbor library. The following example
+and application to HTML elements using the `lexbor` library. The following example
 is derived from the source file
 [lexbor/styles/stylesheet.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/stylesheet.c).
 The code illustrates how to create an HTML document, parse CSS styles, attach
@@ -12,7 +12,7 @@ style declarations from an element.
 
 The core of the example revolves around creating a minimal HTML document that
 contains a `<div>` element with inline CSS styles. The code then initializes the
-Lexbor HTML and CSS parsers, processes the provided CSS, and attaches the styles
+`lexbor` HTML and CSS parsers, processes the provided CSS, and attaches the styles
 to the HTML document. Finally, it retrieves specific CSS properties (width and
 height) from the `<div>` element and serializes them for output.
 
@@ -159,7 +159,7 @@ resources, ensuring there are no memory leaks:
 ## Conclusion
 
 The presented example demonstrates the process of parsing and applying CSS
-styles to an HTML document using the Lexbor library. By following through each
+styles to an HTML document using the `lexbor` library. By following through each
 part of the code, one can gain insights into how to effectively manage CSS
 properties within a structured HTML environment, allowing for flexible design
 and styling in modern web applications.

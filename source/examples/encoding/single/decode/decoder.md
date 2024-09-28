@@ -10,12 +10,12 @@ needing to handle various text encodings in their applications.
 
 The main function of this code is to read data from standard input, decode it
 according to the specified encoding, and print the corresponding Unicode values.
-It uses the Lexbor library to facilitate this process.
+It uses the `lexbor` library to facilitate this process.
 
 ### Header and Includes
 
 At the beginning of the file, we find the licensing information and the
-inclusion of the Lexbor encoding header:
+inclusion of the `lexbor` encoding header:
 
 ```c
 #include <lexbor/encoding/encoding.h>
@@ -164,7 +164,7 @@ if (cp == LXB_ENCODING_DECODE_CONTINUE) {
 
 ### Conclusion
 
-By effectively using the Lexbor library's encoding functionalities, this code
+By effectively using the `lexbor` library's encoding functionalities, this code
 provides a flexible and powerful example of how to decode various text encodings
 from standard input. Developers can adapt this example for their applications,
 thereby enhancing their ability to handle encoded text data efficiently.

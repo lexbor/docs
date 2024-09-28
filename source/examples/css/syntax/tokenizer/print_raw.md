@@ -1,7 +1,7 @@
 # CSS Syntax Tokenizer Example
 
 This article provides an overview of the `print_raw.c` source file, which
-implements a simple command-line tool for tokenizing CSS syntax using the Lexbor
+implements a simple command-line tool for tokenizing CSS syntax using the `lexbor`
 library. The primary purpose of this code is to read a CSS file, tokenize its
 contents, and print the tokens to the standard output. 
 
@@ -123,8 +123,8 @@ returns `EXIT_FAILURE`.
 
 ## Conclusion
 
-The `print_raw.c` implementation demonstrates how to leverage the Lexbor library
+The `print_raw.c` implementation demonstrates how to leverage the `lexbor` library
 for CSS syntax tokenization. By following a structured approach, it effectively
 reads CSS content, processes it into tokens, and provides robust error handling.
 This example serves as a foundation for further exploration of CSS parsing and
-analysis using Lexbor.
+analysis using `lexbor`.

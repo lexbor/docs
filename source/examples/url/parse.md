@@ -2,7 +2,7 @@
 
 This article examines a code example from the
 [lexbor/url/parse.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/url/parse.c)
-file, focusing on URL parsing using the Lexbor library. The intent of this code
+file, focusing on URL parsing using the `lexbor` library. The intent of this code
 is to demonstrate how to initialize the URL parser, parse a URL string, and
 subsequently serialize different components of the parsed URL, such as the
 scheme, username, password, host, and more. Each section of the code plays a
@@ -12,7 +12,7 @@ critical role in handling URL data.
 
 ### Initialization
 
-The code begins by including the necessary header for the Lexbor URL library and
+The code begins by including the necessary header for the `lexbor` URL library and
 defining a static callback function. In the `main` function, several variables
 are declared, including a pointer to `lxb_url_t`, an instance of
 `lxb_url_parser_t`, and `lxb_unicode_idna_t`. 
@@ -109,9 +109,9 @@ URL memory, ensuring that no resources are leaked.
 
 ### Conclusion
 
-The example succinctly demonstrates the capabilities of the Lexbor URL parsing
+The example succinctly demonstrates the capabilities of the `lexbor` URL parsing
 library, showcasing how to initialize the parser, handle a complex URL with
 Unicode characters, and serialize its components. Each part of the code works
 harmoniously to show how flexible and powerful URL handling can be in modern C
-programming with the Lexbor library. The proper initialization, error handling,
+programming with the `lexbor` library. The proper initialization, error handling,
 and cleanup are crucial for robust application development.

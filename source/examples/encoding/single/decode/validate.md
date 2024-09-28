@@ -1,7 +1,7 @@
 # UTF-8 Decoding and Validation Example
 
 This article explains an example of decoding and validating a UTF-8 string,
-using the Lexbor library. The source file for this code example is
+using the `lexbor` library. The source file for this code example is
 [lexbor/encoding/single/decode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/decode/validate.c).
 The primary objective of this code is to demonstrate how to properly decode a
 UTF-8 encoded string, handle decoding errors, and output both valid code points
@@ -10,7 +10,7 @@ and error information for invalid byte sequences.
 ## Code Breakdown
 
 The example begins with necessary includes and macro definitions. It imports the
-required header file for Lexbor encoding and defines a macro `FAILED` that
+required header file for `lexbor` encoding and defines a macro `FAILED` that
 handles error reporting and terminates the program if an error occurs.
 
 ### Setting Up the Main Function
@@ -86,7 +86,7 @@ if (cp > LXB_ENCODING_DECODE_MAX_CODEPOINT) {
 
 The program concludes by returning a success status if all decoding operations
 complete without errors. In summary, this code serves as an illustrative example
-of how to utilize the Lexbor encoding library to decode and validate UTF-8
+of how to utilize the `lexbor` encoding library to decode and validate UTF-8
 encoded strings effectively, while properly handling potential errors in byte
 sequences. By implementing this method, developers can ensure their applications
 correctly interpret and display UTF-8 content.

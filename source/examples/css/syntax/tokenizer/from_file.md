@@ -11,7 +11,7 @@ extract tokens, and producing output that describes each token.
 The main function of the tokenizer is to parse CSS code from a file, generate
 tokens for syntactic analysis, and then invoke a callback function to handle the
 output of each token. The program efficiently handles input and organizes the
-parsing process with the help of the lexbor library.
+parsing process with the help of the `lexbor` library.
 
 ## Code Breakdown
 
@@ -153,7 +153,7 @@ Finally, the program returns `EXIT_SUCCESS` if the execution was successful, or
 ## Conclusion
 
 The CSS syntax tokenizer effectively reads and parses a CSS file, extracting and
-displaying token details by utilizing the lexbor library's API for CSS
+displaying token details by utilizing the `lexbor` library's API for CSS
 processing. This example demonstrates not only the functionality of lexer-based
 parsing but also highlights memory management and error handling within a
 complex system.

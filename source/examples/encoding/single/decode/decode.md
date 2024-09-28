@@ -3,7 +3,7 @@
 This article explains a code example from
 [lexbor/encoding/single/decode/decode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/decode/decode.c),
 which demonstrates how to decode a UTF-8 string into its respective code points
-using the lexbor library.
+using the `lexbor` library.
 
 ## Introduction
 
@@ -140,6 +140,6 @@ substring) and its corresponding Unicode code point in hexadecimal format.
 ## Conclusion
 
 The example demonstrates a straightforward approach to decoding a UTF-8 string
-into Unicode code points using the lexbor library. It effectively showcases
+into Unicode code points using the `lexbor` library. It effectively showcases
 initialization, error handling, and character decoding, providing a practical
 illustration of working with character encodings in C.

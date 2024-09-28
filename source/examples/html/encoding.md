@@ -4,13 +4,13 @@ This article provides an explanation for the HTML Encoding example found in the
 file
 [lexbor/html/encoding.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/encoding.c).
 This program is designed to read an HTML file, determine its character encoding,
-and print it out. The implementation utilizes the Lexbor library, which offers
+and print it out. The implementation utilizes the `lexbor` library, which offers
 various functions to handle encoding.
 
 ## Overview
 
 The main function of the example handles command-line input, reads an HTML file,
-and determines its encoding using the Lexbor library. The code includes a
+and determines its encoding using the `lexbor` library. The code includes a
 failure handling mechanism and a usage function to guide users on how to execute
 the program properly.
 
@@ -79,6 +79,6 @@ ensure proper resource management.
 
 The HTML Encoding example demonstrates essential practices such as error
 handling, memory management, and the use of a library to enhance functionality.
-By following this example, developers can understand how to utilize the Lexbor
+By following this example, developers can understand how to utilize the `lexbor`
 library for encoding detection in HTML documents, while also adhering to proper
 coding standards for readability and maintainability.

@@ -3,14 +3,14 @@
 This article provides an explanation of an example from the file
 [lexbor/encoding/data_by_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/data_by_name.c).
 The purpose of this code is to demonstrate how to retrieve encoding data by its
-name using the Lexbor encoding library. The code illustrated here highlights the
+name using the `lexbor` encoding library. The code illustrated here highlights the
 procedure for accessing character encoding information, specifically focusing on
 UTF-8.
 
 ## Code Explanation
 
 The program starts with the necessary `#include` directive, which includes the
-Lexbor encoding library header file. This library provides the functionality
+`lexbor` encoding library header file. This library provides the functionality
 needed to work with different character encodings.
 
 ### Main Function
@@ -35,7 +35,7 @@ enc_data = lxb_encoding_data_by_name((lxb_char_t *) "uTf-8", 5);
 ```
 
 In this segment, the variable `enc_data` is declared as a pointer to
-`lxb_encoding_data_t`, which represents the encoding data structure in Lexbor.
+`lxb_encoding_data_t`, which represents the encoding data structure in `lexbor`.
 The function `lxb_encoding_data_by_name` is called with two arguments: the
 string "uTf-8" (with a deliberate mixed case) and the length of the string,
 which is `5`.
@@ -86,7 +86,7 @@ program has run without any issues.
 
 The example presented in
 [lexbor/encoding/data_by_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/data_by_name.c)
-effectively demonstrates how to access encoding data using the Lexbor encoding
+effectively demonstrates how to access encoding data using the `lexbor` encoding
 library. It showcases the importance of error handling and provides a simple way
 to retrieve and display the name of a character encoding, using UTF-8 as a
 practical example. This code can serve as a foundational component for

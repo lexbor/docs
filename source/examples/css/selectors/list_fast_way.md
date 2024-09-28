@@ -75,7 +75,7 @@ list, it is noted accordingly.
 ### Conclusion
 
 The `list_fast_way.c` example serves as a practical guide for developers looking
-to understand how to parse CSS selectors using the lexbor library. By
+to understand how to parse CSS selectors using the `lexbor` library. By
 emphasizing memory management, proper initialization, and error handling, this
 example lays a solid foundation for further applications of the library in
 real-world projects. The code harnesses the flexibility of lexbor while

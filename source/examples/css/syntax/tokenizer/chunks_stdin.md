@@ -8,7 +8,7 @@ output the identified token types along with their serialized representations.
 ## Overview
 
 The main purpose of this example is to showcase the mechanics of the
-`lxb_css_syntax_tokenizer`, a component provided by the Lexbor library for
+`lxb_css_syntax_tokenizer`, a component provided by the `lexbor` library for
 parsing CSS syntax. The example leverages standard input (stdin) to read CSS
 input, processes the tokens through the tokenizer, and outputs details about
 each token to the console.
@@ -144,6 +144,6 @@ avoid memory leaks.
 ## Conclusion
 
 This example illustrates how to implement a simple CSS syntax tokenizer using
-the Lexbor library, allowing for parsing CSS input from stdin and outputting
+the `lexbor` library, allowing for parsing CSS input from stdin and outputting
 token information. Anyone looking to understand or extend CSS parsing
 functionality can use this code as a foundation for further development.

@@ -1,7 +1,7 @@
 # HTML Element Creation Example
 
 This article explains the implementation of creating and appending HTML elements
-in a document using the respective Lexbor library. The example provided is from
+in a document using the respective `lexbor` library. The example provided is from
 the source file
 [lexbor/html/element_create.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/element_create.c). 
 
@@ -26,7 +26,7 @@ elements, and preserving the overall tree structure through serialization.
    `lxb_html_document_body_element(document)`, allowing further manipulations to
    be performed on this node.
 
-4. **Creating Elements**: A loop iterates over all tag IDs defined by the Lexbor
+4. **Creating Elements**: A loop iterates over all tag IDs defined by the `lexbor`
    library, from `LXB_TAG_A` to `LXB_TAG__LAST_ENTRY`. For each tag:
    - The tag name is retrieved using `lxb_tag_name_by_id`.
    - An element is created with `lxb_dom_document_create_element`. This function
@@ -49,7 +49,7 @@ elements, and preserving the overall tree structure through serialization.
 ## Conclusion
 
 This program effectively showcases the process of dynamically creating HTML
-elements using the Lexbor library. It covers the aspects of parsing, element
+elements using the `lexbor` library. It covers the aspects of parsing, element
 creation, manipulation, and serialization, providing an essential toolkit for
 developers looking to work with HTML structures programmatically. The inclusion
 of error handling ensures reliability, allowing developers to catch and address

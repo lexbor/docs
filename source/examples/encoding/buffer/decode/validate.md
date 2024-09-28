@@ -1,7 +1,7 @@
 # UTF-8 Decoding and Replacement Example
 
 This article will explain a C code example that demonstrates UTF-8 decoding and
-the handling of invalid byte sequences using the lexbor library. The source file
+the handling of invalid byte sequences using the `lexbor` library. The source file
 for the example is
 [lexbor/encoding/buffer/decode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/decode/validate.c).
 
@@ -15,7 +15,7 @@ points. This is accomplished utilizing the lexbor encoding API.
 
 ### Including Necessary Headers
 
-At the start of the code, the relevant header file from the lexbor library is
+At the start of the code, the relevant header file from the `lexbor` library is
 included:
 
 ```c
@@ -132,7 +132,7 @@ hexadecimal representation.
 
 ## Conclusion
 
-This example effectively showcases the use of the lexbor library for decoding
+This example effectively showcases the use of the `lexbor` library for decoding
 UTF-8 strings while managing potentially invalid byte sequences. By initializing
 the decoder, setting up replacement strategies, and decoding the input string,
 the program demonstrates a robust method for handling encoding issues in C.

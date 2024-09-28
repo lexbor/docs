@@ -1,7 +1,7 @@
 # HTML Tokenizer Example
 
 This article provides a detailed explanation of an HTML tokenizer example
-implemented in C, demonstrating the capabilities of the lexbor library through
+implemented in C, demonstrating the capabilities of the `lexbor` library through
 the file
 [lexbor/html/tokenizer/simple.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/tokenizer/simple.c).
 This code is intended to parse a simple HTML string and display the tokens

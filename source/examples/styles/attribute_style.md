@@ -66,7 +66,7 @@ during program execution.
 ## Conclusion
 
 This code example illustrates how to manipulate and retrieve CSS properties from
-an HTML element using the lexbor library. It covers creating an HTML document,
+an HTML element using the `lexbor` library. It covers creating an HTML document,
 parsing content, accessing specific elements, and outputting style properties,
 providing a comprehensive look at handling HTML and CSS in C with lexbor. The
 example highlights the importance of proper resource management and error

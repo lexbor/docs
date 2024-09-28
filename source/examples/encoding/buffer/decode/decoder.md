@@ -1,7 +1,7 @@
 # Unicode Decoder Example
 
 In this article, we will discuss a simple Unicode decoder implemented in C,
-specifically within the context of the lexbor library. The code can be found in
+specifically within the context of the `lexbor` library. The code can be found in
 the source file
 [lexbor/encoding/buffer/decode/decoder.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/decode/decoder.c).
 This program is designed to take a specified character encoding from the command
@@ -76,7 +76,7 @@ points are then printed if any exist in the output buffer.
 
 ## Conclusion
 
-This `decoder.c` example illustrates the practical use of the lexbor library for
+This `decoder.c` example illustrates the practical use of the `lexbor` library for
 handling various character encodings and converting them into a clear, usable
 form. By leveraging the available utility functions and error handling methods,
 the code provides a robust framework for decoding inputs in a specified

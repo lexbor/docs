@@ -3,7 +3,7 @@
 In this article, we will explore a code example from the file
 [lexbor/encoding/buffer/decode/decode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/decode/decode.c)
 that demonstrates how to decode a UTF-8 encoded string into code points using
-the Lexbor library. This example specifically highlights the usage of Lexbor's
+the `lexbor` library. This example specifically highlights the usage of `lexbor`'s
 encoding functionalities, providing insights into how to leverage these features
 for character decoding in C.
 
@@ -69,7 +69,7 @@ The program concludes with a return statement indicating successful execution.
 ## Summary
 
 This example effectively illustrates how to decode a UTF-8 string into
-individual code points using the Lexbor library. It emphasizes the
+individual code points using the `lexbor` library. It emphasizes the
 initialization of the decoding context, error handling strategies, and the
 process of translating encoded UTF-8 data into usable character representations.
 Through careful management of buffers and decoding functions, developers can

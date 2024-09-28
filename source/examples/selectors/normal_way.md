@@ -2,7 +2,7 @@
 
 This example, found in the source file
 [lexbor/selectors/normal_way.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/selectors/normal_way.c),
-demonstrates how to use the Lexbor library to parse CSS selectors and find HTML
+demonstrates how to use the `lexbor` library to parse CSS selectors and find HTML
 nodes that match those selectors. The code provides a comprehensive workflow,
 from creating an HTML document to parsing selectors and retrieving matching
 nodes while handling memory management efficiently.
@@ -11,7 +11,7 @@ nodes while handling memory management efficiently.
 
 The main function serves as the central processing unit of the code,
 orchestrating the various tasks. It initializes necessary structures, parses an
-HTML string, sets up CSS selectors, and employs the Lexbor library's
+HTML string, sets up CSS selectors, and employs the `lexbor` library's
 capabilities to find nodes in the document.
 
 ### HTML and CSS Data
@@ -102,7 +102,7 @@ each created object, adhering to good practices in C coding.
 ## Conclusion
 
 In summary, this example outlines a practical implementation of HTML and CSS
-handling using the Lexbor library. It emphasizes the importance of robust memory
+handling using the `lexbor` library. It emphasizes the importance of robust memory
 management, selector parsing, and node finding functionalities, making it a
-valuable reference for developers looking to understand or utilize Lexbor in
+valuable reference for developers looking to understand or utilize `lexbor` in
 their projects.

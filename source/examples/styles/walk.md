@@ -5,7 +5,7 @@ This article explains the functionality and structure of the code found in
 The example focuses on parsing an HTML document, attaching CSS styles to an
 element, and traversing the applied styles. The primary goal of this example is
 to demonstrate how to manipulate the Document Object Model (DOM) and apply CSS
-styling in the Lexbor library.
+styling in the `lexbor` library.
 
 ## Overview of the Code
 
@@ -16,7 +16,7 @@ elements.
 
 ### Include Directives and Function Prototypes
 
-The code begins by including essential header files from the Lexbor library,
+The code begins by including essential header files from the `lexbor` library,
 specifically for HTML and CSS functionalities. It defines two primary callback
 functions:
 
@@ -78,7 +78,7 @@ memory leaks and ensuring efficient resource management.
 ## Conclusion
 
 This code example highlights the integration of HTML parsing and CSS styling
-using the Lexbor library. By utilizing the provided functions and callback
+using the `lexbor` library. By utilizing the provided functions and callback
 methods, developers can effectively manipulate and inspect styles associated
 with HTML elements. The careful arrangement of initialization, parsing, walking
 through styles, and resource cleanup demonstrates best practices in managing

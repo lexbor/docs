@@ -1,7 +1,7 @@
 # CSS Selector Parsing Example
 
 This article provides an in-depth explanation of the code found in
-`list_easy_way.c`, which demonstrates how to use the lexbor library for parsing
+`list_easy_way.c`, which demonstrates how to use the `lexbor` library for parsing
 CSS selectors. The code illustrates the steps involved in initializing a parser,
 parsing a CSS selector string, and handling the results and logs.
 

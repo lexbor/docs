@@ -2,13 +2,13 @@
 
 This article explains an example program found in the file
 [lexbor/selectors/easy_way.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/selectors/easy_way.c),
-which demonstrates how to use the Lexbor library to parse HTML and match it
+which demonstrates how to use the `lexbor` library to parse HTML and match it
 against CSS selectors. The example involves creating an HTML document, defining
 CSS selectors, and then finding matching nodes in the document.
 
 ## Overview of the Code
 
-The program begins with the inclusion of necessary headers from the Lexbor
+The program begins with the inclusion of necessary headers from the `lexbor`
 library, specifically for handling HTML documents and CSS selectors. The primary
 functionalities are encapsulated in multiple functions, including the `callback`
 function, which prints matched nodes, and the `find_callback` function, which
@@ -65,7 +65,7 @@ keeps track of the count of found nodes.
 
 ### Conclusion
 
-This example demonstrates the effective use of the Lexbor library for
+This example demonstrates the effective use of the `lexbor` library for
 manipulating and selecting elements within HTML documents based on CSS
 selectors. By understanding how to parse both HTML and CSS, and by using
 callback functions to manage matched nodes, developers can efficiently implement

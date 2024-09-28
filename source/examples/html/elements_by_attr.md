@@ -2,7 +2,7 @@
 
 This article will explain the functionality and implementation of the code found
 in **lexbor/html/elements_by_attr.c**, which demonstrates how to retrieve DOM
-elements based on specific attributes using the lexbor library.
+elements based on specific attributes using the `lexbor` library.
 
 ## Overview
 
@@ -142,7 +142,7 @@ This is critical for maintaining memory hygiene in C programs.
 ## Conclusion
 
 This code snippet demonstrates how to efficiently query and manipulate DOM
-elements in an HTML document using the lexbor library. By utilizing various
+elements in an HTML document using the `lexbor` library. By utilizing various
 search strategies based on attributes, developers can effectively streamline
 their DOM interactions, showcasing the flexibility and power of the lexbor
 library for handling HTML content.

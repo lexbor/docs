@@ -4,11 +4,11 @@ This article explains the purpose and functionality of the UTF-8 encoding
 example provided in the file
 [lexbor/encoding/single/encode/encode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/encode/encode.c).
 The code demonstrates how to encode a series of Unicode code points into a UTF-8
-byte string using the Lexbor encoding library. 
+byte string using the `lexbor` encoding library. 
 
 ## Code Overview
 
-The program begins by including the necessary header file for the Lexbor
+The program begins by including the necessary header file for the `lexbor`
 encoding library. It defines a macro for error handling named `FAILED`, which
 simplifies printing error messages and terminating the program if initialization
 or execution fails.
@@ -51,6 +51,6 @@ encoder instance. The following key steps are involved in the encoding process:
 ## Conclusion
 
 Upon reaching the end of the program, it exits gracefully, indicating successful
-execution. This example illustrates how to use the Lexbor encoding library for
+execution. This example illustrates how to use the `lexbor` encoding library for
 converting Unicode code points to a UTF-8 encoded string, providing a clear and
-practical implementation of encoding functionality in C using Lexbor.
+practical implementation of encoding functionality in C using `lexbor`.

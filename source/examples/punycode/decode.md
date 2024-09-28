@@ -10,7 +10,7 @@ domain names (IDNs).
 ## Overview
 
 The core function of this program reads input from standard input, decodes it
-using the Lexbor library's Punycode functionality, and outputs the decoded
+using the `lexbor` library's Punycode functionality, and outputs the decoded
 string to standard output. Below, we detail the main components of the code,
 their functionality, and the logic behind the operations.
 
@@ -100,7 +100,7 @@ data is displayed.
 
 ## Conclusion
 
-This example demonstrates how to utilize the Lexbor library for Punycode
+This example demonstrates how to utilize the `lexbor` library for Punycode
 decoding in C. The program handles memory management, input reading, and
 decoding efficiently while ensuring robustness against common issues like memory
 allocation failures. Through this utility, developers can work with

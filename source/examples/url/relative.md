@@ -4,7 +4,7 @@ This article provides an explanation of the URL parsing example found in the
 source file
 [lexbor/url/relative.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/url/relative.c).
 The example demonstrates the parsing of a relative URL based on a provided base
-URL using the lexbor library. It outlines the setup of the URL parser, handling
+URL using the `lexbor` library. It outlines the setup of the URL parser, handling
 of input strings, and the serialization of various components of the parsed URL.
 
 ## Code Breakdown
@@ -100,7 +100,7 @@ utilized during the parsing are properly released.
 ### Conclusion
 
 The provided example illustrates the process of relative URL parsing using the
-lexbor library. From initializing the parser to serializing specific components
+`lexbor` library. From initializing the parser to serializing specific components
 of the URL, each step is crucial for accurate URL handling in applications. The
 careful management of memory and resources also highlights best practices in
 programming with C.

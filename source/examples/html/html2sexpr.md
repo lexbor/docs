@@ -3,14 +3,14 @@
 This article provides an overview of a code example found in the file
 [lexbor/html/html2sexpr.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/html2sexpr.c).
 The program is designed to convert an HTML tag tree into an S-expression string
-and output it to standard output. The program utilizes the Lexbor library to
+and output it to standard output. The program utilizes the `lexbor` library to
 handle parsing and manipulating HTML documents.
 
 ## Overview
 
 The program first checks if the correct number of command-line arguments is
 provided. It expects one argument: the path to an HTML file. It reads the
-contents of this file and initializes an HTML document object using Lexbor's
+contents of this file and initializes an HTML document object using `lexbor`'s
 API. After parsing the HTML, the program invokes a tree-walking function to
 serialize the HTML structure into an S-expression format. The serialized output
 is then printed to the console.
@@ -114,8 +114,8 @@ ensuring resources are released before terminating.
 ## Conclusion
 
 This example demonstrates a straightforward implementation of converting an HTML
-document structure into S-expressions using the Lexbor library. The program is
+document structure into S-expressions using the `lexbor` library. The program is
 structured to handle input validation, document parsing, tree traversal, and
 serialization efficiently while providing clear feedback in the case of errors.
-It showcases the use of Lexbor's DOM manipulation capabilities and highlights
+It showcases the use of `lexbor`'s DOM manipulation capabilities and highlights
 how to build a recursive tree-walking algorithm for tree serialization.

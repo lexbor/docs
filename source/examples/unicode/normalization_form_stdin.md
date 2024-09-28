@@ -52,7 +52,7 @@ potential null-termination issues gracefully.
 ## Conclusion
 
 This example illustrates how to implement a basic command line utility for
-Unicode normalization using the lexbor library. It effectively demonstrates
+Unicode normalization using the `lexbor` library. It effectively demonstrates
 handling input, processing data with a normalization algorithm, and producing
 output. This utility can be useful in applications where consistent Unicode
 representation is crucial, such as in text processing and data interchange

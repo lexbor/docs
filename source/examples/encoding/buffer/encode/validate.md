@@ -4,7 +4,7 @@ This article explains the functionality of a Unicode encoding example, which can
 be found in the source file
 [lexbor/encoding/buffer/encode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/encode/validate.c).
 The code serves as an illustration of how to encode Unicode code points into a
-UTF-8 byte string using the Lexbor library. 
+UTF-8 byte string using the `lexbor` library. 
 
 ## Overview
 
@@ -19,7 +19,7 @@ and configuring it with replacement bytes for invalid code points.
 
 The code begins by including necessary header files, specifically `string.h` for
 string manipulation and `lexbor/encoding/encoding.h` for encoding functions from
-the Lexbor library. A macro named `FAILED` is defined for error handling, which
+the `lexbor` library. A macro named `FAILED` is defined for error handling, which
 simplifies reporting errors by outputting a message to `stderr` and exiting the
 program with a failure status.
 
@@ -75,7 +75,7 @@ points.
 
 ## Conclusion
 
-This example showcases how to utilize the Lexbor library to encode Unicode code
+This example showcases how to utilize the `lexbor` library to encode Unicode code
 points into a UTF-8 byte string while implementing error handling and
 customization through replacement bytes for invalid code points. By following
 the steps outlined, developers can efficiently manage Unicode data in their

@@ -3,14 +3,14 @@
 This article describes the functionality of the example code provided in the
 file
 [lexbor/html/tokenizer/text.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/tokenizer/text.c).
-The code implements an HTML tokenizer using the Lexbor library, focusing on
+The code implements an HTML tokenizer using the `lexbor` library, focusing on
 extracting and printing text tokens from HTML input.
 
 ## Overview of the Code
 
 The main thrust of this code is to parse HTML data, identify text tokens within
 it, and print those tokens to the standard output. The code utilizes functions
-provided by the Lexbor library, a lightweight and efficient HTML and XML
+provided by the `lexbor` library, a lightweight and efficient HTML and XML
 processing library.
 
 ## Key Sections of the Code
@@ -19,7 +19,7 @@ processing library.
 
 The code begins with the inclusion of the `lexbor/html/tokenizer.h` header file,
 which contains the necessary declarations for using the tokenizer functionality
-of the Lexbor library. Following this, a macro named `FAILED` is defined. This
+of the `lexbor` library. Following this, a macro named `FAILED` is defined. This
 macro can be used throughout the code to simplify error handling:
 
 ```c
@@ -116,7 +116,7 @@ process.
 
 ## Conclusion
 
-This example provides a clear illustration of how to utilize the Lexbor library
+This example provides a clear illustration of how to utilize the `lexbor` library
 to parse HTML and process text tokens. By focusing on text tokens, and employing
 proper error handling mechanics, the code demonstrates a concise yet effective
 approach to basic HTML tokenization.

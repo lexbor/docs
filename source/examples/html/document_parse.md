@@ -1,6 +1,6 @@
 # HTML Document Parsing Example
 
-This article explains an example of parsing an HTML document using the Lexbor
+This article explains an example of parsing an HTML document using the `lexbor`
 library. The purpose of this example, located in the source file
 [lexbor/html/document_parse.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/document_parse.c),
 is to illustrate the steps necessary to create an HTML document, parse a string
@@ -110,6 +110,6 @@ maintain system performance and stability.
 The example provided in
 [lexbor/html/document_parse.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/document_parse.c)
 serves as a clear demonstration of how to create, parse, and handle an HTML
-document using Lexbor. Through careful initialization, parsing, result
+document using `lexbor`. Through careful initialization, parsing, result
 outputting, and cleanup, this code illustrates best practices for managing HTML
 documents in a C environment.

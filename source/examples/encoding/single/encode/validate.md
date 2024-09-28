@@ -1,7 +1,7 @@
 # Encoding Unicode Code Points to UTF-8 Example
 
 This example demonstrates how to validate and encode Unicode code points into a
-UTF-8 byte string using the lexbor library. The functionality is encapsulated
+UTF-8 byte string using the `lexbor` library. The functionality is encapsulated
 within a C program located in the
 [lexbor/encoding/single/encode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/encode/validate.c)
 file. The purpose of this code is to illustrate the encoding of a set of given
@@ -10,7 +10,7 @@ with a predefined replacement character.
 
 ## Overview of the Code
 
-The code begins by including the necessary header files from the lexbor library,
+The code begins by including the necessary header files from the `lexbor` library,
 specifically targeting encoding functionality. It subsequently defines a macro
 for error handling, which outputs an error message to `stderr` and exits the
 program with a failure status.
@@ -71,5 +71,5 @@ the last byte of the buffer to `0x00`. It then prints the final UTF-8 result.
 
 The program effectively showcases how to handle Unicode encoding with proper
 error management for invalid inputs. This example is particularly useful for
-developers using the lexbor library to manage character encodings, providing
+developers using the `lexbor` library to manage character encodings, providing
 insight on validating and encoding procedures in C.

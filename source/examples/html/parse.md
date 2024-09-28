@@ -1,6 +1,6 @@
 # HTML Parsing and Serialization Example
 
-This example demonstrates how to create an HTML parser using the lexbor library,
+This example demonstrates how to create an HTML parser using the `lexbor` library,
 parse simple HTML strings into document objects, and serialize those documents
 back to a readable format. The code is found in the source file
 [lexbor/html/parse.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/parse.c).

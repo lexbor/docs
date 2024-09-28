@@ -4,7 +4,7 @@ This article explains the encoding conversion functionality provided in the
 source file
 [lexbor/encoding/single/from_to.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/from_to.c).
 The code allows users to convert text from one character encoding to another via
-command-line input. It demonstrates how to utilize the Lexbor encoding library
+command-line input. It demonstrates how to utilize the `lexbor` encoding library
 for encoding and decoding different formats of character sets.
 
 ## Overview
@@ -19,7 +19,7 @@ before writing the output to standard output.
 
 ### Definitions and Includes
 
-At the beginning of the file, we include the necessary header for the Lexbor
+At the beginning of the file, we include the necessary header for the `lexbor`
 encoding module:
 
 ```c
@@ -125,7 +125,7 @@ resources are cleaned up properly before the program exits.
 ## Conclusion
 
 The `from_to.c` example illustrates a practical approach to character encoding
-conversion using the Lexbor encoding library. It showcases error handling, user
+conversion using the `lexbor` encoding library. It showcases error handling, user
 guidance, and processing loops, making it a valuable reference for developers
 needing to handle various text encodings in their applications. This example
 emphasizes the importance of robust input handling and clean output generation

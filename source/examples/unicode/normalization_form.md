@@ -2,7 +2,7 @@
 
 This article explains the example code found in the file
 [lexbor/unicode/normalization_form.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/unicode/normalization_form.c).
-The program demonstrates how to perform Unicode normalization using the Lexbor
+The program demonstrates how to perform Unicode normalization using the `lexbor`
 library, specifically focusing on four normalization forms: NFC, NFD, NFKC, and
 NFKD. 
 
@@ -61,7 +61,7 @@ function processes the normalized output.
 
 The `callback` function accepts the normalized data, its length, and a context
 string (the name of the normalization form). Inside this function, the received
-data is processed to decode valid UTF-8 sequences. It utilizes the Lexbor
+data is processed to decode valid UTF-8 sequences. It utilizes the `lexbor`
 function `lxb_encoding_decode_valid_utf_8_single()` to decode each character
 code point and print it in hexadecimal format.
 
@@ -82,5 +82,5 @@ returns a success status, indicating that all operations were completed without
 errors.
 
 This example provides a practical approach to understanding how Unicode
-normalization works in the Lexbor library and demonstrates how to handle Unicode
+normalization works in the `lexbor` library and demonstrates how to handle Unicode
 strings effectively.

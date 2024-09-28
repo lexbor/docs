@@ -4,7 +4,7 @@ In this article, we will explore the implementation details and functionality of
 the `elements_by_class_name` example, found in the
 [lexbor/html/elements_by_class_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/elements_by_class_name.c)
 source file. The code demonstrates how to parse an HTML string and retrieve
-elements with a specific class name using the lexbor library. This example is
+elements with a specific class name using the `lexbor` library. This example is
 essential for developers seeking to manipulate and query DOM elements in a
 structured manner.
 
@@ -99,7 +99,7 @@ lxb_html_document_destroy(document);
 
 ## Conclusion
 
-The `elements_by_class_name` example illustrates how to use the lexbor library
+The `elements_by_class_name` example illustrates how to use the `lexbor` library
 to parse HTML content, search for elements by class name, and efficiently manage
 those elements. The critical sections of the code demonstrate proper document
 handling, error management, and systematic cleanup, providing a solid foundation

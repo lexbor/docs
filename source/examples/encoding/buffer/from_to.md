@@ -79,7 +79,7 @@ operations, and handles errors appropriately.
 ## Conclusion
 
 The `from_to` example illustrates how to adeptly handle encoding conversions in
-C using the lexbor library. By providing a structured way to manage different
+C using the `lexbor` library. By providing a structured way to manage different
 encodings and offering clear error handling, this example serves as a
 foundational component in the development of applications that require text data
 manipulation across various encodings. The modular approach allows enhancements

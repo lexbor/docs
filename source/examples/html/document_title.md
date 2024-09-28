@@ -5,7 +5,7 @@ implemented in the source code found in
 [lexbor/html/document_title.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/document_title.c).
 The purpose of this code is to demonstrate how to parse an HTML string, retrieve
 its title, modify the title, and then display the resulting HTML document
-structure using the Lexbor library.
+structure using the `lexbor` library.
 
 ## Code Breakdown
 
@@ -113,9 +113,9 @@ lxb_html_document_destroy(document);
 ## Conclusion
 
 This example illustrates the basic operations for handling HTML document titles
-using the Lexbor library, including parsing content, accessing and modifying the
+using the `lexbor` library, including parsing content, accessing and modifying the
 title, and ensuring proper resource management. The structure of the code is
 straightforward, aiming to provide a clear understanding of each step involved
 in managing an HTML document's title. As developers familiarize themselves with
-the functionalities offered by Lexbor, they will be better equipped to
+the functionalities offered by `lexbor`, they will be better equipped to
 manipulate HTML content programmatically.

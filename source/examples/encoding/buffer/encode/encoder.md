@@ -157,7 +157,7 @@ written out before the program exits.
 ## Conclusion
 
 The `encoder.c` file is a functional implementation of an encoding utility using
-the lexbor library. It effectively handles various character encodings,
+the `lexbor` library. It effectively handles various character encodings,
 processes input data in a loop, and provides useful output, making it a useful
 tool for developers working with different text encodings. The awareness of
 error handling and usage guidance further enhances its usability in command-line

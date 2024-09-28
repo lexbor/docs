@@ -2,14 +2,14 @@
 
 This article provides an overview of the code located in
 [lexbor/css/syntax/structure_parse_file.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/syntax/structure_parse_file.c),
-which implements a CSS syntax parser using the lexbor library. The primary goal
+which implements a CSS syntax parser using the `lexbor` library. The primary goal
 of this code is to parse CSS syntax rules and declarations, handling various
 states and transitions within the parsing process.
 
 ## Code Overview
 
 The code starts with the inclusion of headers that bring in necessary
-definitions and functions from the lexbor library. It defines multiple functions
+definitions and functions from the `lexbor` library. It defines multiple functions
 and callback structures that manage the parsing of different CSS constructs.
 Central to the code is the `main` function, which serves as the entry point of
 the application.
@@ -85,5 +85,5 @@ through the parsing state.
 The code contained in `structure_parse_file.c` offers a comprehensive
 implementation of a CSS syntax parser with well-defined states and callbacks.
 The use of systematic error handling and resource management provides stability
-to the parsing process. By integrating these components, the lexbor library
+to the parsing process. By integrating these components, the `lexbor` library
 enhances its ability to interpret and manipulate CSS effectively.

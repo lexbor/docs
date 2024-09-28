@@ -3,13 +3,13 @@
 This article will explain the code found in the source file
 [lexbor/html/elements_by_tag_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/elements_by_tag_name.c),
 which demonstrates how to find and print HTML elements by their tag names using
-the Lexbor DOM library.
+the `lexbor` DOM library.
 
 ## Code Overview
 
 The purpose of this example is to parse a simple HTML string and retrieve all
 `<div>` elements from the parsed document. It achieves this by leveraging the
-Lexbor library's DOM capabilities to manage and manipulate the HTML document
+`lexbor` library's DOM capabilities to manage and manipulate the HTML document
 structure.
 
 ## Main Function
@@ -131,8 +131,8 @@ complete.
 
 ## Conclusion
 
-This example serves as a practical demonstration of how to use the Lexbor
+This example serves as a practical demonstration of how to use the `lexbor`
 library to parse HTML and find elements by tag name. By using functions from the
 library's API, the code effectively processes a document and manages collections
-of elements, showcasing the utility of the Lexbor framework in web development
+of elements, showcasing the utility of the `lexbor` framework in web development
 tasks.

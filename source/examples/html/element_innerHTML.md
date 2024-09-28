@@ -1,7 +1,7 @@
 # Setting innerHTML Example
 
 This article will explain the `innerHTML` manipulation in the context of the
-Lexbor HTML parser, as illustrated in the source file
+`lexbor` HTML parser, as illustrated in the source file
 [lexbor/html/element_innerHTML.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/element_innerHTML.c).
 This example demonstrates how to parse HTML content, modify an element's inner
 HTML, and serialize the result.
@@ -9,7 +9,7 @@ HTML, and serialize the result.
 ## Code Overview
 
 The code starts with the inclusion of the necessary header file, `base.h`, which
-likely contains the essential definitions and functions for the Lexbor library.
+likely contains the essential definitions and functions for the `lexbor` library.
 The `main` function serves as the entry point for the execution of this program.
 
 ### HTML Parsing
@@ -80,6 +80,6 @@ lxb_html_document_destroy(document);
 
 The example provided illustrates how to parse an HTML string, modify an
 element's inner HTML content, and serialize the resulting DOM structure using
-Lexbor's capabilities. This demonstrates an essential functionality often used
+`lexbor`'s capabilities. This demonstrates an essential functionality often used
 in web development for DOM manipulation, showcasing the ease of use of the
-Lexbor library for such tasks.
+`lexbor` library for such tasks.

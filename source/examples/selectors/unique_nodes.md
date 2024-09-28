@@ -2,7 +2,7 @@
 
 This article discusses the functionality of the `unique_nodes.c` source file,
 which implements a basic example of parsing HTML and CSS selectors using the
-lexbor library. The example illustrates how to create an HTML document, parse
+`lexbor` library. The example illustrates how to create an HTML document, parse
 CSS selectors, and find nodes within the document that match those selectors.
 
 ## Key Components
@@ -80,6 +80,6 @@ The `unique_nodes.c` example illustrates a practical application of the lexbor
 library to handle HTML documents and CSS selectors. By showcasing the entire
 lifecycle from parsing HTML to finding nodes based on CSS selectors, this
 example serves as an informative foundation for developers looking to work with
-document structures and styles in C using the lexbor library. The implemented
+document structures and styles in C using the `lexbor` library. The implemented
 logic emphasizes efficiency and clarity, ensuring that the handling of selectors
 and nodes is both effective and straightforward.

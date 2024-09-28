@@ -2,7 +2,7 @@
 
 This article explains the implementation found in
 [lexbor/html/element_attributes.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/element_attributes.c),
-which demonstrates how to manipulate HTML element attributes using the Lexbor
+which demonstrates how to manipulate HTML element attributes using the `lexbor`
 library. The example outlines parsing an HTML snippet, finding an element, and
 performing various operations involving element attributes, such as adding,
 checking existence, retrieving, modifying, and removing attributes from an
@@ -139,7 +139,7 @@ lxb_html_document_destroy(document);
 ## Conclusion
 
 The `element_attributes.c` example illustrates fundamental operations in DOM
-manipulation provided by the Lexbor library. The code efficiently demonstrates
+manipulation provided by the `lexbor` library. The code efficiently demonstrates
 how to parse HTML, locate and manipulate elements, manage attributes, and ensure
 appropriate cleanup of resources, making it a valuable reference for web
-developers working with the Lexbor framework.
+developers working with the `lexbor` framework.

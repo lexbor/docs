@@ -68,5 +68,5 @@ The `main` function contains several key operations:
 This example illustrates the use of a callback function within a tokenizer to
 process HTML tokens sequentially. By gracefully handling errors and providing
 hooks for further processing, the code affords flexibility and clarity in
-parsing HTML inputs using the lexbor library. It exemplifies best practices in
+parsing HTML inputs using the `lexbor` library. It exemplifies best practices in
 resource management, modular function design, and effective error handling in C.
