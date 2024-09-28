@@ -1,6 +1,6 @@
 ```{toctree}
 :hidden:
-:maxdepth: 2
+:maxdepth: 1
 
 documentation
 download
@@ -84,4 +84,4 @@ repository](https://github.com/lexbor/lexbor/tree/master/examples/lexbor). We
 also discuss some of them in extra detail to provide insights into `lexbor`
 usage:
 
-- [CSS selectors, the easy way](articles/example-CSS-selectors-easy-way)
+[Examples](examples/index)
