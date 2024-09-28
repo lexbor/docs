@@ -1,6 +1,6 @@
 # CSS Syntax Parsing Example
 
-This article provides an explanation of a code example from the source file `lexbor/css/syntax/simple_colorize.c`. The code implements a simple CSS parser that reads a CSS file, parses its content, and provides color-coded output for each type of CSS rule and declaration using ANSI escape codes.
+This article provides an explanation of a code example from the source file [lexbor/css/syntax/simple_colorize.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/syntax/simple_colorize.c). The code implements a simple CSS parser that reads a CSS file, parses its content, and provides color-coded output for each type of CSS rule and declaration using ANSI escape codes.
 
 ## Structure of the Program
 

@@ -1,6 +1,6 @@
 # Unicode Normalization Form Example
 
-This article describes the implementation found in the file `lexbor/unicode/normalization_form_stdin.c`. The purpose of this code example is to read input from standard input (stdin), apply a specified Unicode normalization form, and print the normalized output. The program supports four normalization forms: NFC, NFD, NFKC, and NFKD.
+This article describes the implementation found in the file [lexbor/unicode/normalization_form_stdin.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/unicode/normalization_form_stdin.c). The purpose of this code example is to read input from standard input (stdin), apply a specified Unicode normalization form, and print the normalized output. The program supports four normalization forms: NFC, NFD, NFKC, and NFKD.
 
 ## Overview of the Code
 

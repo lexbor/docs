@@ -1,6 +1,6 @@
 # HTML Document Parsing Example
 
-This article provides an overview of an example implementation of HTML document parsing using the Lexbor library. The example is located in the source file `lexbor/html/document_parse_chunk.c`. This example demonstrates how to create an HTML document, parse it in chunks, and handle the cleaning up of allocated resources.
+This article provides an overview of an example implementation of HTML document parsing using the Lexbor library. The example is located in the source file [lexbor/html/document_parse_chunk.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/document_parse_chunk.c). This example demonstrates how to create an HTML document, parse it in chunks, and handle the cleaning up of allocated resources.
 
 ## Code Overview
 

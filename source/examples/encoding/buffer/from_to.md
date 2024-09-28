@@ -1,6 +1,6 @@
 # Encoding Conversion Example
 
-This article describes an example of encoding conversion using the `from_to` program from the `lexbor` library, specifically found in the source file `lexbor/encoding/buffer/from_to.c`. The program reads data from the standard input, converts the data from one encoding to another (specified by the user), and outputs the result to the standard output. 
+This article describes an example of encoding conversion using the `from_to` program from the `lexbor` library, specifically found in the source file [lexbor/encoding/buffer/from_to.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/from_to.c). The program reads data from the standard input, converts the data from one encoding to another (specified by the user), and outputs the result to the standard output. 
 
 ## Overview
 

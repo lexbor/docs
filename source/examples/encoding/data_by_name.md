@@ -1,6 +1,6 @@
 # Encoding Data Retrieval Example
 
-This article provides an explanation of an example from the file `lexbor/encoding/data_by_name.c`. The purpose of this code is to demonstrate how to retrieve encoding data by its name using the Lexbor encoding library. The code illustrated here highlights the procedure for accessing character encoding information, specifically focusing on UTF-8.
+This article provides an explanation of an example from the file [lexbor/encoding/data_by_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/data_by_name.c). The purpose of this code is to demonstrate how to retrieve encoding data by its name using the Lexbor encoding library. The code illustrated here highlights the procedure for accessing character encoding information, specifically focusing on UTF-8.
 
 ## Code Explanation
 
@@ -63,4 +63,4 @@ This line returns a success status to the operating system, indicating that the 
 
 ## Conclusion
 
-The example presented in `lexbor/encoding/data_by_name.c` effectively demonstrates how to access encoding data using the Lexbor encoding library. It showcases the importance of error handling and provides a simple way to retrieve and display the name of a character encoding, using UTF-8 as a practical example. This code can serve as a foundational component for applications that require encoding information for text processing.
+The example presented in [lexbor/encoding/data_by_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/data_by_name.c) effectively demonstrates how to access encoding data using the Lexbor encoding library. It showcases the importance of error handling and provides a simple way to retrieve and display the name of a character encoding, using UTF-8 as a practical example. This code can serve as a foundational component for applications that require encoding information for text processing.

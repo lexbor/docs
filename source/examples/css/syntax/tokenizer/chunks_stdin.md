@@ -1,6 +1,6 @@
 # CSS Syntax Tokenizer Example
 
-This article explains the implementation of a CSS syntax tokenizer in the file `lexbor/css/syntax/tokenizer/chunks_stdin.c`. The code demonstrates how to read CSS data from standard input, tokenize it, and output the identified token types along with their serialized representations.
+This article explains the implementation of a CSS syntax tokenizer in the file [lexbor/css/syntax/tokenizer/chunks_stdin.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/syntax/tokenizer/chunks_stdin.c). The code demonstrates how to read CSS data from standard input, tokenize it, and output the identified token types along with their serialized representations.
 
 ## Overview
 

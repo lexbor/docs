@@ -1,6 +1,6 @@
 # HTML Tokenizer Callback Example
 
-This article describes the implementation of an HTML Tokenizer Callback found in the `lexbor/html/tokenizer/callback.c` source file. The purpose of this code is to demonstrate how to parse an HTML string and handle tokens as they are generated. It establishes a callback mechanism that is invoked after each token is processed, allowing for custom processing or logging of token data.
+This article describes the implementation of an HTML Tokenizer Callback found in the [lexbor/html/tokenizer/callback.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/tokenizer/callback.c) source file. The purpose of this code is to demonstrate how to parse an HTML string and handle tokens as they are generated. It establishes a callback mechanism that is invoked after each token is processed, allowing for custom processing or logging of token data.
 
 ## Overview
 

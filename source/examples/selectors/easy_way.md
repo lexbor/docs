@@ -1,6 +1,6 @@
 # CSS Selectors Usage Example
 
-This article explains an example program found in the file `lexbor/selectors/easy_way.c`, which demonstrates how to use the Lexbor library to parse HTML and match it against CSS selectors. The example involves creating an HTML document, defining CSS selectors, and then finding matching nodes in the document.
+This article explains an example program found in the file [lexbor/selectors/easy_way.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/selectors/easy_way.c), which demonstrates how to use the Lexbor library to parse HTML and match it against CSS selectors. The example involves creating an HTML document, defining CSS selectors, and then finding matching nodes in the document.
 
 ## Overview of the Code
 

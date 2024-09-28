@@ -6,6 +6,7 @@ documentation
 download
 roadmap
 articles/index
+examples/index
 support
 license
 ```

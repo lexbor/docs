@@ -1,6 +1,6 @@
 # Element Attributes Example
 
-This article explains the implementation found in `lexbor/html/element_attributes.c`, which demonstrates how to manipulate HTML element attributes using the Lexbor library. The example outlines parsing an HTML snippet, finding an element, and performing various operations involving element attributes, such as adding, checking existence, retrieving, modifying, and removing attributes from an element.
+This article explains the implementation found in [lexbor/html/element_attributes.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/element_attributes.c), which demonstrates how to manipulate HTML element attributes using the Lexbor library. The example outlines parsing an HTML snippet, finding an element, and performing various operations involving element attributes, such as adding, checking existence, retrieving, modifying, and removing attributes from an element.
 
 ## Code Overview
 

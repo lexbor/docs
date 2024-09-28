@@ -1,6 +1,6 @@
 # CSS Syntax Tokenizer Example
 
-This article provides a detailed explanation of a CSS syntax tokenizer implemented in the file `lexbor/css/syntax/tokenizer/from_file.c`. The code serves the purpose of reading a CSS file, processing its contents to extract tokens, and producing output that describes each token.
+This article provides a detailed explanation of a CSS syntax tokenizer implemented in the file [lexbor/css/syntax/tokenizer/from_file.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/syntax/tokenizer/from_file.c). The code serves the purpose of reading a CSS file, processing its contents to extract tokens, and producing output that describes each token.
 
 ## Overview
 

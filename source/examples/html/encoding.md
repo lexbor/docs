@@ -1,6 +1,6 @@
 # HTML Encoding Example
 
-This article provides an explanation for the HTML Encoding example found in the file `lexbor/html/encoding.c`. This program is designed to read an HTML file, determine its character encoding, and print it out. The implementation utilizes the Lexbor library, which offers various functions to handle encoding.
+This article provides an explanation for the HTML Encoding example found in the file [lexbor/html/encoding.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/encoding.c). This program is designed to read an HTML file, determine its character encoding, and print it out. The implementation utilizes the Lexbor library, which offers various functions to handle encoding.
 
 ## Overview
 

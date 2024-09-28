@@ -1,6 +1,6 @@
 # URL Parsing Example
 
-This article provides an explanation of the URL parsing example found in the source file `lexbor/url/relative.c`. The example demonstrates the parsing of a relative URL based on a provided base URL using the lexbor library. It outlines the setup of the URL parser, handling of input strings, and the serialization of various components of the parsed URL.
+This article provides an explanation of the URL parsing example found in the source file [lexbor/url/relative.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/url/relative.c). The example demonstrates the parsing of a relative URL based on a provided base URL using the lexbor library. It outlines the setup of the URL parser, handling of input strings, and the serialization of various components of the parsed URL.
 
 ## Code Breakdown
 

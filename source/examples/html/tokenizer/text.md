@@ -1,6 +1,6 @@
 # HTML Tokenizer Example
 
-This article describes the functionality of the example code provided in the file `lexbor/html/tokenizer/text.c`. The code implements an HTML tokenizer using the Lexbor library, focusing on extracting and printing text tokens from HTML input.
+This article describes the functionality of the example code provided in the file [lexbor/html/tokenizer/text.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/tokenizer/text.c). The code implements an HTML tokenizer using the Lexbor library, focusing on extracting and printing text tokens from HTML input.
 
 ## Overview of the Code
 

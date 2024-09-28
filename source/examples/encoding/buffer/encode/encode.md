@@ -1,6 +1,6 @@
 # Encoding Unicode Code Points to UTF-8 Example
 
-This article explains the encoding of Unicode code points to a UTF-8 byte string using the Lexbor library. The source code is located in `lexbor/encoding/buffer/encode/encode.c`. This example demonstrates how to initialize the encoder, encode Unicode code points, and handle the output appropriately.
+This article explains the encoding of Unicode code points to a UTF-8 byte string using the Lexbor library. The source code is located in [lexbor/encoding/buffer/encode/encode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/encode/encode.c). This example demonstrates how to initialize the encoder, encode Unicode code points, and handle the output appropriately.
 
 ## Overview
 

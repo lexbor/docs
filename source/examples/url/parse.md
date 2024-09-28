@@ -1,6 +1,6 @@
 # URL Parsing Example
 
-This article examines a code example from the `lexbor/url/parse.c` file, focusing on URL parsing using the Lexbor library. The intent of this code is to demonstrate how to initialize the URL parser, parse a URL string, and subsequently serialize different components of the parsed URL, such as the scheme, username, password, host, and more. Each section of the code plays a critical role in handling URL data.
+This article examines a code example from the [lexbor/url/parse.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/url/parse.c) file, focusing on URL parsing using the Lexbor library. The intent of this code is to demonstrate how to initialize the URL parser, parse a URL string, and subsequently serialize different components of the parsed URL, such as the scheme, username, password, host, and more. Each section of the code plays a critical role in handling URL data.
 
 ## Code Breakdown
 

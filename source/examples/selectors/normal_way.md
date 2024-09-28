@@ -1,6 +1,6 @@
 # CSS Selectors Parsing and Node Finding Example
 
-This example, found in the source file `lexbor/selectors/normal_way.c`, demonstrates how to use the Lexbor library to parse CSS selectors and find HTML nodes that match those selectors. The code provides a comprehensive workflow, from creating an HTML document to parsing selectors and retrieving matching nodes while handling memory management efficiently.
+This example, found in the source file [lexbor/selectors/normal_way.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/selectors/normal_way.c), demonstrates how to use the Lexbor library to parse CSS selectors and find HTML nodes that match those selectors. The code provides a comprehensive workflow, from creating an HTML document to parsing selectors and retrieving matching nodes while handling memory management efficiently.
 
 ## Overview of Key Components
 

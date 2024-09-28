@@ -1,6 +1,6 @@
 # CSS Stylesheet Parsing and Application Example
 
-In this article, we will explore the implementation of CSS stylesheet parsing and application to HTML elements using the Lexbor library. The following example is derived from the source file `lexbor/styles/stylesheet.c`. The code illustrates how to create an HTML document, parse CSS styles, attach these styles to the HTML document, and finally retrieve and serialize specific style declarations from an element.
+In this article, we will explore the implementation of CSS stylesheet parsing and application to HTML elements using the Lexbor library. The following example is derived from the source file [lexbor/styles/stylesheet.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/stylesheet.c). The code illustrates how to create an HTML document, parse CSS styles, attach these styles to the HTML document, and finally retrieve and serialize specific style declarations from an element.
 
 ## Overview
 

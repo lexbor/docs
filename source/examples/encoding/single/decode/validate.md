@@ -1,6 +1,6 @@
 # UTF-8 Decoding and Validation Example
 
-This article explains an example of decoding and validating a UTF-8 string, using the Lexbor library. The source file for this code example is `lexbor/encoding/single/decode/validate.c`. The primary objective of this code is to demonstrate how to properly decode a UTF-8 encoded string, handle decoding errors, and output both valid code points and error information for invalid byte sequences.
+This article explains an example of decoding and validating a UTF-8 string, using the Lexbor library. The source file for this code example is [lexbor/encoding/single/decode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/decode/validate.c). The primary objective of this code is to demonstrate how to properly decode a UTF-8 encoded string, handle decoding errors, and output both valid code points and error information for invalid byte sequences.
 
 ## Code Breakdown
 

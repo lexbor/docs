@@ -1,6 +1,6 @@
 # Unicode Encoding Example
 
-This article explains the functionality of a Unicode encoding example, which can be found in the source file `lexbor/encoding/buffer/encode/validate.c`. The code serves as an illustration of how to encode Unicode code points into a UTF-8 byte string using the Lexbor library. 
+This article explains the functionality of a Unicode encoding example, which can be found in the source file [lexbor/encoding/buffer/encode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/encode/validate.c). The code serves as an illustration of how to encode Unicode code points into a UTF-8 byte string using the Lexbor library. 
 
 ## Overview
 

@@ -1,6 +1,6 @@
 # UTF-8 Decoding Example
 
-This article explains a code example from `lexbor/encoding/single/decode/decode.c`, which demonstrates how to decode a UTF-8 string into its respective code points using the lexbor library.
+This article explains a code example from [lexbor/encoding/single/decode/decode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/decode/decode.c), which demonstrates how to decode a UTF-8 string into its respective code points using the lexbor library.
 
 ## Introduction
 

@@ -1,6 +1,6 @@
 # Getting Elements by Class Name Example
 
-In this article, we will explore the implementation details and functionality of the `elements_by_class_name` example, found in the `lexbor/html/elements_by_class_name.c` source file. The code demonstrates how to parse an HTML string and retrieve elements with a specific class name using the lexbor library. This example is essential for developers seeking to manipulate and query DOM elements in a structured manner.
+In this article, we will explore the implementation details and functionality of the `elements_by_class_name` example, found in the [lexbor/html/elements_by_class_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/elements_by_class_name.c) source file. The code demonstrates how to parse an HTML string and retrieve elements with a specific class name using the lexbor library. This example is essential for developers seeking to manipulate and query DOM elements in a structured manner.
 
 ## Overview
 

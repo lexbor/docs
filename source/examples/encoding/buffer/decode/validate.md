@@ -1,6 +1,6 @@
 # UTF-8 Decoding and Replacement Example
 
-This article will explain a C code example that demonstrates UTF-8 decoding and the handling of invalid byte sequences using the lexbor library. The source file for the example is `lexbor/encoding/buffer/decode/validate.c`.
+This article will explain a C code example that demonstrates UTF-8 decoding and the handling of invalid byte sequences using the lexbor library. The source file for the example is [lexbor/encoding/buffer/decode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/decode/validate.c).
 
 ## Overview
 

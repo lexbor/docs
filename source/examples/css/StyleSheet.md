@@ -1,6 +1,6 @@
 # CSS Stylesheet Parsing Example
 
-This article explains the example code within the file `lexbor/css/StyleSheet.c`, which demonstrates how to use the Lexbor library to read and parse a CSS stylesheet. The code showcases the steps required to initialize the parser, read the CSS data from a file, parse the stylesheet, and serialize the resulting object.
+This article explains the example code within the file [lexbor/css/StyleSheet.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/StyleSheet.c), which demonstrates how to use the Lexbor library to read and parse a CSS stylesheet. The code showcases the steps required to initialize the parser, read the CSS data from a file, parse the stylesheet, and serialize the resulting object.
 
 ## Code Breakdown
 

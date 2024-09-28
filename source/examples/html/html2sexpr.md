@@ -1,6 +1,6 @@
 # HTML to S-Expression Converter Example
 
-This article provides an overview of a code example found in the file `lexbor/html/html2sexpr.c`. The program is designed to convert an HTML tag tree into an S-expression string and output it to standard output. The program utilizes the Lexbor library to handle parsing and manipulating HTML documents.
+This article provides an overview of a code example found in the file [lexbor/html/html2sexpr.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/html2sexpr.c). The program is designed to convert an HTML tag tree into an S-expression string and output it to standard output. The program utilizes the Lexbor library to handle parsing and manipulating HTML documents.
 
 ## Overview
 

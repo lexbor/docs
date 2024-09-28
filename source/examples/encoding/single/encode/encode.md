@@ -1,6 +1,6 @@
 # UTF-8 Encoding Example
 
-This article explains the purpose and functionality of the UTF-8 encoding example provided in the file `lexbor/encoding/single/encode/encode.c`. The code demonstrates how to encode a series of Unicode code points into a UTF-8 byte string using the Lexbor encoding library. 
+This article explains the purpose and functionality of the UTF-8 encoding example provided in the file [lexbor/encoding/single/encode/encode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/encode/encode.c). The code demonstrates how to encode a series of Unicode code points into a UTF-8 byte string using the Lexbor encoding library. 
 
 ## Code Overview
 

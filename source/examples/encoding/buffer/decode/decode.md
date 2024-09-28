@@ -1,6 +1,6 @@
 # UTF-8 Decoding Example
 
-In this article, we will explore a code example from the file `lexbor/encoding/buffer/decode/decode.c` that demonstrates how to decode a UTF-8 encoded string into code points using the Lexbor library. This example specifically highlights the usage of Lexbor's encoding functionalities, providing insights into how to leverage these features for character decoding in C.
+In this article, we will explore a code example from the file [lexbor/encoding/buffer/decode/decode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/decode/decode.c) that demonstrates how to decode a UTF-8 encoded string into code points using the Lexbor library. This example specifically highlights the usage of Lexbor's encoding functionalities, providing insights into how to leverage these features for character decoding in C.
 
 ## Code Explanation
 

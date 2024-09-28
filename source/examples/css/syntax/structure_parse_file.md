@@ -1,6 +1,6 @@
 # CSS Syntax Parser Example
 
-This article provides an overview of the code located in `lexbor/css/syntax/structure_parse_file.c`, which implements a CSS syntax parser using the lexbor library. The primary goal of this code is to parse CSS syntax rules and declarations, handling various states and transitions within the parsing process.
+This article provides an overview of the code located in [lexbor/css/syntax/structure_parse_file.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/syntax/structure_parse_file.c), which implements a CSS syntax parser using the lexbor library. The primary goal of this code is to parse CSS syntax rules and declarations, handling various states and transitions within the parsing process.
 
 ## Code Overview
 

@@ -1,6 +1,6 @@
 # HTML Chunk Parsing Example
 
-This article provides an overview of the HTML chunk parsing example implemented in the source file `lexbor/html/parse_chunk.c`. The example demonstrates how to utilize the Lexbor HTML parsing library to handle HTML data in incremental chunks. By breaking the input into smaller pieces, it showcases the parser's versatility and ability to manage partial data streams effectively.
+This article provides an overview of the HTML chunk parsing example implemented in the source file [lexbor/html/parse_chunk.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/parse_chunk.c). The example demonstrates how to utilize the Lexbor HTML parsing library to handle HTML data in incremental chunks. By breaking the input into smaller pieces, it showcases the parser's versatility and ability to manage partial data streams effectively.
 
 ## Code Overview
 
@@ -76,4 +76,4 @@ These calls ensure that the allocated parser and document objects are properly d
 
 ## Conclusion
 
-The example provided in `lexbor/html/parse_chunk.c` is a straightforward illustration of how to parse HTML data incrementally with the Lexbor library. By breaking the input into manageable chunks, the parser can efficiently handle larger HTML documents and offers developers flexibility when processing dynamic or streamed data. This method is particularly useful in web environments where HTML content may not always be available as a single, complete document.
+The example provided in [lexbor/html/parse_chunk.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/parse_chunk.c) is a straightforward illustration of how to parse HTML data incrementally with the Lexbor library. By breaking the input into manageable chunks, the parser can efficiently handle larger HTML documents and offers developers flexibility when processing dynamic or streamed data. This method is particularly useful in web environments where HTML content may not always be available as a single, complete document.

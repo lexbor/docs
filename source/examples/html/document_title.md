@@ -1,6 +1,6 @@
 # HTML Document Title Example
 
-This article will explain the functionality of the HTML document title example implemented in the source code found in `lexbor/html/document_title.c`. The purpose of this code is to demonstrate how to parse an HTML string, retrieve its title, modify the title, and then display the resulting HTML document structure using the Lexbor library.
+This article will explain the functionality of the HTML document title example implemented in the source code found in [lexbor/html/document_title.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/document_title.c). The purpose of this code is to demonstrate how to parse an HTML string, retrieve its title, modify the title, and then display the resulting HTML document structure using the Lexbor library.
 
 ## Code Breakdown
 

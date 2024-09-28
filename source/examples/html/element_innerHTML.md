@@ -1,6 +1,6 @@
 # Setting innerHTML Example
 
-This article will explain the `innerHTML` manipulation in the context of the Lexbor HTML parser, as illustrated in the source file `lexbor/html/element_innerHTML.c`. This example demonstrates how to parse HTML content, modify an element's inner HTML, and serialize the result.
+This article will explain the `innerHTML` manipulation in the context of the Lexbor HTML parser, as illustrated in the source file [lexbor/html/element_innerHTML.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/element_innerHTML.c). This example demonstrates how to parse HTML content, modify an element's inner HTML, and serialize the result.
 
 ## Code Overview
 

@@ -1,6 +1,6 @@
 # Unicode Decoder Example
 
-In this article, we will discuss a simple Unicode decoder implemented in C, specifically within the context of the lexbor library. The code can be found in the source file `lexbor/encoding/buffer/decode/decoder.c`. This program is designed to take a specified character encoding from the command line, read input data, and decode it into Unicode code points, displaying the result in a format suitable for further processing or representation.
+In this article, we will discuss a simple Unicode decoder implemented in C, specifically within the context of the lexbor library. The code can be found in the source file [lexbor/encoding/buffer/decode/decoder.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/decode/decoder.c). This program is designed to take a specified character encoding from the command line, read input data, and decode it into Unicode code points, displaying the result in a format suitable for further processing or representation.
 
 ## Code Structure Overview
 

@@ -1,6 +1,6 @@
 # Encoding Conversion Example
 
-This article explains the encoding conversion functionality provided in the source file `lexbor/encoding/single/from_to.c`. The code allows users to convert text from one character encoding to another via command-line input. It demonstrates how to utilize the Lexbor encoding library for encoding and decoding different formats of character sets.
+This article explains the encoding conversion functionality provided in the source file [lexbor/encoding/single/from_to.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/from_to.c). The code allows users to convert text from one character encoding to another via command-line input. It demonstrates how to utilize the Lexbor encoding library for encoding and decoding different formats of character sets.
 
 ## Overview
 

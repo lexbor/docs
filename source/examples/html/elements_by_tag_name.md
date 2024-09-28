@@ -1,6 +1,6 @@
 # HTML Elements by Tag Name Example
 
-This article will explain the code found in the source file `lexbor/html/elements_by_tag_name.c`, which demonstrates how to find and print HTML elements by their tag names using the Lexbor DOM library.
+This article will explain the code found in the source file [lexbor/html/elements_by_tag_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/elements_by_tag_name.c), which demonstrates how to find and print HTML elements by their tag names using the Lexbor DOM library.
 
 ## Code Overview
 

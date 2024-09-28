@@ -1,6 +1,6 @@
 # Encoding Decoder Example
 
-In this article, we will explore the encoding decoder example found in the file `lexbor/encoding/single/decode/decoder.c`. This code demonstrates how to decode input data from standard input according to a specified character encoding. It provides a useful utility for developers needing to handle various text encodings in their applications.
+In this article, we will explore the encoding decoder example found in the file [lexbor/encoding/single/decode/decoder.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/decode/decoder.c). This code demonstrates how to decode input data from standard input according to a specified character encoding. It provides a useful utility for developers needing to handle various text encodings in their applications.
 
 ## Code Overview
 

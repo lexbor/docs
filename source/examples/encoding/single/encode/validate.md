@@ -1,6 +1,6 @@
 # Encoding Unicode Code Points to UTF-8 Example
 
-This example demonstrates how to validate and encode Unicode code points into a UTF-8 byte string using the lexbor library. The functionality is encapsulated within a C program located in the `lexbor/encoding/single/encode/validate.c` file. The purpose of this code is to illustrate the encoding of a set of given code points, handling exceptions for those that are invalid by replacing them with a predefined replacement character.
+This example demonstrates how to validate and encode Unicode code points into a UTF-8 byte string using the lexbor library. The functionality is encapsulated within a C program located in the [lexbor/encoding/single/encode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/encode/validate.c) file. The purpose of this code is to illustrate the encoding of a set of given code points, handling exceptions for those that are invalid by replacing them with a predefined replacement character.
 
 ## Overview of the Code
 

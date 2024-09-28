@@ -1,6 +1,6 @@
 # CSS Style Attribute Example
 
-This article provides an in-depth explanation of a code example found in the `lexbor/styles/attribute_style.c` file. The purpose of this code is to demonstrate how to create an HTML document, parse a specific HTML element, retrieve its CSS style properties, and then serialize those properties for output. 
+This article provides an in-depth explanation of a code example found in the [lexbor/styles/attribute_style.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/attribute_style.c) file. The purpose of this code is to demonstrate how to create an HTML document, parse a specific HTML element, retrieve its CSS style properties, and then serialize those properties for output. 
 
 ## Code Breakdown
 

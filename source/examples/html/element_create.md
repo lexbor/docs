@@ -1,6 +1,6 @@
 # HTML Element Creation Example
 
-This article explains the implementation of creating and appending HTML elements in a document using the respective Lexbor library. The example provided is from the source file `lexbor/html/element_create.c`. 
+This article explains the implementation of creating and appending HTML elements in a document using the respective Lexbor library. The example provided is from the source file [lexbor/html/element_create.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/element_create.c). 
 
 ## Introduction
 

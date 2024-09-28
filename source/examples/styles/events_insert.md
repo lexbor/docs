@@ -1,6 +1,6 @@
 # Events Insert Example
 
-This article explains the C code found in `lexbor/styles/events_insert.c`, which demonstrates the process of manipulating HTML documents and applying CSS styles using the Lexbor library. The code operates on a simple HTML structure and applies specific styles based on a CSS stylesheet.
+This article explains the C code found in [lexbor/styles/events_insert.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/events_insert.c), which demonstrates the process of manipulating HTML documents and applying CSS styles using the Lexbor library. The code operates on a simple HTML structure and applies specific styles based on a CSS stylesheet.
 
 ## Overview
 
@@ -110,4 +110,4 @@ Finally, all allocated resources are cleaned up to prevent memory leaks by destr
 
 ## Conclusion
 
-The code in `lexbor/styles/events_insert.c` illustrates an effective use of the Lexbor library to manipulate HTML and apply CSS. By parsing, creating elements, setting attributes, and attaching styles, it provides a clear example of dynamic document editing and processing. This showcases both the capabilities and convenience of the Lexbor framework in handling web technologies programmatically.
+The code in [lexbor/styles/events_insert.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/events_insert.c) illustrates an effective use of the Lexbor library to manipulate HTML and apply CSS. By parsing, creating elements, setting attributes, and attaching styles, it provides a clear example of dynamic document editing and processing. This showcases both the capabilities and convenience of the Lexbor framework in handling web technologies programmatically.

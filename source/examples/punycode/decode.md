@@ -1,6 +1,6 @@
 # Punycode Decoding Example
 
-This article explains the implementation of a Punycode decoding utility found in the `lexbor/punycode/decode.c` file. The code example facilitates the decoding of encoded domain names into their regular representation, which is critical for handling internationalized domain names (IDNs). 
+This article explains the implementation of a Punycode decoding utility found in the [lexbor/punycode/decode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/punycode/decode.c) file. The code example facilitates the decoding of encoded domain names into their regular representation, which is critical for handling internationalized domain names (IDNs). 
 
 ## Overview
 

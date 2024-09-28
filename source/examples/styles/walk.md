@@ -1,6 +1,6 @@
 # CSS Style Walking Example
 
-This article explains the functionality and structure of the code found in `lexbor/styles/walk.c`. The example focuses on parsing an HTML document, attaching CSS styles to an element, and traversing the applied styles. The primary goal of this example is to demonstrate how to manipulate the Document Object Model (DOM) and apply CSS styling in the Lexbor library.
+This article explains the functionality and structure of the code found in [lexbor/styles/walk.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/walk.c). The example focuses on parsing an HTML document, attaching CSS styles to an element, and traversing the applied styles. The primary goal of this example is to demonstrate how to manipulate the Document Object Model (DOM) and apply CSS styling in the Lexbor library.
 
 ## Overview of the Code
 

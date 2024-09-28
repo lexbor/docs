@@ -1,6 +1,6 @@
 # IDNA to ASCII Conversion Example
 
-This document provides an explanation of the IDNA to ASCII conversion code example located in the `lexbor/unicode/idna_to_ascii.c` source file. The code focuses on converting Internationalized Domain Names (IDN) from their Unicode representations to ASCII, which is often required for compatibility with DNS systems.
+This document provides an explanation of the IDNA to ASCII conversion code example located in the [lexbor/unicode/idna_to_ascii.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/unicode/idna_to_ascii.c) source file. The code focuses on converting Internationalized Domain Names (IDN) from their Unicode representations to ASCII, which is often required for compatibility with DNS systems.
 
 ## Overview
 

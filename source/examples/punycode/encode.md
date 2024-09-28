@@ -1,6 +1,6 @@
 # Punycode Encoding Example
 
-This article discusses the code example found in the file `lexbor/punycode/encode.c`, which demonstrates how to encode a string using the Punycode algorithm with the lexbor library. Punycode is a way to represent Internationalized Domain Names (IDNs) using only ASCII characters. This code facilitates reading input data, manages memory allocation dynamically, and encodes the input using a callback function to handle the output.
+This article discusses the code example found in the file [lexbor/punycode/encode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/punycode/encode.c), which demonstrates how to encode a string using the Punycode algorithm with the lexbor library. Punycode is a way to represent Internationalized Domain Names (IDNs) using only ASCII characters. This code facilitates reading input data, manages memory allocation dynamically, and encodes the input using a callback function to handle the output.
 
 ## Code Explanation
 
@@ -90,4 +90,4 @@ failed:
 
 ## Conclusion
 
-This article provides a comprehensive overview of the `lexbor/punycode/encode.c` example, illustrating how to implement Punycode encoding in C. The example highlights important practices such as dynamic memory management, error handling, and the use of callback functions, which are all vital when dealing with input and output in systems programming. By following this structured approach, developers can efficiently utilize the lexbor library to handle Internationalized Domain Names.
+This article provides a comprehensive overview of the [lexbor/punycode/encode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/punycode/encode.c) example, illustrating how to implement Punycode encoding in C. The example highlights important practices such as dynamic memory management, error handling, and the use of callback functions, which are all vital when dealing with input and output in systems programming. By following this structured approach, developers can efficiently utilize the lexbor library to handle Internationalized Domain Names.
