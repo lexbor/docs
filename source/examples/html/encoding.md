@@ -1,8 +1,8 @@
 # Determining HTML Encoding
 
-The example code in `lexbor/html/encoding.c` demonstrates how to determine the encoding of an HTML file using the `lexbor` library. This example is particularly useful for understanding how to initialize the encoding mechanism and extract the encoding information from the HTML content.
+The example code in [lexbor/html/encoding.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/encoding.c) demonstrates how to determine the encoding of an HTML file using the `lexbor` library. This example is particularly useful for understanding how to initialize the encoding mechanism and extract the encoding information from the HTML content.
 
-In this example, the code performs several tasks to determine the HTML encoding. It initializes the HTML encoding detection system, reads the HTML file, and then identifies the encoding used in that file. This process is useful for web scraping, data extraction, and ensuring proper text rendering. The file in question is `lexbor/html/encoding.c`.
+In this example, the code performs several tasks to determine the HTML encoding. It initializes the HTML encoding detection system, reads the HTML file, and then identifies the encoding used in that file. This process is useful for web scraping, data extraction, and ensuring proper text rendering. The file in question is [lexbor/html/encoding.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/encoding.c).
 
 ## Key Code Sections
 

@@ -1,6 +1,6 @@
 # Extracting Elements by Attribute
 
-The file `lexbor/html/elements_by_attr.c` demonstrates how to use the `lexbor` library to extract and manipulate HTML elements based on their attributes. This example illustrates a range of selection techniques, including full match, starts with, ends with, and contains. Here, we will provide an in-depth explanation of the key sections within this code to better understand its functionality.
+The file [lexbor/html/elements_by_attr.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/elements_by_attr.c) demonstrates how to use the `lexbor` library to extract and manipulate HTML elements based on their attributes. This example illustrates a range of selection techniques, including full match, starts with, ends with, and contains. Here, we will provide an in-depth explanation of the key sections within this code to better understand its functionality.
 
 ## Key Code Sections
 

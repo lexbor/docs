@@ -1,6 +1,6 @@
 # Punycode Encoding
 
-This article explains the operation of the `lexbor/punycode/encode.c` example from the `lexbor` library. The intent of this example is to demonstrate how to read input from standard input (stdin), handle dynamic memory allocation for growing input, and utilize the `lexbor` Punycode encoding capabilities.
+This article explains the operation of the [lexbor/punycode/encode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/punycode/encode.c) example from the `lexbor` library. The intent of this example is to demonstrate how to read input from standard input (stdin), handle dynamic memory allocation for growing input, and utilize the `lexbor` Punycode encoding capabilities.
 
 ## Key Code Sections
 

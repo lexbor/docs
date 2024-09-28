@@ -1,7 +1,7 @@
 # Unicode Normalization
 
 This article explores an example from the `lexbor` library located in the source
-file `lexbor/unicode/normalization_form_stdin.c`. The purpose of this example is
+file [lexbor/unicode/normalization_form_stdin.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/unicode/normalization_form_stdin.c). The purpose of this example is
 to normalize Unicode text read from standard input (stdin) using a chosen
 normalization form. It demonstrates how to initialize and use the Unicode
 normalization functions provided by `lexbor`. We will dissect the key portions

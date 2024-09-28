@@ -1,7 +1,7 @@
 # Manipulating HTML Document Title
 
 This article provides an in-depth explanation of the example code in 
-`lexbor/html/document_title.c`, which demonstrates how to work with HTML 
+[lexbor/html/document_title.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/document_title.c), which demonstrates how to work with HTML 
 document titles using the `lexbor` library. The code illustrates initializing a 
 document, parsing an HTML string, extracting and modifying the title, and 
 printing the tree structure before and after the change.

@@ -1,11 +1,11 @@
 # Understanding Fast CSS Selector Parsing with `lexbor`
 
-This article provides a detailed explanation of the `lexbor/css/selectors/list_fast_way.c`
-example from the `lexbor` library, focusing on its intermediate-to-advanced
-aspects. The example demonstrates how to efficiently parse and process CSS selectors
-using `lexbor`. We will look into the key sections, including initialization,
-parsing, and serialization of selectors, highlighting the intent and logic behind
-these implementations.
+This article provides a detailed explanation of the
+[lexbor/css/selectors/list_fast_way.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/selectors/list_fast_way.c)
+example from the `lexbor` library. The example demonstrates how to efficiently
+parse and process CSS selectors using `lexbor`. We will look into the key
+sections, including initialization, parsing, and serialization of selectors,
+highlighting the intent and logic behind these implementations.
 
 ## Key Code Sections
 

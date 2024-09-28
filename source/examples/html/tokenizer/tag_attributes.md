@@ -1,6 +1,6 @@
 # Parsing HTML Tag Attributes
 
-The example code found in `lexbor/html/tokenizer/tag_attributes.c` demonstrates how to use the `lexbor` library to tokenize an HTML string and retrieve the attributes of HTML tags. This will help to understand how to parse HTML data using the `lexbor` library and handle token attributes. Below, I will break down the important sections of the code and explain them in detail.
+The example code found in [lexbor/html/tokenizer/tag_attributes.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/tokenizer/tag_attributes.c) demonstrates how to use the `lexbor` library to tokenize an HTML string and retrieve the attributes of HTML tags. This will help to understand how to parse HTML data using the `lexbor` library and handle token attributes. Below, I will break down the important sections of the code and explain them in detail.
 
 ## Key Code Sections
 

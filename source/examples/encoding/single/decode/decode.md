@@ -1,6 +1,6 @@
 # Decoding UTF-8 to Code Points
 
-The example provided in `lexbor/encoding/single/decode/decode.c` demonstrates
+The example provided in [lexbor/encoding/single/decode/decode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/decode/decode.c) demonstrates
 how to use the `lexbor` library to decode a UTF-8 string into its respective Unicode
 code points. This process involves initializing a decoder, processing each character
 in the string, and handling the decoding results.
@@ -77,7 +77,7 @@ decoding and printing every character.
 
 ## Summary
 
-This example from `lexbor/encoding/single/decode/decode.c` demonstrates the basic
+This example from [lexbor/encoding/single/decode/decode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/decode/decode.c) demonstrates the basic
 process of decoding a UTF-8 encoded string into Unicode code points using the lexbor
 library. It initializes the decoder for UTF-8, iterates through the string, and
 prints each character with its corresponding Unicode code point. This showcases

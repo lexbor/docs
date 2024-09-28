@@ -1,8 +1,8 @@
 # Parsing and Serializing CSS Stylesheet
 
-This article explains an intermediate-to-advanced example code that demonstrates 
+This article explains example code that demonstrates 
 how to parse and serialize a CSS stylesheet using the `lexbor` library. The 
-example can be found in the file `lexbor/css/StyleSheet.c`.
+example can be found in the file [lexbor/css/StyleSheet.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/StyleSheet.c).
 
 The provided code example demonstrates how to read a CSS file, parse it using 
 the `lexbor` library, and then serialize the parsed CSS back to a string. This 

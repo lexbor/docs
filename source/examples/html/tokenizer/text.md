@@ -1,6 +1,6 @@
 # Tokenizing Text Nodes in HTML
 
-In this example, found in `lexbor/html/tokenizer/text.c`, we explore how to 
+In this example, found in [lexbor/html/tokenizer/text.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/tokenizer/text.c), we explore how to 
 use the `lexbor` library to tokenize HTML content and selectively process 
 text nodes (`#text` nodes). The example shows how to set up a tokenizer, 
 manage the parsing process, and handle tokens using callback functions 

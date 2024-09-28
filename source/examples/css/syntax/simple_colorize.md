@@ -1,6 +1,6 @@
 # CSS Lexer with Colorized Output
 
-This example demonstrates how to use the `lexbor` library to parse a CSS file and provide colorized output based on the different types of CSS tokens encountered. The code is found in the `lexbor/css/syntax/simple_colorize.c` file. The primary objective of this example is to showcase how to set up a CSS parser, process different CSS rules, and colorize the output dynamically to reflect the structure of CSS syntax.
+This example demonstrates how to use the `lexbor` library to parse a CSS file and provide colorized output based on the different types of CSS tokens encountered. The code is found in the [lexbor/css/syntax/simple_colorize.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/syntax/simple_colorize.c) file. The primary objective of this example is to showcase how to set up a CSS parser, process different CSS rules, and colorize the output dynamically to reflect the structure of CSS syntax.
 
 ## Key Code Sections
 

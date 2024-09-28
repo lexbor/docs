@@ -1,6 +1,6 @@
 # Parsing HTML and CSS Selectors in lexbor
 
-This example in `lexbor/selectors/unique_nodes.c` demonstrates how to use the
+This example in [lexbor/selectors/unique_nodes.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/selectors/unique_nodes.c) demonstrates how to use the
 `lexbor` library to parse HTML content, process CSS selectors, and find HTML
 nodes that match the parsed selectors. The key parts of this example include
 initializing various lexbor structures, parsing HTML and CSS, serializing the

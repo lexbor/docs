@@ -1,6 +1,6 @@
 # Encode and Validate Unicode Code Points
 
-This article explains the code from the `lexbor` library in the file `lexbor/encoding/single/encode/validate.c`. The example demonstrates how to encode a sequence of Unicode code points into a UTF-8 byte string and handle validation of those points, especially focusing on dealing with invalid Unicode code points.
+This article explains the code from the `lexbor` library in the file [lexbor/encoding/single/encode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/encode/validate.c). The example demonstrates how to encode a sequence of Unicode code points into a UTF-8 byte string and handle validation of those points, especially focusing on dealing with invalid Unicode code points.
 
 The example code shows how to use the `lexbor` library to encode an array of Unicode code points into UTF-8. It includes the crucial steps of initializing the encoder, iterating through the Unicode code points, encoding each point, handling errors, replacing invalid code points, and finally, outputting the encoded string.
 

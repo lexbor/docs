@@ -1,6 +1,6 @@
 # URL Parsing and Serialization
 
-This example comes from the `lexbor/url/relative.c` file and demonstrates how
+This example comes from the [lexbor/url/relative.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/url/relative.c) file and demonstrates how
 to parse and serialize URLs using the `lexbor` library. The following
 explanation will dive into crucial parts of the code, illustrate its core
 functions, and provide detailed reasoning about the various `lexbor` elements 
@@ -128,7 +128,7 @@ outputting each URL component.
 - IDNA transformation emphasizes handling internationalized domain names.
 
 ## Summary
-The example from `lexbor/url/relative.c` demonstrates parsing relative URLs
+The example from [lexbor/url/relative.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/url/relative.c) demonstrates parsing relative URLs
 using a base URL, initializing necessary `lexbor` objects, and serializing the
 URL components. This process highlights `lexbor`'s capabilities in handling
 URL parsing and internationalization, which is crucial for applications dealing

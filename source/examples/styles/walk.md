@@ -1,6 +1,6 @@
 # Walking Through CSS Properties of an HTML Element
 
-The example code file `lexbor/styles/walk.c` demonstrates how to utilize the `lexbor`
+The example code file [lexbor/styles/walk.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/walk.c) demonstrates how to utilize the `lexbor`
 library to parse an HTML document, attach CSS stylesheets, and iterate over the
 CSS properties of specific HTML elements. This article will explain the code in
 detail, focusing on important sections and functions used within the `lexbor`

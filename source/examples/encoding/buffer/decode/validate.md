@@ -1,6 +1,6 @@
 # Validating and Replacing Invalid UTF-8 Encodings
 
-This article explains the example file `lexbor/encoding/buffer/decode/validate.c`
+This article explains the example file [lexbor/encoding/buffer/decode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/decode/validate.c)
 which demonstrates how to decode a UTF-8 encoded string and handle invalid byte
 sequences by replacing them with a specific replacement sequence using the `lexbor` library.
 

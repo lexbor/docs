@@ -1,7 +1,7 @@
 # Parsing and Applying CSS Stylesheet in HTML
 
 This article explains the intricacies of the `lexbor` library through an example
-found in `lexbor/styles/stylesheet.c`. This particular example demonstrates
+found in [lexbor/styles/stylesheet.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/stylesheet.c). This particular example demonstrates
 how to parse an HTML document, attach a CSS stylesheet to it, and then extract
 and serialize specific CSS properties applied to an element. The article will
 delve into key sections of the code, breaking down the usage and intent of

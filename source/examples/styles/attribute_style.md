@@ -1,6 +1,6 @@
 # Parsing Inline CSS Styles
 
-This article provides an in-depth explanation of an example program available in the file `lexbor/styles/attribute_style.c`, which demonstrates how to parse inline CSS styles within HTML elements using the `lexbor` library. The example focuses specifically on extracting and serializing the `width` and `height` CSS properties from a `<div>` element. This task involves HTML parsing, CSS preprocessing, and style extraction using various functions provided by `lexbor`.
+This article provides an in-depth explanation of an example program available in the file [lexbor/styles/attribute_style.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/styles/attribute_style.c), which demonstrates how to parse inline CSS styles within HTML elements using the `lexbor` library. The example focuses specifically on extracting and serializing the `width` and `height` CSS properties from a `<div>` element. This task involves HTML parsing, CSS preprocessing, and style extraction using various functions provided by `lexbor`.
 
 ## Key Code Sections
 

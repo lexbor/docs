@@ -1,6 +1,6 @@
 # Converting Unicode to ASCII with IDNA
 
-This article explains the use of the `lexbor` library to convert Unicode text to ASCII using Internationalized Domain Names in Applications (IDNA). We will analyze the code in `lexbor/unicode/idna_to_ascii.c`, providing a detailed explanation of how it works.
+This article explains the use of the `lexbor` library to convert Unicode text to ASCII using Internationalized Domain Names in Applications (IDNA). We will analyze the code in [lexbor/unicode/idna_to_ascii.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/unicode/idna_to_ascii.c), providing a detailed explanation of how it works.
 
 The example demonstrates how to use the `lexbor` library to convert Unicode text to ASCII, particularly in the context of internationalized domain names. The program initializes an IDNA object, reads input from stdin, processes it, and finally converts the read content to ASCII using a callback function. This article dissects the key sections of the code, explaining their functionality and rationale.
 
@@ -137,4 +137,4 @@ Using formatted printing, this function outputs the data received in the callbac
 
 ## Summary
 
-The example in `lexbor/unicode/idna_to_ascii.c` illustrates how to use the `lexbor` library for converting Unicode text to ASCII in the context of IDNA. The main tasks include initializing the IDNA object, reading and managing input dynamically, and using a callback function for the conversion process. Understanding these steps is essential for implementing robust applications that leverage the `lexbor` library to handle internationalized domain names effectively.
+The example in [lexbor/unicode/idna_to_ascii.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/unicode/idna_to_ascii.c) illustrates how to use the `lexbor` library for converting Unicode text to ASCII in the context of IDNA. The main tasks include initializing the IDNA object, reading and managing input dynamically, and using a callback function for the conversion process. Understanding these steps is essential for implementing robust applications that leverage the `lexbor` library to handle internationalized domain names effectively.

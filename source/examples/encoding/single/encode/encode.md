@@ -1,6 +1,6 @@
 # UTF-8 Encoding Example
 
-The source file under discussion is `lexbor/encoding/single/encode/encode.c`. This example demonstrates how to encode a sequence of Unicode code points into a UTF-8 byte string using the `lexbor` library. The example covers the initialization of the encoding process, the encoding of individual Unicode code points, and the final assembly of the encoded string.
+The source file under discussion is [lexbor/encoding/single/encode/encode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/encode/encode.c). This example demonstrates how to encode a sequence of Unicode code points into a UTF-8 byte string using the `lexbor` library. The example covers the initialization of the encoding process, the encoding of individual Unicode code points, and the final assembly of the encoded string.
 
 ## Key Code Sections
 

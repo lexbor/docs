@@ -1,6 +1,6 @@
 # Lexbor Encoding Decoder
 
-This article delves into the purpose and functionality of the code from the file `lexbor/encoding/buffer/decode/decoder.c`. The example demonstrates how to utilize the `lexbor` library to decode text from various encodings, converting it to Unicode code points. We'll explore key sections of the code to understand how it achieves this.
+This article delves into the purpose and functionality of the code from the file [lexbor/encoding/buffer/decode/decoder.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/decode/decoder.c). The example demonstrates how to utilize the `lexbor` library to decode text from various encodings, converting it to Unicode code points. We'll explore key sections of the code to understand how it achieves this.
 
 ## Key Code Sections
 

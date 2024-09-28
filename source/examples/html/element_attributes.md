@@ -1,6 +1,6 @@
 # Handling Element Attributes with `lexbor`
 
-This article explores the `lexbor/html/element_attributes.c` example, which demonstrates parsing an HTML document, manipulating DOM elements, and their attributes using the `lexbor` library. The example focuses on setting, getting, checking for existence, iterating over, changing, and finally removing attributes of a DOM element within a parsed HTML document.
+This article explores the [lexbor/html/element_attributes.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/element_attributes.c) example, which demonstrates parsing an HTML document, manipulating DOM elements, and their attributes using the `lexbor` library. The example focuses on setting, getting, checking for existence, iterating over, changing, and finally removing attributes of a DOM element within a parsed HTML document.
 
 ## Key Code Sections
 

@@ -1,6 +1,6 @@
 # Unicode Normalization
 
-This article explains the code from the file `lexbor/unicode/normalization_form.c`. The example demonstrates how to use the `lexbor` library to normalize a Unicode string using different Unicode normalization forms. We will walk through the essential sections of the code, explaining the rationale and intent behind each part.
+This article explains the code from the file [lexbor/unicode/normalization_form.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/unicode/normalization_form.c). The example demonstrates how to use the `lexbor` library to normalize a Unicode string using different Unicode normalization forms. We will walk through the essential sections of the code, explaining the rationale and intent behind each part.
 
 The example showcases how to normalize a given Unicode string using four different normalization forms: NFC, NFD, NFKC, and NFKD. The purpose of this example is to illustrate how to initialize the Unicode normalizer, perform normalization with different forms, and handle the results via a callback function.
 

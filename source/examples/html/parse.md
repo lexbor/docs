@@ -1,6 +1,6 @@
 # Parsing and Serializing HTML
 
-This article explains the purpose and functionality of a code example from the `lexbor` library, specifically located in the `lexbor/html/parse.c` file. The example demonstrates how to initialize an HTML parser, parse HTML strings into document objects, serialize those documents, and destroy the allocated resources properly. We will break down the code and discuss the important aspects and rationale behind each significant section.
+This article explains the purpose and functionality of a code example from the `lexbor` library, specifically located in the [lexbor/html/parse.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/parse.c) file. The example demonstrates how to initialize an HTML parser, parse HTML strings into document objects, serialize those documents, and destroy the allocated resources properly. We will break down the code and discuss the important aspects and rationale behind each significant section.
 
 ## Key Code Sections
 
@@ -92,4 +92,4 @@ This is done using the `lxb_html_document_destroy` function.
 
 ## Summary
 
-This example from the `lexbor/html/parse.c` file showcases the process of initializing an HTML parser, parsing HTML strings, serializing the parsed documents, and managing memory by destroying the parser and document objects. These steps are crucial for efficient HTML parsing and manipulation when using the `lexbor` library. Understanding this example helps users to correctly implement and handle HTML parsing and serialization in their own applications, ensuring both functionality and performance.
+This example from the [lexbor/html/parse.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/parse.c) file showcases the process of initializing an HTML parser, parsing HTML strings, serializing the parsed documents, and managing memory by destroying the parser and document objects. These steps are crucial for efficient HTML parsing and manipulation when using the `lexbor` library. Understanding this example helps users to correctly implement and handle HTML parsing and serialization in their own applications, ensuring both functionality and performance.

@@ -1,6 +1,6 @@
 # Querying Elements by Class Name
 
-File: `lexbor/html/elements_by_class_name.c`
+File: [lexbor/html/elements_by_class_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/elements_by_class_name.c)
 
 This example demonstrates how to use the `lexbor` library to parse an HTML
 document and retrieve all elements with a specific class name. The example

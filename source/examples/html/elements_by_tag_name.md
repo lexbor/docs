@@ -1,6 +1,6 @@
 # Extracting Elements by Tag Name
 
-In this article, we will delve into the `lexbor/html/elements_by_tag_name.c` example,
+In this article, we will delve into the [lexbor/html/elements_by_tag_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/elements_by_tag_name.c) example,
 which demonstrates how to extract HTML elements by their tag name using the `lexbor`
 library. This specific example focuses on parsing an HTML snippet and then retrieving
 all `<div>` elements from it. We will analyze the different sections of the code to 
@@ -100,7 +100,7 @@ Here, `lxb_dom_collection_destroy` releases the memory for the collection, and
 
 ## Summary
 
-The `lexbor/html/elements_by_tag_name.c` example effectively demonstrates how to 
+The [lexbor/html/elements_by_tag_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/elements_by_tag_name.c) example effectively demonstrates how to 
 parse an HTML document and extract elements by their tag name. Key takeaways include 
 the importance of proper initialization and error handling, as well as the 
 simplicity and power of the `lexbor` API for DOM manipulation tasks. This example is 

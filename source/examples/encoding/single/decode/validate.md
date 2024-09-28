@@ -1,6 +1,6 @@
 # UTF-8 String Decoding and Validation
 
-This article explains a demonstrative code file `lexbor/encoding/single/decode/validate.c` that 
+This article explains a demonstrative code file [lexbor/encoding/single/decode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/decode/validate.c) that 
 decodes and validates a UTF-8 encoded string to code points using the `lexbor` library. The example 
 focuses on initializing the decoder, processing each byte sequence in the input string to validate 
 and decode it, and handling invalid byte sequences.

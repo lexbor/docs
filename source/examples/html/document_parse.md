@@ -1,6 +1,6 @@
 # Parsing an HTML Document
 
-In this example, located in the `lexbor/html/document_parse.c` file, we see a typical usage scenario of the `lexbor` library for parsing an HTML document. This example demonstrates the creation of an HTML document object, basic parsing of HTML content, and serialization of the resulting DOM tree.
+In this example, located in the [lexbor/html/document_parse.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/document_parse.c) file, we see a typical usage scenario of the `lexbor` library for parsing an HTML document. This example demonstrates the creation of an HTML document object, basic parsing of HTML content, and serialization of the resulting DOM tree.
 
 The example provides a clear, concise illustration of how to initialize and use the `lexbor` library to parse an HTML document. The example highlights crucial library functions and demonstrates error handling during document creation and HTML parsing. We will analyze several important sections of the code to understand its workings.
 
@@ -65,4 +65,4 @@ This call to `lxb_html_document_destroy()` ensures that all resources allocated 
 
 ## Summary
 
-This example code from `lexbor/html/document_parse.c` serves as an excellent starting point for understanding basic document parsing using the `lexbor` library. It covers essential aspects such as initialization, parsing, and cleanup, while also demonstrating how to handle errors effectively. Typical `lexbor` users can draw valuable insights from this example to incorporate into their own projects, particularly concerning proper resource management and direct interaction with the HTML DOM.
+This example code from [lexbor/html/document_parse.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/document_parse.c) serves as an excellent starting point for understanding basic document parsing using the `lexbor` library. It covers essential aspects such as initialization, parsing, and cleanup, while also demonstrating how to handle errors effectively. Typical `lexbor` users can draw valuable insights from this example to incorporate into their own projects, particularly concerning proper resource management and direct interaction with the HTML DOM.

@@ -1,6 +1,6 @@
 # Using Selectors with lexbor
 
-This article delves into the use of CSS selectors within the `lexbor` library, specifically through the example provided in the file `lexbor/selectors/easy_way.c`. This example demonstrates how to create an HTML document, parse it, apply CSS selectors, and find matching HTML elements.
+This article delves into the use of CSS selectors within the `lexbor` library, specifically through the example provided in the file [lexbor/selectors/easy_way.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/selectors/easy_way.c). This example demonstrates how to create an HTML document, parse it, apply CSS selectors, and find matching HTML elements.
 
 The example illustrates how the `lexbor` library can be utilized to parse an HTML document, apply CSS selectors to it, and then process the matched nodes. This is achieved through several key steps: initializing the HTML document, setting up the CSS parser, creating and parsing selectors, and finally, invoking callbacks when matches are found.
 
@@ -118,4 +118,4 @@ lxb_html_document_destroy(document);
 
 ## Summary
 
-This example highlights the core functionalities of the `lexbor` library: parsing HTML documents, using CSS parsers, and handling node selection with callbacks. It demonstrates how to effectively apply complex CSS selectors and manage resources within the library, providing a comprehensive guide for intermediate to advanced users aiming to leverage `lexbor` for DOM manipulation and CSS querying.
+This example highlights the core functionalities of the `lexbor` library: parsing HTML documents, using CSS parsers, and handling node selection with callbacks. It demonstrates how to effectively apply complex CSS selectors and manage resources within the library, providing a comprehensive guide for users aiming to leverage `lexbor` for DOM manipulation and CSS querying.

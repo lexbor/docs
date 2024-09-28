@@ -1,6 +1,6 @@
 # CSS Selectors Handling in `lexbor`
 
-This article explains the purpose and functionality of the `lexbor/selectors/normal_way.c` example file. The code demonstrates how to work with CSS selectors using the `lexbor` library. We'll dive deep into the primary segments of the code, examining the creation and manipulation of HTML documents, parsing CSS selectors and applying them to an HTML document to find specific nodes.
+This article explains the purpose and functionality of the [lexbor/selectors/normal_way.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/selectors/normal_way.c) example file. The code demonstrates how to work with CSS selectors using the `lexbor` library. We'll dive deep into the primary segments of the code, examining the creation and manipulation of HTML documents, parsing CSS selectors and applying them to an HTML document to find specific nodes.
 
 The example showcases how to parse HTML and CSS, use CSS selectors to find specific elements within the HTML document, and handle these elements via callbacks. By understanding this example, you'll gain insights into utilizing the `lexbor` library for HTML parsing and CSS selector applications.
 

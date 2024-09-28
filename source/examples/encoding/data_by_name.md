@@ -1,7 +1,7 @@
 # Retrieve Encoding Data by Name
 
 This example demonstrates how to retrieve encoding data by name using the `lexbor`
-library, as shown in the file `lexbor/encoding/data_by_name.c`. This code 
+library, as shown in the file [lexbor/encoding/data_by_name.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/data_by_name.c). This code 
 illustrates the utilization of `lexbor` functions and data types to find specific 
 character encoding details based on a given encoding name.
 

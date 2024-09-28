@@ -1,7 +1,7 @@
 # Validating Encoded Strings with `lexbor`
 
 This article explains the functioning of a code example found in the file 
-`lexbor/encoding/buffer/encode/validate.c`. This code demonstrates how to use 
+[lexbor/encoding/buffer/encode/validate.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/encode/validate.c). This code demonstrates how to use 
 the `lexbor` library to encode a series of Unicode code points into a UTF-8 byte 
 string, validating and handling invalid code points along the way.
 

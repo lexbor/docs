@@ -1,6 +1,6 @@
 # HTML Element Creation and Traversal
 
-In this example, sourced from the `lexbor/html/element_create.c` file, we will 
+In this example, sourced from the [lexbor/html/element_create.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/html/element_create.c) file, we will 
 delve into creating and manipulating HTML elements using the `lexbor` library. 
 This article provides a deep dive into the code, explaining how to dynamically 
 create every standardized HTML element, insert them into the document tree and 

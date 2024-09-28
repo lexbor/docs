@@ -1,6 +1,6 @@
 # Text Conversion Through Custom Encodings
 
-This article will provide an in-depth explanation of the `lexbor/encoding/single/from_to.c`
+This article will provide an in-depth explanation of the [lexbor/encoding/single/from_to.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/single/from_to.c)
 example file. The intent of this example is to demonstrate how the `lexbor` library can be
 used to read input text in one character encoding, decode it, and then encode it to another
 character encoding before writing it out. The article will break down the important sections
