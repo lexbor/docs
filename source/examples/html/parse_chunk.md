@@ -1,4 +1,4 @@
-# HTML Chunks Parsing: Example
+# HTML Chunks Parsing
 
 In this article, we will delve into the `lexbor/html/parse_chunk.c` file, which is designed to demonstrate how to parse HTML in chunks using the `lexbor` library. This approach is useful for handling HTML data that arrives in parts, such as from network streams. We will examine key sections of the code to understand its functionality and the useful features of the `lexbor` library.
 

@@ -1,4 +1,4 @@
-# Converting Unicode to ASCII with IDNA: Example
+# Converting Unicode to ASCII with IDNA
 
 This article explains the use of the `lexbor` library to convert Unicode text to ASCII using Internationalized Domain Names in Applications (IDNA). We will analyze the code in `lexbor/unicode/idna_to_ascii.c`, providing a detailed explanation of how it works.
 

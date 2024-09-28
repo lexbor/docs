@@ -1,4 +1,4 @@
-# Validating Encoded Strings with `lexbor`: Example
+# Validating Encoded Strings with `lexbor`
 
 This article explains the functioning of a code example found in the file 
 `lexbor/encoding/buffer/encode/validate.c`. This code demonstrates how to use 

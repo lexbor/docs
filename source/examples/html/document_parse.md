@@ -1,4 +1,4 @@
-# Parsing an HTML Document: Example
+# Parsing an HTML Document
 
 In this example, located in the `lexbor/html/document_parse.c` file, we see a typical usage scenario of the `lexbor` library for parsing an HTML document. This example demonstrates the creation of an HTML document object, basic parsing of HTML content, and serialization of the resulting DOM tree.
 

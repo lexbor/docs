@@ -1,4 +1,4 @@
-# Extracting Elements by Tag Name: Example
+# Extracting Elements by Tag Name
 
 In this article, we will delve into the `lexbor/html/elements_by_tag_name.c` example,
 which demonstrates how to extract HTML elements by their tag name using the `lexbor`

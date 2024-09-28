@@ -1,4 +1,4 @@
-# Parsing and Serializing CSS Stylesheet: Example
+# Parsing and Serializing CSS Stylesheet
 
 This article explains an intermediate-to-advanced example code that demonstrates 
 how to parse and serialize a CSS stylesheet using the `lexbor` library. The 

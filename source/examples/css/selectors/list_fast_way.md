@@ -1,4 +1,4 @@
-# Understanding Fast CSS Selector Parsing with `lexbor`: Example
+# Understanding Fast CSS Selector Parsing with `lexbor`
 
 This article provides a detailed explanation of the `lexbor/css/selectors/list_fast_way.c`
 example from the `lexbor` library, focusing on its intermediate-to-advanced

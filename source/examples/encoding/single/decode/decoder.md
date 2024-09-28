@@ -1,4 +1,4 @@
-# Encoding Text Data with `lexbor`: Example
+# Encoding Text Data with `lexbor`
 
 The example source file `lexbor/encoding/single/decode/decoder.c` provides an in-depth look at using the `lexbor` library to decode text data from various character encodings. The primary intent of this example is to demonstrate how to initialize a decoding context, read data from standard input, and correctly handle the decoding process using the `lexbor` library. This example targets developers aiming to understand the library's capabilities for text decoding and error handling.
 

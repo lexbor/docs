@@ -1,4 +1,4 @@
-# Parsing HTML and CSS Selectors in lexbor: Example
+# Parsing HTML and CSS Selectors in lexbor
 
 This example in `lexbor/selectors/unique_nodes.c` demonstrates how to use the
 `lexbor` library to parse HTML content, process CSS selectors, and find HTML

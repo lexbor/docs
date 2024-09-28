@@ -1,4 +1,4 @@
-# CSS Tokenizer Printing: Example
+# CSS Tokenizer Printing
 
 This article explains the source code example found in `lexbor/css/syntax/tokenizer/print_raw.c`. This example demonstrates how to utilize the `lexbor` library to parse a CSS file and print the raw tokens produced by the tokenizer. We'll delve into the key code sections to better understand the parsing process and token management with `lexbor`.
 

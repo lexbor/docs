@@ -1,4 +1,4 @@
-# Parsing a CSS File with `lexbor`: Example
+# Parsing a CSS File with `lexbor`
 
 This article focuses on the source file `lexbor/css/syntax/tokenizer/from_file.c` and explains how to parse a CSS file using the `lexbor` library. This explanation delves into the specific functions and methods employed to tokenize and handle CSS content, illustrating a practical approach to CSS parsing with `lexbor`.
 

@@ -1,4 +1,4 @@
-# Unicode Normalization: Example
+# Unicode Normalization
 
 This article explains the code from the file `lexbor/unicode/normalization_form.c`. The example demonstrates how to use the `lexbor` library to normalize a Unicode string using different Unicode normalization forms. We will walk through the essential sections of the code, explaining the rationale and intent behind each part.
 

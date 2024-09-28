@@ -1,4 +1,4 @@
-# Setting `innerHTML` Property in Lexbor: Example
+# Setting `innerHTML` Property in Lexbor
 
 This example in the file `lexbor/html/element_innerHTML.c` demonstrates how to use the `lexbor` library to parse an HTML document, set the `innerHTML` of a body element, and serialize the resulting DOM tree. The intent of this code is to highlight key operations in manipulating the DOM using `lexbor`, such as document parsing, element selection, and updating the DOM tree.
 

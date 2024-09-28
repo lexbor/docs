@@ -1,4 +1,4 @@
-# URL Parsing and Serialization: Example
+# URL Parsing and Serialization
 
 This example comes from the `lexbor/url/relative.c` file and demonstrates how
 to parse and serialize URLs using the `lexbor` library. The following

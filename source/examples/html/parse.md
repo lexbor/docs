@@ -1,4 +1,4 @@
-# Parsing and Serializing HTML: Example
+# Parsing and Serializing HTML
 
 This article explains the purpose and functionality of a code example from the `lexbor` library, specifically located in the `lexbor/html/parse.c` file. The example demonstrates how to initialize an HTML parser, parse HTML strings into document objects, serialize those documents, and destroy the allocated resources properly. We will break down the code and discuss the important aspects and rationale behind each significant section.
 

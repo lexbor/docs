@@ -1,4 +1,4 @@
-# HTML Element Creation and Traversal: Example
+# HTML Element Creation and Traversal
 
 In this example, sourced from the `lexbor/html/element_create.c` file, we will 
 delve into creating and manipulating HTML elements using the `lexbor` library. 

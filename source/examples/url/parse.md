@@ -1,4 +1,4 @@
-# Parsing and Serializing a URL: Example
+# Parsing and Serializing a URL
 
 This article will delve into a code example from the `lexbor` library, specifically found in `lexbor/url/parse.c`. The example demonstrates parsing a URL and serializing its components using the `lexbor` URL parser. The context is to take an input URL, parse it into its components, and then serialize and display these components.
 

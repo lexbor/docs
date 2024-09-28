@@ -1,4 +1,4 @@
-# Encoding Data with Escaped Sequences: Example
+# Encoding Data with Escaped Sequences
 
 In this example, found in the file `lexbor/encoding/buffer/encode/encoder.c`, we delve into an implementation that reads input data, processes any escaped sequences, and encodes the data using the specified character encoding. The purpose of this code is to demonstrate how the `lexbor` library can be used to handle textual data with escaped sequences and convert it to various encodings. This write-up explains key parts of the program, focusing on the logic and usage of `lexbor` functions.
 

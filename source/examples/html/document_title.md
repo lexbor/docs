@@ -1,4 +1,4 @@
-# Manipulating HTML Document Title: Example
+# Manipulating HTML Document Title
 
 This article provides an in-depth explanation of the example code in 
 `lexbor/html/document_title.c`, which demonstrates how to work with HTML 

@@ -1,4 +1,4 @@
-# Querying Elements by Class Name: Example
+# Querying Elements by Class Name
 
 File: `lexbor/html/elements_by_class_name.c`
 

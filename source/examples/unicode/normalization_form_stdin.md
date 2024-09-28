@@ -1,4 +1,4 @@
-# Unicode Normalization: Example
+# Unicode Normalization
 
 This article explores an example from the `lexbor` library located in the source
 file `lexbor/unicode/normalization_form_stdin.c`. The purpose of this example is

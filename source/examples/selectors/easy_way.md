@@ -1,4 +1,4 @@
-# Using Selectors with lexbor: Example
+# Using Selectors with lexbor
 
 This article delves into the use of CSS selectors within the `lexbor` library, specifically through the example provided in the file `lexbor/selectors/easy_way.c`. This example demonstrates how to create an HTML document, parse it, apply CSS selectors, and find matching HTML elements.
 

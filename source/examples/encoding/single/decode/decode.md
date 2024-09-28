@@ -1,4 +1,4 @@
-# Decoding UTF-8 to Code Points: Example
+# Decoding UTF-8 to Code Points
 
 The example provided in `lexbor/encoding/single/decode/decode.c` demonstrates
 how to use the `lexbor` library to decode a UTF-8 string into its respective Unicode

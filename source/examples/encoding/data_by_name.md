@@ -1,4 +1,4 @@
-# Retrieve Encoding Data by Name: Example
+# Retrieve Encoding Data by Name
 
 This example demonstrates how to retrieve encoding data by name using the `lexbor`
 library, as shown in the file `lexbor/encoding/data_by_name.c`. This code 

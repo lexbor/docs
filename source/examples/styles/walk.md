@@ -1,4 +1,4 @@
-# Walking Through CSS Properties of an HTML Element: Example
+# Walking Through CSS Properties of an HTML Element
 
 The example code file `lexbor/styles/walk.c` demonstrates how to utilize the `lexbor`
 library to parse an HTML document, attach CSS stylesheets, and iterate over the

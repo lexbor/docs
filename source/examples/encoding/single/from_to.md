@@ -1,4 +1,4 @@
-# Text Conversion Through Custom Encodings: Example
+# Text Conversion Through Custom Encodings
 
 This article will provide an in-depth explanation of the `lexbor/encoding/single/from_to.c`
 example file. The intent of this example is to demonstrate how the `lexbor` library can be

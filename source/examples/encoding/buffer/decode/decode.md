@@ -1,4 +1,4 @@
-# Decoding UTF-8 Strings to Code Points with `lexbor`: Example
+# Decoding UTF-8 Strings to Code Points with `lexbor`
 The code example in `lexbor/encoding/buffer/decode/decode.c` demonstrates how to decode a UTF-8 encoded string into individual Unicode code points using the `lexbor` library. The example illustrates initialization, decoding, and extracting code points using various `lexbor` functions and data types.
 
 ## Key Code Sections

@@ -1,4 +1,4 @@
-# Determining HTML Encoding: Example
+# Determining HTML Encoding
 
 The example code in `lexbor/html/encoding.c` demonstrates how to determine the encoding of an HTML file using the `lexbor` library. This example is particularly useful for understanding how to initialize the encoding mechanism and extract the encoding information from the HTML content.
 

@@ -1,4 +1,4 @@
-# Tokenizing CSS from Standard Input: Example
+# Tokenizing CSS from Standard Input
 
 The file `lexbor/css/syntax/tokenizer/chunks_stdin.c` demonstrates how to tokenize CSS data read from standard input using the `lexbor` library. This article will delve into the key parts of this example, explaining the purpose and workings of each section.
 

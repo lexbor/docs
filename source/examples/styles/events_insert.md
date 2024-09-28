@@ -1,4 +1,4 @@
-# Demonstrating Event Insertions in HTML with CSS: Example
+# Demonstrating Event Insertions in HTML with CSS
 
 This article elaborates on the `lexbor/styles/events_insert.c` file from the `lexbor` library. It details how to parse an HTML document, attach a CSS stylesheet to it, and dynamically insert new elements, demonstrating how styles are applied. This example illustrates `lexbor`'s ability to manipulate both HTML and CSS effectively.
 

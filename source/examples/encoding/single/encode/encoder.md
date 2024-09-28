@@ -1,4 +1,4 @@
-# Encoding Input Strings to a Specified Encoding: Example
+# Encoding Input Strings to a Specified Encoding
 
 This example in `lexbor/encoding/single/encode/encoder.c` demonstrates how to use the `lexbor` library to encode input strings to a specified encoding. The source file `encoder.c` provides a comprehensive example of how to handle encoding using the `lexbor` encoding library. This involves initializing the encoder, reading from standard input, processing escaped code points, and outputting the result in the specified encoding.
 

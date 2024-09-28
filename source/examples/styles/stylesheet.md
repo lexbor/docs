@@ -1,4 +1,4 @@
-# Parsing and Applying CSS Stylesheet in HTML: Example
+# Parsing and Applying CSS Stylesheet in HTML
 
 This article explains the intricacies of the `lexbor` library through an example
 found in `lexbor/styles/stylesheet.c`. This particular example demonstrates

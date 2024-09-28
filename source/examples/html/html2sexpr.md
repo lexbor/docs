@@ -1,4 +1,4 @@
-# Converting HTML Tag Tree to S-Expressions: Example
+# Converting HTML Tag Tree to S-Expressions
 
 This article provides an in-depth explanation of the code from the file `lexbor/html/html2sexpr.c`. The example demonstrates how to use the `lexbor` library to convert an HTML tag tree into an s-expression string, which is output to `stdout`. It covers the process of reading an HTML file, parsing it into a DOM tree, traversing the tree, and then serializing it into s-expressions.
 

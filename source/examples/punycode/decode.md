@@ -1,4 +1,4 @@
-# Decoding Punycode: Example
+# Decoding Punycode
 
 This article delves into the `lexbor/punycode/decode.c` example file from the `lexbor` library. The example demonstrates how to decode Punycode-encoded data, a mechanism used primarily for representing Unicode characters in ASCII. This is particularly useful for encoding international domain names (IDNs).
 

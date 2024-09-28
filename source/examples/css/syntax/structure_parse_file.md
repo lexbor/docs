@@ -1,4 +1,4 @@
-# Parsing CSS Syntax from File: Example
+# Parsing CSS Syntax from File
 
 This example demonstrates how to parse a CSS file and interpret its syntax using the `lexbor` library. The provided C code, located in `lexbor/css/syntax/structure_parse_file.c`, reads a CSS file, parses its content, and handles different CSS rules and declarations. The primary aim of this example is to show the steps involved in setting up a `lexbor` CSS parser, defining necessary callbacks, and executing the parsing process. This detailed explanation walks through the key functionality and sophisticated use of the `lexbor` library functions and data types.
 

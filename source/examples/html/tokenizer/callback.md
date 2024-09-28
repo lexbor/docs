@@ -1,4 +1,4 @@
-# Token Callback in HTML Tokenizer: Example
+# Token Callback in HTML Tokenizer
 
 This article explains an example in the `lexbor/html/tokenizer/callback.c` file. This code demonstrates how to use the `lexbor` library to create an HTML tokenizer, set a callback function for processing tokens, and parse a chunk of HTML data. Each important part of the code will be analyzed to understand its intent and behavior.
 

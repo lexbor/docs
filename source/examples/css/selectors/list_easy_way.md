@@ -1,4 +1,4 @@
-# Parsing and Serializing CSS Selectors with lexbor: Example
+# Parsing and Serializing CSS Selectors with lexbor
 
 This article discusses a C code example from the `lexbor` library, specifically focusing on the file `lexbor/css/selectors/list_easy_way.c`. The example demonstrates how to parse CSS selectors and serialize them using the capabilities provided by `lexbor`.
 

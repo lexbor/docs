@@ -1,4 +1,4 @@
-# HTML Tokenization with lexbor: Example
+# HTML Tokenization with lexbor
 
 In this article, we will walk through an example demonstrating the usage of the
 `lexbor` HTML tokenizer, specifically focusing on the `simple.c` file located in

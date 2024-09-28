@@ -1,4 +1,4 @@
-# Tokenizing Text Nodes in HTML: Example
+# Tokenizing Text Nodes in HTML
 
 In this example, found in `lexbor/html/tokenizer/text.c`, we explore how to 
 use the `lexbor` library to tokenize HTML content and selectively process 

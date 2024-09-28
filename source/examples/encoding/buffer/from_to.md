@@ -1,4 +1,4 @@
-# Character Encoding Conversion: Example
+# Character Encoding Conversion
 
 This document explains the `lexbor/encoding/buffer/from_to.c` file in the `lexbor` library, which demonstrates how to read input data, decode it using one encoding, and then encode it with another encoding. This example highlights core functionalities of lexbor's encoding module.
 
