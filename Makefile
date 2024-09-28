@@ -84,3 +84,7 @@ upload: clean-doc backup deploy
 	rsync -rctvn $(DEPLOYDIR)/ $(HOST):$(REMOTEDIR)
 	# Final sync if dry-run is successful
 	rsync -rctv $(DEPLOYDIR)/ $(HOST):$(REMOTEDIR)
+
+.PHONY: linkcheck
+linkcheck:
+	$(call venv_exec, $(SPHINX) -b linkcheck $(SOURCEDIR) $(BUILDDIR))
