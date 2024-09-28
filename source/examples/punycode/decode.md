@@ -46,7 +46,7 @@ if (p + size > end) {
 }
 ```
 
-If there isn’t sufficient space, it reallocates memory to increase the buffer size by threefold. If this operation fails, an error message is displayed and the program jumps to the `failed` label to free allocated memory and exit.
+If there isn't sufficient space, it reallocates memory to increase the buffer size by threefold. If this operation fails, an error message is displayed and the program jumps to the `failed` label to free allocated memory and exit.
 
 ### Input Cleaning
 

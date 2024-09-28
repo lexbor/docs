@@ -3,7 +3,7 @@
 Hello, everyone!
 
 We continue our series on developing a browser engine. Better late than never!
-Despite the long break, I’ll update you on the lexbor project and its current
+Despite the long break, I'll update you on the lexbor project and its current
 status at the end of this article.
 
 In this article, we'll explore the specifics of parsing Cascading Style Sheets
@@ -41,7 +41,7 @@ Recommendation, etc. You can see all stages on
 marked with its current development stage, ranging from early drafts to final
 recommendations.
 
-We will focus on Editor’s Draft and Working Draft with a glance at
+We will focus on Editor's Draft and Working Draft with a glance at
 Recommendation. Since W3C standards evolve slowly, by the time a module reaches
 Recommendation, it might already be outdated. Thus, we'll treat CSS standards as
 living documents, like the HTML standard.
@@ -116,7 +116,7 @@ A specific structure includes:
 1. Stylesheet (formerly List of Rules)
 2. At-Rule
 3. Qualified Rule
-4. Block’s contents
+4. Block's contents
 5. Declaration
 6. Component value
 7. Simple block
@@ -242,7 +242,7 @@ Parsing selectors will proceed as follows:
 
 This sounds simple, but in practice, it's more complex:
 - The knowledge about which stage to switch to must be passed to each module;
-  they don’t inherently know this.
+  they don't inherently know this.
 - We need to decide whether to consume the `{` or `}` token before passing it to
   the next stage.
 - Nesting depth must be tracked. We can't just pass control to the next module
@@ -296,7 +296,7 @@ structure. This is a form of inside-out parsing.
 
 This approach is implemented in my `lexbor` project.
 
-Here’s how it works: We set up callbacks for different stages of parsing the CSS
+Here's how it works: We set up callbacks for different stages of parsing the CSS
 structure. Each callback is called only once at the beginning of a stage, not
 for every token.
 
@@ -608,7 +608,7 @@ All these tests are valid, but the result after parsing will always be `<x> = a
 b c`. The question arises—how do we compare this with others? My intuition
 suggested that the task had become significantly more complicated, but a sense
 of determination (not foolishness) drove me to address it directly. As expected,
-it didn’t work out right away; it required some thought!
+it didn't work out right away; it required some thought!
 
 Consider this example:
 ```
@@ -633,7 +633,7 @@ inconsistencies.
 
 The most reliable solution turned out to be generating the test and the result
 separately. This means that forming the result goes through the same stages as
-forming the test. Although this approach is costly, it’s manageable since
+forming the test. Although this approach is costly, it's manageable since
 real-time performance is not a constraint.
 
 As a result, we now have an excellent tool for generating tests for grammars.

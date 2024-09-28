@@ -22,7 +22,7 @@ The `main` function performs several key operations:
 
 ### CSS Parsing Implementation
 
-The `css_parse` function is crucial as it sets up the parsing buffer and pushes the initial parsing rules onto a stack. Here’s a breakdown of its functionality:
+The `css_parse` function is crucial as it sets up the parsing buffer and pushes the initial parsing rules onto a stack. Here's a breakdown of its functionality:
 
 - **Set Buffer**: The parsing buffer of the parser is set with the provided CSS data and its length.
   

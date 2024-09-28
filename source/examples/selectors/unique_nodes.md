@@ -30,7 +30,7 @@ The program outputs the serialized format of the HTML document using `lxb_html_s
 
 ### Finding HTML Nodes
 
-The core functionality of this example is encapsulated in the `lxb_selectors_find()` function, which takes the selectors and attempts to match them against the nodes in the document’s body. A callback function, `find_callback`, is provided to handle each found node, incrementing a count and processing each matched node individually. If any part of this process fails, the program suitably returns an error status.
+The core functionality of this example is encapsulated in the `lxb_selectors_find()` function, which takes the selectors and attempts to match them against the nodes in the document's body. A callback function, `find_callback`, is provided to handle each found node, incrementing a count and processing each matched node individually. If any part of this process fails, the program suitably returns an error status.
 
 ### Cleanup
 

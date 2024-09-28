@@ -43,7 +43,7 @@ The `lexbor` binaries are available for:
 
 1. Download the `lexbor` [signing
    key](https://lexbor.com/keys/lexbor_signing.key) used for our repositories
-   and add it to `apt`’s keyring:
+   and add it to `apt`'s keyring:
 
  ```sh
  curl -O https://lexbor.com/keys/lexbor_signing.key
@@ -115,7 +115,7 @@ The `lexbor` binaries are available for:
 
 1. Download the `lexbor` [signing
    key](https://lexbor.com/keys/lexbor_signing.key) used for our repositories
-   and add it to `apt`’s keyring:
+   and add it to `apt`'s keyring:
 
  ```sh
  curl -O https://lexbor.com/keys/lexbor_signing.key

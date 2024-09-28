@@ -4,7 +4,7 @@ This article explains the C code found in [lexbor/styles/events_insert.c](https:
 
 ## Overview
 
-The provided code initializes an HTML document representation, parses a predefined HTML string, applies a CSS stylesheet, and manipulates the DOM to insert a new HTML element. Here’s a breakdown of the major sections of the code.
+The provided code initializes an HTML document representation, parses a predefined HTML string, applies a CSS stylesheet, and manipulates the DOM to insert a new HTML element. Here's a breakdown of the major sections of the code.
 
 ## Code Breakdown
 

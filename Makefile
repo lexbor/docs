@@ -1,5 +1,6 @@
+PYTHON      ?= python3
 SPHINX      ?= sphinx-build
-SERVER      ?= python3 -m http.server
+SERVER      ?= $(PYTHON) -m http.server
 VENVDIR     ?= .venv
 VENV        ?= $(VENVDIR)/bin/activate
 
@@ -21,7 +22,7 @@ endef
 
 # Ensure virtual environment exists
 $(VENVDIR):
-	python3 -m venv $(VENVDIR)
+	$(PYTHON) -m venv $(VENVDIR)
 
 # Install dependencies inside virtual environment
 .PHONY: install
@@ -88,3 +89,7 @@ upload: clean-doc backup deploy
 .PHONY: linkcheck
 linkcheck:
 	$(call venv_exec, $(SPHINX) -b linkcheck $(SOURCEDIR) $(BUILDDIR))
+
+.PHONY: spellcheck
+spellcheck:
+	$(call venv_exec, $(PYTHON) -m pyspelling -c spellcheck.yaml -j $(shell nproc))

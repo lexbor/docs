@@ -10,7 +10,7 @@ The program begins with the inclusion of necessary headers from the Lexbor libra
 
 - **callback**: This function acts as a callback for serializing HTML nodes. It takes a pointer to data representing the node's content and its length, printing the content to the standard output.
 
-- **find_callback**: This callback function is invoked for each matching node found by the CSS selectors. It increments the count of matched nodes, prints the count, and calls the serialization callback to output the node’s content.
+- **find_callback**: This callback function is invoked for each matching node found by the CSS selectors. It increments the count of matched nodes, prints the count, and calls the serialization callback to output the node's content.
 
 ### Main Function Breakdown
 

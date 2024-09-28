@@ -6,7 +6,7 @@ This article provides an in-depth explanation of a code example found in the [le
 
 ### Header Files and Function Definition
 
-The code begins with necessary includes, specifically `base.h`, along with lexbor’s HTML and CSS header files. This setup ensures that all necessary functions related to HTML document handling and CSS processing are available. 
+The code begins with necessary includes, specifically `base.h`, along with lexbor's HTML and CSS header files. This setup ensures that all necessary functions related to HTML document handling and CSS processing are available. 
 
 The `callback` function serves as a utility to print CSS property declarations. It takes a character pointer `data`, the length of data `len`, and a context pointer `ctx`. It uses `printf` to output the string, formatting it based on the provided length. This function is fundamental for logging purposes throughout the serialization process.
 

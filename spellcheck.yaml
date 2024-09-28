@@ -1,0 +1,30 @@
+matrix:
+  - name: Markdown Source
+    sources:
+      - source/**/*.md
+    aspell:
+      lang: en
+      d: en_US
+    dictionary:
+      wordlists:
+        - .spellcheck_ignore.txt
+      output: spellcheck_dict.dic
+    pipeline:
+      - pyspelling.filters.context:
+          context_visible_first: true
+          escapes: '\\[\\`]'
+          delimiters:
+            - open: '(?s)^(?P<open> *`{3,})'
+              close: ^(?P=open)$
+            - open: '\]\('
+              close: \)
+            - open: '[*]+'
+              close: '[*]+'
+            - open: '(?s)(?P<open>[<])'
+              close: '[>]'
+            - open: (?P<open>`+)
+              close: (?P=open)
+            - open: (?s)^(?P<open>---)$
+              close: ^(?P=open)$
+      - pyspelling.filters.markdown: null
+      - pyspelling.filters.url: null

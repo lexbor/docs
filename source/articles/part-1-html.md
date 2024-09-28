@@ -166,7 +166,7 @@ In the HTML namespace, the `<span>` tag is treated as text, so no `<span>`
 element is created. In the SVG namespace, however, an element is created based
 on the `<span>` tag. Thus, tags behave differently depending on the namespace.
 
-But there’s more. The tokenizer must also be aware of the current namespace to
+But there's more. The tokenizer must also be aware of the current namespace to
 process `CDATA` correctly.
 
 Consider two examples involving `CDATA` and two different namespaces:
