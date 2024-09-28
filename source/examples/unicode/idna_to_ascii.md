@@ -1,38 +1,54 @@
 # IDNA to ASCII Conversion Example
 
-This document provides an explanation of the IDNA to ASCII conversion code example located in the [lexbor/unicode/idna_to_ascii.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/unicode/idna_to_ascii.c) source file. The code focuses on converting Internationalized Domain Names (IDN) from their Unicode representations to ASCII, which is often required for compatibility with DNS systems.
+This document provides an explanation of the IDNA to ASCII conversion code
+example located in the
+[lexbor/unicode/idna_to_ascii.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/unicode/idna_to_ascii.c)
+source file. The code focuses on converting Internationalized Domain Names (IDN)
+from their Unicode representations to ASCII, which is often required for
+compatibility with DNS systems.
 
 ## Overview
 
-The program begins by initializing the necessary libraries and defining the main entry point. Central to the workflow is the utilization of the `lxb_unicode_idna_t` structure, which is responsible for handling the conversion process. The program reads data from standard input and manages memory dynamically to accommodate varying input sizes.
+The program begins by initializing the necessary libraries and defining the main
+entry point. Central to the workflow is the utilization of the
+`lxb_unicode_idna_t` structure, which is responsible for handling the conversion
+process. The program reads data from standard input and manages memory
+dynamically to accommodate varying input sizes.
 
 ## Code Explanation
 
 ### Initialization
 
-The program begins with include directives, where it imports the lexbor unicode library. The `callback` function is declared, which is used later in the code to process the results of the conversion.
+The program begins with include directives, where it imports the lexbor unicode
+library. The `callback` function is declared, which is used later in the code to
+process the results of the conversion.
 
-In the `main` function, the variables are declared, and critical initialization occurs:
+In the `main` function, the variables are declared, and critical initialization
+occurs:
 
 ```c
 status = lxb_unicode_idna_init(&idna);
 ```
 
-Here, `lxb_unicode_idna_init` initializes an IDNA object, and the program checks for successful initialization, exiting if it fails.
+Here, `lxb_unicode_idna_init` initializes an IDNA object, and the program checks
+for successful initialization, exiting if it fails.
 
 ### Memory Allocation
 
-Memory allocation is handled using the `lexbor_malloc` function. The program allocates a buffer to read input data:
+Memory allocation is handled using the `lexbor_malloc` function. The program
+allocates a buffer to read input data:
 
 ```c
 buf = lexbor_malloc(sizeof(inbuf));
 ```
 
-If memory allocation fails, the program gracefully handles the error by cleaning up resources and terminating.
+If memory allocation fails, the program gracefully handles the error by cleaning
+up resources and terminating.
 
 ### Input Processing Loop
 
-The main processing loop reads data from standard input using `fread`. It checks for end-of-file conditions and also manages buffer overflows dynamically:
+The main processing loop reads data from standard input using `fread`. It checks
+for end-of-file conditions and also manages buffer overflows dynamically:
 
 ```c
 if (p + size > end) {
@@ -40,11 +56,15 @@ if (p + size > end) {
     tmp = lexbor_realloc(buf, nsize);
 ```
 
-If additional space is needed in the buffer, the program reallocates memory to ensure there is sufficient room for incoming data, multiplying the existing size by three. This approach helps accommodate larger inputs without frequent reallocations.
+If additional space is needed in the buffer, the program reallocates memory to
+ensure there is sufficient room for incoming data, multiplying the existing size
+by three. This approach helps accommodate larger inputs without frequent
+reallocations.
 
 ### Handling Newline Characters
 
-Before proceeding with the IDNA conversion, the program removes trailing newline and carriage return characters from the buffer:
+Before proceeding with the IDNA conversion, the program removes trailing newline
+and carriage return characters from the buffer:
 
 ```c
 if (p - buf > 0) {
@@ -54,17 +74,22 @@ if (p - buf > 0) {
 }
 ```
 
-This ensures that the string sent for conversion does not include unwanted whitespace or end-of-line characters, which could potentially affect the conversion.
+This ensures that the string sent for conversion does not include unwanted
+whitespace or end-of-line characters, which could potentially affect the
+conversion.
 
 ### IDNA Conversion
 
-The core functionality of the program lies in the call to `lxb_unicode_idna_to_ascii`, which performs the actual conversion from Unicode to ASCII:
+The core functionality of the program lies in the call to
+`lxb_unicode_idna_to_ascii`, which performs the actual conversion from Unicode
+to ASCII:
 
 ```c
 status = lxb_unicode_idna_to_ascii(&idna, buf, p - buf, callback, NULL, 0);
 ```
 
-This function takes the initialized IDNA object, the buffer of data, its length, and a callback function that will handle the output.
+This function takes the initialized IDNA object, the buffer of data, its length,
+and a callback function that will handle the output.
 
 ### Callback Function
 
@@ -79,19 +104,29 @@ callback(const lxb_char_t *data, size_t len, void *ctx)
 }
 ```
 
-This function simply prints the converted ASCII data to the standard output. It receives the data generated by the conversion and its length, allowing it to format the output correctly.
+This function simply prints the converted ASCII data to the standard output. It
+receives the data generated by the conversion and its length, allowing it to
+format the output correctly.
 
 ### Cleanup and Exit
 
-Finally, the program ensures that all allocated resources are cleaned up correctly:
+Finally, the program ensures that all allocated resources are cleaned up
+correctly:
 
 ```c
 lexbor_free(buf);
 lxb_unicode_idna_destroy(&idna, false);
 ```
 
-The error handling also follows a similar pattern, ensuring that there are no memory leaks or dangling pointers by freeing up the allocated buffer and destroying the IDNA object.
+The error handling also follows a similar pattern, ensuring that there are no
+memory leaks or dangling pointers by freeing up the allocated buffer and
+destroying the IDNA object.
 
 ## Conclusion
 
-This IDNA to ASCII conversion example demonstrates important concepts related to memory management, input handling, and Unicode processing in C using the lexbor library. Through structured control flow and careful resource management, the program efficiently converts IDN input into a format compatible with traditional DNS systems. The use of callback functions helps in handling outputs dynamically, showcasing an effective design pattern in C programming.
+This IDNA to ASCII conversion example demonstrates important concepts related to
+memory management, input handling, and Unicode processing in C using the lexbor
+library. Through structured control flow and careful resource management, the
+program efficiently converts IDN input into a format compatible with traditional
+DNS systems. The use of callback functions helps in handling outputs
+dynamically, showcasing an effective design pattern in C programming.

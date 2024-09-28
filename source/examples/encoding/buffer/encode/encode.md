@@ -1,16 +1,24 @@
 # Encoding Unicode Code Points to UTF-8 Example
 
-This article explains the encoding of Unicode code points to a UTF-8 byte string using the Lexbor library. The source code is located in [lexbor/encoding/buffer/encode/encode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/encode/encode.c). This example demonstrates how to initialize the encoder, encode Unicode code points, and handle the output appropriately.
+This article explains the encoding of Unicode code points to a UTF-8 byte string
+using the Lexbor library. The source code is located in
+[lexbor/encoding/buffer/encode/encode.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/encoding/buffer/encode/encode.c).
+This example demonstrates how to initialize the encoder, encode Unicode code
+points, and handle the output appropriately.
 
 ## Overview
 
-The primary purpose of this code is to convert an array of Unicode code points into a UTF-8 encoded string. The code includes error handling, memory allocation for the output buffer, and final output printing. 
+The primary purpose of this code is to convert an array of Unicode code points
+into a UTF-8 encoded string. The code includes error handling, memory allocation
+for the output buffer, and final output printing. 
 
 ## Code Explanation
 
 ### Includes and Macros
 
-The code begins with the inclusion of the `lexbor/encoding/encoding.h` header file, which provides necessary functions and definitions for encoding operations. A macro called `FAILED` is defined to handle error reporting:
+The code begins with the inclusion of the `lexbor/encoding/encoding.h` header
+file, which provides necessary functions and definitions for encoding
+operations. A macro called `FAILED` is defined to handle error reporting:
 
 ```c
 #define FAILED(...)                                                            \
@@ -23,11 +31,13 @@ The code begins with the inclusion of the `lexbor/encoding/encoding.h` header fi
     while (0)
 ```
 
-This macro simplifies the error handling by printing an error message to `stderr` and exiting the program if there is a failure during initialization.
+This macro simplifies the error handling by printing an error message to
+`stderr` and exiting the program if there is a failure during initialization.
 
 ### Main Function
 
-The `main` function initializes several variables and prepares to encode the Unicode code points:
+The `main` function initializes several variables and prepares to encode the
+Unicode code points:
 
 ```c
 int main(int argc, const char *argv[])
@@ -41,11 +51,14 @@ int main(int argc, const char *argv[])
     lxb_char_t buffer[1024];
 ```
 
-In this section, a buffer of 1024 characters is created to hold the encoded byte string. The `lxb_codepoint_t` array contains several predefined Unicode code points.
+In this section, a buffer of 1024 characters is created to hold the encoded byte
+string. The `lxb_codepoint_t` array contains several predefined Unicode code
+points.
 
 ### Unicode Code Points
 
-The code points initialized in the `cps` array represent Cyrillic characters and symbols:
+The code points initialized in the `cps` array represent Cyrillic characters and
+symbols:
 
 ```c
 lxb_codepoint_t cps[] = {0x041F, 0x0440, 0x0438, 0x0432, 0x0435, 0x0442,
@@ -64,7 +77,9 @@ if (status != LXB_STATUS_OK) {
 }
 ```
 
-Here, `lxb_encoding_data` retrieves encoding information for UTF-8, and `lxb_encoding_encode_init` initializes the encoding context. If the initialization fails, the `FAILED` macro is invoked.
+Here, `lxb_encoding_data` retrieves encoding information for UTF-8, and
+`lxb_encoding_encode_init` initializes the encoding context. If the
+initialization fails, the `FAILED` macro is invoked.
 
 ### Encoding Process
 
@@ -77,7 +92,8 @@ if (status != LXB_STATUS_OK) {
 }
 ```
 
-This line calls the `encode` function from the `encoding` structure, which encodes the code points from `cps_ref` to `cps_end`.
+This line calls the `encode` function from the `encoding` structure, which
+encodes the code points from `cps_ref` to `cps_end`.
 
 ### Output Preparation
 
@@ -95,8 +111,12 @@ Finally, the result is displayed:
 printf("\nResult: %s\n", (char *) buffer);
 ```
 
-This prints the encoded UTF-8 string to standard output along with the original Unicode values shown in hexadecimal format.
+This prints the encoded UTF-8 string to standard output along with the original
+Unicode values shown in hexadecimal format.
 
 ## Conclusion
 
-This code example effectively demonstrates the usage of the Lexbor encoding library for converting Unicode code points to a UTF-8 encoded string. It emphasizes proper initialization, error handling, and output formatting, which are essential for working with character encoding in C programming.
+This code example effectively demonstrates the usage of the Lexbor encoding
+library for converting Unicode code points to a UTF-8 encoded string. It
+emphasizes proper initialization, error handling, and output formatting, which
+are essential for working with character encoding in C programming.

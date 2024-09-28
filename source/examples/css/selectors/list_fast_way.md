@@ -1,49 +1,83 @@
 # CSS Selectors Parsing Example
 
-This article explains the functionality present in the `list_fast_way.c` source file of the lexbor CSS library, illustrating how to parse CSS selectors effectively. The primary goal of the code is to demonstrate the parsing of various CSS selectors and report the results, including any parsing warnings that may arise.
+This article explains the functionality present in the `list_fast_way.c` source
+file of the lexbor CSS library, illustrating how to parse CSS selectors
+effectively. The primary goal of the code is to demonstrate the parsing of
+various CSS selectors and report the results, including any parsing warnings
+that may arise.
 
 ## Code Structure Overview
 
-The entire program is structured around a single function `main`, which is the entry point when the program is executed. Several components of the code are critical to understanding how it prepares for and executes CSS selector parsing.
+The entire program is structured around a single function `main`, which is the
+entry point when the program is executed. Several components of the code are
+critical to understanding how it prepares for and executes CSS selector parsing.
 
 ### Including Required Headers
 
-The program begins by including `lexbor/css/css.h`, which is essential as it provides the functions, types, and structures required for working with the lexbor CSS parser.
+The program begins by including `lexbor/css/css.h`, which is essential as it
+provides the functions, types, and structures required for working with the
+lexbor CSS parser.
 
 ### Callback Function
 
-The `callback` function is defined to handle logging messages that arise during the CSS parsing process. It takes in data and its length, printing the message using `printf`. This function is a straightforward implementation that merely outputs the parsed messages but can be extended for more complex handlers if needed.
+The `callback` function is defined to handle logging messages that arise during
+the CSS parsing process. It takes in data and its length, printing the message
+using `printf`. This function is a straightforward implementation that merely
+outputs the parsed messages but can be extended for more complex handlers if
+needed.
 
 ### Main Function Logic
 
 Inside the `main` function, the following key operations are performed:
 
 1. **Memory Setup:** 
-   - A memory object is created using `lxb_css_memory_create`, which acts as a buffer for all parsed structures.
-   - Initialization of memory is conducted with `lxb_css_memory_init`, setting aside an initial block of 128 bytes.
+   - A memory object is created using `lxb_css_memory_create`, which acts as a
+     buffer for all parsed structures.
+   - Initialization of memory is conducted with `lxb_css_memory_init`, setting
+     aside an initial block of 128 bytes.
 
 2. **Parser Initialization:** 
-   - A CSS parser object is instantiated with `lxb_css_parser_create` and initialized using `lxb_css_parser_init`.
+   - A CSS parser object is instantiated with `lxb_css_parser_create` and
+     initialized using `lxb_css_parser_init`.
 
 3. **Binding the Memory and Selectors:**
-   - It is crucial to bind the created memory object to the parser to prevent memory allocation issues during parsing. This is achieved using `lxb_css_parser_memory_set`.
-   - Similarly, a selectors object is created and initialized. This object must also be bound to the parser, so its data can be managed correctly while parsing CSS selectors.
+   - It is crucial to bind the created memory object to the parser to prevent
+     memory allocation issues during parsing. This is achieved using
+     `lxb_css_parser_memory_set`.
+   - Similarly, a selectors object is created and initialized. This object must
+     also be bound to the parser, so its data can be managed correctly while
+     parsing CSS selectors.
 
 ### Parsing CSS Selectors
 
-The program defines a static array of CSS selectors to be parsed. Each selector is processed in a loop, where:
+The program defines a static array of CSS selectors to be parsed. Each selector
+is processed in a loop, where:
 
 - The parser attempts to parse each selector using `lxb_css_selectors_parse`.
-- The output is assessed to determine if parsing was successful or if there were any warnings or errors. Any issues are logged using the `callback` function, which provides informative feedback.
+- The output is assessed to determine if parsing was successful or if there were
+  any warnings or errors. Any issues are logged using the `callback` function,
+  which provides informative feedback.
 
 ### Resource Cleanup
 
-After all parsing operations, the program ensures to destroy the selectors and parser resources, calling `lxb_css_selectors_destroy` and `lxb_css_parser_destroy`. This step is crucial in managing memory and avoiding leaks in longer-running applications.
+After all parsing operations, the program ensures to destroy the selectors and
+parser resources, calling `lxb_css_selectors_destroy` and
+`lxb_css_parser_destroy`. This step is crucial in managing memory and avoiding
+leaks in longer-running applications.
 
 ### Serialization of Results
 
-Finally, the parsed selector lists are serialized and printed. For each selector, the program checks if any parsing results were generated by the `lxb_css_selector_serialize_list` function. If a selector results in an empty list, it is noted accordingly.
+Finally, the parsed selector lists are serialized and printed. For each
+selector, the program checks if any parsing results were generated by the
+`lxb_css_selector_serialize_list` function. If a selector results in an empty
+list, it is noted accordingly.
 
 ### Conclusion
 
-The `list_fast_way.c` example serves as a practical guide for developers looking to understand how to parse CSS selectors using the lexbor library. By emphasizing memory management, proper initialization, and error handling, this example lays a solid foundation for further applications of the library in real-world projects. The code harnesses the flexibility of lexbor while maintaining clarity and efficiency in parsing operations, making it an invaluable resource for CSS-related development.
+The `list_fast_way.c` example serves as a practical guide for developers looking
+to understand how to parse CSS selectors using the lexbor library. By
+emphasizing memory management, proper initialization, and error handling, this
+example lays a solid foundation for further applications of the library in
+real-world projects. The code harnesses the flexibility of lexbor while
+maintaining clarity and efficiency in parsing operations, making it an
+invaluable resource for CSS-related development.

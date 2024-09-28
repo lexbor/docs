@@ -1,10 +1,17 @@
 # CSS Syntax Tokenizer Example
 
-This article provides a detailed explanation of a CSS syntax tokenizer implemented in the file [lexbor/css/syntax/tokenizer/from_file.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/syntax/tokenizer/from_file.c). The code serves the purpose of reading a CSS file, processing its contents to extract tokens, and producing output that describes each token.
+This article provides a detailed explanation of a CSS syntax tokenizer
+implemented in the file
+[lexbor/css/syntax/tokenizer/from_file.c](https://github.com/lexbor/lexbor/blob/master/examples/lexbor/css/syntax/tokenizer/from_file.c).
+The code serves the purpose of reading a CSS file, processing its contents to
+extract tokens, and producing output that describes each token.
 
 ## Overview
 
-The main function of the tokenizer is to parse CSS code from a file, generate tokens for syntactic analysis, and then invoke a callback function to handle the output of each token. The program efficiently handles input and organizes the parsing process with the help of the lexbor library.
+The main function of the tokenizer is to parse CSS code from a file, generate
+tokens for syntactic analysis, and then invoke a callback function to handle the
+output of each token. The program efficiently handles input and organizes the
+parsing process with the help of the lexbor library.
 
 ## Code Breakdown
 
@@ -17,7 +24,9 @@ At the beginning of the file, necessary libraries are included:
 #include <lexbor/core/fs.h>
 ```
 
-The first include provides access to CSS-related functionality within the lexbor library, whereas the second includes core file system operations needed to read the CSS file.
+The first include provides access to CSS-related functionality within the lexbor
+library, whereas the second includes core file system operations needed to read
+the CSS file.
 
 A utility function `usage` is defined to provide a simple usage instruction:
 
@@ -28,11 +37,13 @@ static void usage(void)
 }
 ```
 
-This function prints an error message when the user does not provide the correct number of arguments.
+This function prints an error message when the user does not provide the correct
+number of arguments.
 
 ### Main Function Logic
 
-The entry point of the program is the `main` function, which processes command-line arguments and orchestrates the tokenization process:
+The entry point of the program is the `main` function, which processes
+command-line arguments and orchestrates the tokenization process:
 
 ```c
 int main(int argc, const char *argv[])
@@ -40,7 +51,8 @@ int main(int argc, const char *argv[])
 
 #### Argument Validation
 
-At the start of the main function, the program checks whether exactly one command-line argument (the CSS file name) has been provided:
+At the start of the main function, the program checks whether exactly one
+command-line argument (the CSS file name) has been provided:
 
 ```c
 if (argc != 2) {
@@ -62,7 +74,8 @@ if (css == NULL) {
 }
 ```
 
-The `lexbor_fs_file_easy_read` function reads the entire file into memory, and if it fails, the program reports the error and exits.
+The `lexbor_fs_file_easy_read` function reads the entire file into memory, and
+if it fails, the program reports the error and exits.
 
 #### Tokenizer Initialization
 
@@ -73,11 +86,14 @@ tkz = lxb_css_syntax_tokenizer_create();
 status = lxb_css_syntax_tokenizer_init(tkz);
 ```
 
-These lines allocate memory for the tokenizer and perform any necessary setup. If initialization fails, an error message is printed, and the program proceeds to cleanup.
+These lines allocate memory for the tokenizer and perform any necessary setup.
+If initialization fails, an error message is printed, and the program proceeds
+to cleanup.
 
 #### Setting Input Buffer
 
-Next, the contents of the CSS file are set as the input buffer for the tokenizer:
+Next, the contents of the CSS file are set as the input buffer for the
+tokenizer:
 
 ```c
 lxb_css_syntax_tokenizer_buffer_set(tkz, css, css_len);
@@ -112,9 +128,15 @@ while (type != LXB_CSS_SYNTAX_TOKEN__EOF);
 
 #### Token Extraction
 
-Within the loop, the function `lxb_css_syntax_token` retrieves a token. If no token is available, it reports a parsing failure. Upon successful token retrieval, it prints the type name of the token followed by calling `lxb_css_syntax_token_serialize`, which uses the provided `callback` function to output the token data.
+Within the loop, the function `lxb_css_syntax_token` retrieves a token. If no
+token is available, it reports a parsing failure. Upon successful token
+retrieval, it prints the type name of the token followed by calling
+`lxb_css_syntax_token_serialize`, which uses the provided `callback` function to
+output the token data.
 
-The type of the current token is acquired to determine if the end of the file (EOF) has been reached. If the EOF is not reached, the loop continues to consume tokens.
+The type of the current token is acquired to determine if the end of the file
+(EOF) has been reached. If the EOF is not reached, the loop continues to consume
+tokens.
 
 ### Cleanup and Exit
 
@@ -125,8 +147,13 @@ lxb_css_syntax_tokenizer_destroy(tkz);
 lexbor_free(css);
 ```
 
-Finally, the program returns `EXIT_SUCCESS` if the execution was successful, or `EXIT_FAILURE` in case of any errors during the process.
+Finally, the program returns `EXIT_SUCCESS` if the execution was successful, or
+`EXIT_FAILURE` in case of any errors during the process.
 
 ## Conclusion
 
-The CSS syntax tokenizer effectively reads and parses a CSS file, extracting and displaying token details by utilizing the lexbor library's API for CSS processing. This example demonstrates not only the functionality of lexer-based parsing but also highlights memory management and error handling within a complex system.
+The CSS syntax tokenizer effectively reads and parses a CSS file, extracting and
+displaying token details by utilizing the lexbor library's API for CSS
+processing. This example demonstrates not only the functionality of lexer-based
+parsing but also highlights memory management and error handling within a
+complex system.
