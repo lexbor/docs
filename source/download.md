@@ -46,16 +46,17 @@ The `lexbor` binaries are available for:
    and add it to `apt`’s keyring:
 
  ```sh
- curl -O https://lexbor.com/keys/lexbor_signing.key
- apt-key add lexbor_signing.key
+sudo mkdir -p /etc/apt/keyrings
+curl https://lexbor.com/keys/lexbor_signing.key | \
+    sudo gpg --dearmor --output /etc/apt/keyrings/lexbor.gpg
  ```
 
 2. To configure the `lexbor` repository, create the following file named
    `/etc/apt/sources.list.d/lexbor.list`. For Debian 11:
 
  ```ini
- deb https://packages.lexbor.com/debian/ bullseye liblexbor
- deb-src https://packages.lexbor.com/debian/ bullseye liblexbor
+deb-src [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/debian/ bullseye liblexbor
+deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/debian/ bullseye liblexbor
  ```
 
  Supported distros also include `buster` (10), `stretch` (9), and `jessie` (8).
@@ -118,16 +119,17 @@ The `lexbor` binaries are available for:
    and add it to `apt`’s keyring:
 
  ```sh
- curl -O https://lexbor.com/keys/lexbor_signing.key
- apt-key add lexbor_signing.key
+sudo mkdir -p /etc/apt/keyrings
+curl https://lexbor.com/keys/lexbor_signing.key | \
+    sudo gpg --dearmor --output /etc/apt/keyrings/lexbor.gpg
  ```
 
 2. To configure the `lexbor` repository, create the following file named
-   `/etc/apt/sources.list.d/lexbor.list`. For Ubuntu 22.04:
+   `/etc/apt/sources.list.d/lexbor.list`. For Ubuntu 20.04:
 
  ```ini
- deb https://packages.lexbor.com/ubuntu/ jammy liblexbor
- deb-src https://packages.lexbor.com/ubuntu/ jammy liblexbor
+deb-src [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/ubuntu/ focal liblexbor
+deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/ubuntu/ focal liblexbor
  ```
 
  Supported distros also include `hirsute` (21.04), `groovy` (20.10), `focal`
