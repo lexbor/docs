@@ -66,6 +66,12 @@ deploy: html
 	rsync -rv $(EXCLUDE) $(BUILDDIR)/ $(TMP)/
 	rsync -rcv --delete --exclude='*.gz' --exclude='tmp.*' $(TMP)/ $(DEPLOYDIR)/
 	-rm -rf $(TMP)
+	rm -f $(DEPLOYDIR)/index.html
+	rm -rf $(DEPLOYDIR)/.doctrees
+	rm -f $(DEPLOYDIR)/objects.inv
+	rm -f $(DEPLOYDIR)/.buildinfo
+	rm -rf $(DEPLOYDIR)/_sources
+	cp index.htm $(DEPLOYDIR)/
 	chmod -R g=u $(DEPLOYDIR)
 
 # Backup the remote directory and sync locally
