@@ -171,7 +171,7 @@ make
   object creation and memory management in our own way. Many classic algorithms
   used in `lexbor` are adapted to meet the specific needs of the project.
 
-- We're open to using third-party code, but it’s often simpler to start from
+- We're open to using third-party code, but it's often simpler to start from
   scratch than to add extra dependencies (looking at you, Node.js).
 
 - Some functions are platform-dependent, such as threading, timers, I/O, and
@@ -324,7 +324,7 @@ void
 - The `*_destroy` functions always check if the object is `NULL`; if so, they
   return `NULL`.
 
-- If the `*_destroy` function doesn’t take the `bool self_destroy` argument, the
+- If the `*_destroy` function doesn't take the `bool self_destroy` argument, the
   object can only be created using the `*_create` function (i.e., not on the
   stack).
 

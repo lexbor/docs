@@ -43,7 +43,7 @@ The `lexbor` binaries are available for:
 
 1. Download the `lexbor` [signing
    key](https://lexbor.com/keys/lexbor_signing.key) used for our repositories
-   and add it to `apt`’s keyring:
+   and add it to `apt`'s keyring:
 
  ```sh
 sudo mkdir -p /etc/apt/keyrings
@@ -116,7 +116,7 @@ deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/debian/
 
 1. Download the `lexbor` [signing
    key](https://lexbor.com/keys/lexbor_signing.key) used for our repositories
-   and add it to `apt`’s keyring:
+   and add it to `apt`'s keyring:
 
  ```sh
 sudo mkdir -p /etc/apt/keyrings
