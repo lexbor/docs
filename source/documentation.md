@@ -1,6 +1,4 @@
-# Documentation
-
-## Quick Start
+# Quick Start
 
 These steps show how to use `lexbor` in your code. They assume you are using Linux and `gcc`.
 
@@ -146,7 +144,7 @@ sudo make install
 ```
 
 
-### Code Samples
+## Code Samples
 
 All code samples are available in the `lexbor` repository under the [`/examples/` directory](https://github.com/lexbor/lexbor/tree/master/examples).
 
@@ -162,9 +160,9 @@ make
 
 ## General Considerations
 
-### Our Approach: Dependencies, Algorithms, Platforms
+We focus on minimal dependencies, custom algorithms, and platform-specific solutions:
 
-- The project is written in pure `C` without external dependencies. We believe
+- The project is written in pure `C` without external prerequisites. We believe
   in a "go hard or go home" approach.
 
 - While we're not reinventing every algorithm known to humankind, we handle
@@ -376,7 +374,7 @@ Each module is located in a subdirectory within the `/source/` directory of the
 project.
 
 
-## Versions
+### Module Versioning
 
 Each module records its version in the `base.h` file located at the module root.
 For example, see `/source/lexbor/html/base.h`:
@@ -392,7 +390,7 @@ For example, see `/source/lexbor/html/base.h`:
 ```
 
 
-## Core
+### Core
 
 This is the base module, implementing essential algorithms for the project, such
 as AVL and BST trees, arrays, and strings. It also handles memory management.
@@ -402,7 +400,7 @@ ones optimized.
 Documentation for this module will be available later.
 
 
-## DOM
+### DOM
 
 This module implements the [DOM specification](https://dom.spec.whatwg.org/).
 Its functions manage the DOM tree, including its nodes, attributes, and events.
@@ -410,7 +408,7 @@ Its functions manage the DOM tree, including its nodes, attributes, and events.
 Documentation for this module will be available later.
 
 
-## HTML
+### HTML
 
 This module implements the [HTML
 specification](https://html.spec.whatwg.org/multipage/).
@@ -424,7 +422,7 @@ the
 or the corresponding [articles](articles/index).
 
 
-## Encoding
+### Encoding
 
 This module implements the [Encoding
 specification](https://encoding.spec.whatwg.org/).
@@ -447,7 +445,7 @@ examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/encoding)
 in our repo or the corresponding [articles](articles/index).
 
 
-## CSS
+### CSS
 
 This module implements the [CSS specification](https://drafts.csswg.org/).
 
