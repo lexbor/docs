@@ -166,7 +166,7 @@ In the HTML namespace, the `<span>` tag is treated as text, so no `<span>`
 element is created. In the SVG namespace, however, an element is created based
 on the `<span>` tag. Thus, tags behave differently depending on the namespace.
 
-But there’s more. The tokenizer must also be aware of the current namespace to
+But there's more. The tokenizer must also be aware of the current namespace to
 process `CDATA` correctly.
 
 Consider two examples involving `CDATA` and two different namespaces:
@@ -413,7 +413,7 @@ affect the tokenizer. These dependencies are largely due to namespaces.
 
 ## How to Solve Issues?
 
-I will outline an HTML parser implementation for my Lexbor project, along with
+I will outline an HTML parser implementation for my `lexbor` project, along with
 solutions to the problems discussed.
 
 ### Preprocessing
@@ -674,7 +674,7 @@ tree_build_in_body_character(token) {
 }
 ```
 
-In Lexbor HTML:
+In `lexbor` HTML:
 ```c
 tree_build_in_body_character(token) {
     lexbor_str_t str = {0};
@@ -748,7 +748,7 @@ move forward. Next, I will focus on CSS parsing and developing a custom grammar
 ## Sources
 
 The approach to parsing and HTML tree construction described here is implemented
-in my [Lexbor](https://github.com/lexbor/lexbor) HTML library.
+in my [`lexbor`](https://github.com/lexbor/lexbor) HTML library.
 
 ## P.S.
 

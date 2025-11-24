@@ -61,8 +61,8 @@ the order of their implementation.
 
 ## Fonts, OpenType
 
-1. [Font/OpenType](https://docs.microsoft.com/ru-ru/typography/opentype/spec/)<br>
-   1.1. [Parsing OpenType font files](https://docs.microsoft.com/ru-ru/typography/opentype/spec/otff)<br>
+1. [Font/OpenType](https://learn.microsoft.com/ru-ru/typography/opentype/spec/)<br>
+   1.1. [Parsing OpenType font files](https://learn.microsoft.com/ru-ru/typography/opentype/spec/otff)<br>
    1.2. Calculating font metrics for glyphs in HTML layout: `baseline`,
         `ascender`, `descender`, `line-gap`, `x-height`, `cap-height`,
         `width`, `height`
@@ -83,9 +83,9 @@ the order of their implementation.
 
 ## Unicode
 
-1. [http://www.unicode.org/](http://www.unicode.org/): ![Done][done]<br>
+1. [https://www.unicode.org/](https://www.unicode.org/): ![Done][done]<br>
    1.1. [Normalization forms](https://www.unicode.org/reports/tr15/): ![Done][done]<br>
-   1.2. [Unicode IDNA Compatibility Processing](http://www.unicode.org/reports/tr46/): ![Done][done]
+   1.2. [Unicode IDNA Compatibility Processing](https://www.unicode.org/reports/tr46/): ![Done][done]
 
 
 ## Layout

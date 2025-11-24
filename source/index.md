@@ -1,11 +1,12 @@
 ```{toctree}
 :hidden:
-:maxdepth: 2
+:maxdepth: 1
 
 documentation
 download
 roadmap
 articles/index
+examples/index
 support
 license
 fuzzers <https://lexbor.com/fuzzers>
@@ -18,7 +19,7 @@ We build a web browser engine available as a software library; it ships under
 the Apache 2.0 license and has no extra dependencies.
 
 
-# What’s the news?
+# What's the news?
 
 Check out the latest version and our future roadmap [here](roadmap/) or follow
 our work on [GitHub](https://github.com/lexbor/lexbor).
@@ -51,7 +52,7 @@ apps in a new environment? No problem.
 From the very start, we focus on availability and support in vastly different
 environments.
 
-When you use lexbor, you need not worry about your app’s portability; from the
+When you use lexbor, you need not worry about your app's portability; from the
 ground up, we designed lexbor for wide support across various computing
 platforms and IoT devices.
 
@@ -86,4 +87,4 @@ repository](https://github.com/lexbor/lexbor/tree/master/examples/lexbor). We
 also discuss some of them in extra detail to provide insights into `lexbor`
 usage:
 
-- [CSS selectors, the easy way](articles/example-CSS-selectors-easy-way)
+[Examples](examples/index)
