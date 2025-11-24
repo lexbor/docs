@@ -10,9 +10,9 @@ BUILDDIR    ?= build
 DEPLOYDIR   ?= deploy
 REMOTEDIR   ?= /data/lexbor.com/docs/www/
 
-TODAY       ?= $(shell date '+%F')
-TMPDIR      ?= /tmp/$(TODAY)
-BACKUP      ?= backup/$(TODAY).tar.gz
+TODAY       = $(shell date '+%F')
+TMPDIR      = /tmp/$(TODAY)
+BACKUP      = backup/$(TODAY).tar.gz
 
 # Helper to activate the virtual environment and run a command
 define venv_exec
@@ -77,6 +77,7 @@ deploy: html
 # Backup the remote directory and sync locally
 .PHONY: backup
 backup:
+	mkdir -p $(shell dirname $(BACKUP))
 	# Backup remote directory to local
 	rsync -rctv $(HOST):$(REMOTEDIR) $(TMPDIR)/
 	tar -zcvf $(BACKUP) $(TMPDIR) && rm -rf $(TMPDIR)
