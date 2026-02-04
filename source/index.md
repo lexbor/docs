@@ -3,6 +3,8 @@
 :maxdepth: 2
 
 documentation
+modules/index
+amalgamation
 download
 roadmap
 articles/index
