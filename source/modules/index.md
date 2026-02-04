@@ -4,14 +4,14 @@
 :hidden:
 :maxdepth: 2
 
-core
-html
-dom
-css
-selectors
-encoding
-url
-unicode
+/modules/core
+/modules/html
+/modules/dom
+/modules/css
+/modules/selectors
+/modules/encoding
+/modules/url
+/modules/unicode
 ```
 
 The `lexbor` project is designed with a modular architecture, where each module can be built and used independently or as part of the complete engine. This approach provides flexibility — you can use only the components you need, keeping your application lightweight and focused.
@@ -42,14 +42,14 @@ These modules are stable, fully tested, and ready for production use:
 
 | Module | Version | Specification | Description |
 |--------|---------|---------------|-------------|
-| [Core](core.md) | 2.7.0 | — | Base algorithms and memory management |
-| [HTML](html.md) | 2.8.0 | [WHATWG HTML](https://html.spec.whatwg.org/) | Full HTML parser |
-| [DOM](dom.md) | 2.0.0 | [WHATWG DOM](https://dom.spec.whatwg.org/) | DOM tree manipulation |
-| [CSS](css.md) | 1.4.0 | [CSS](https://www.w3.org/Style/CSS/) | CSS parser and CSS modules |
-| [Selectors](selectors.md) | 0.5.0 | [CSS Selectors Level 4](https://drafts.csswg.org/selectors-4/) | CSS selectors engine |
-| [Encoding](encoding.md) | 2.2.0 | [WHATWG Encoding](https://encoding.spec.whatwg.org/) | 40+ character encodings |
-| [URL](url.md) | 0.4.0 | [WHATWG URL](https://url.spec.whatwg.org/) | URL parsing and manipulation |
-| [Unicode](unicode.md) | 0.4.0 | [Unicode TR#15](https://www.unicode.org/reports/tr15/), [TR#46](https://unicode.org/reports/tr46/) | Normalization and IDNA |
+| [Core](/modules/core/) | 2.7.0 | — | Base algorithms and memory management |
+| [HTML](/modules/html/) | 2.8.0 | [WHATWG HTML](https://html.spec.whatwg.org/) | Full HTML parser |
+| [DOM](/modules/dom/) | 2.0.0 | [WHATWG DOM](https://dom.spec.whatwg.org/) | DOM tree manipulation |
+| [CSS](/modules/css/) | 1.4.0 | [CSS](https://www.w3.org/Style/CSS/) | CSS parser and CSS modules |
+| [Selectors](/modules/selectors/) | 0.5.0 | [CSS Selectors Level 4](https://drafts.csswg.org/selectors-4/) | CSS selectors engine |
+| [Encoding](/modules/encoding/) | 2.2.0 | [WHATWG Encoding](https://encoding.spec.whatwg.org/) | 40+ character encodings |
+| [URL](/modules/url/) | 0.4.0 | [WHATWG URL](https://url.spec.whatwg.org/) | URL parsing and manipulation |
+| [Unicode](/modules/unicode/) | 0.5.0 | [Unicode TR#15](https://www.unicode.org/reports/tr15/), [TR#46](https://unicode.org/reports/tr46/) | Normalization and IDNA |
 | Punycode | — | [RFC 3492](https://www.rfc-editor.org/rfc/rfc3492.html) | Punycode encoding/decoding |
 
 ### Supporting Modules

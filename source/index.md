@@ -2,14 +2,14 @@
 :hidden:
 :maxdepth: 2
 
-documentation
-modules/index
-amalgamation
-download
-roadmap
-articles/index
-support
-license
+/documentation
+/modules/index
+/amalgamation
+/download
+/roadmap
+/articles/index
+/support
+/license
 fuzzers <https://lexbor.com/fuzzers>
 GitHub <https://github.com/lexbor/lexbor>
 ```
