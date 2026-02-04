@@ -81,9 +81,9 @@ You can use quotation marks (single or double) around the value, or omit them fo
 
 **Examples:**
 ```css
-input[type = "text"]          /* exact match */
-[class ~= "active"]           /* class contains "active" */
-[lang |= "en"]                /* language is en or en-* */
+input[type = "text"]        /* exact match */
+[class ~= "active"]         /* class contains "active" */
+[lang |= "en"]              /* language is en or en-* */
 a[href^="https"]            /* links starting with https */
 img[src$=".png"]            /* images ending with .png */
 [title*="hello"]            /* title contains "hello" */
@@ -171,10 +171,10 @@ img[src$=".png"]            /* images ending with .png */
 **Examples:**
 ```css
 :is(h1, h2, h3, h4, h5, h6)        /* any heading */
-:where(article, section) p          /* paragraphs in article or section, low specificity */
-p:not(.exclude)                     /* paragraphs without class "exclude" */
-article:has(img)                    /* articles containing images */
-div:has(> p.important)              /* divs with direct child p.important */
+:where(article, section) p         /* paragraphs in article or section, low specificity */
+p:not(.exclude)                    /* paragraphs without class "exclude" */
+article:has(img)                   /* articles containing images */
+div:has(> p.important)             /* divs with direct child p.important */
 ```
 
 ##### Other Functional Pseudo-classes
@@ -516,11 +516,11 @@ void lxb_css_selector_list_destroy_memory(lxb_css_selector_list_t *list);
 
 The Selectors module implements [CSS Selectors Level 4](https://drafts.csswg.org/selectors-4/) specification with the following status:
 
-- ✅ All simple selectors
-- ✅ All combinators
-- ✅ All attribute selectors
-- ✅ All pseudo-classes
-- ✅ Specificity calculation
-- ✅ Selector list (`,` separator)
+- All simple selectors
+- All combinators
+- All attribute selectors
+- All pseudo-classes
+- Specificity calculation
+- Selector list (`,` separator)
 
 The module passes extensive test suites and is used in production by major projects like PHP, SerpApi, and various language bindings.
