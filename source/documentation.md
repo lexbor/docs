@@ -79,14 +79,15 @@ Optional flags recognized by the `cmake` command:
 | LEXBOR_WITHOUT_THREADS         |   ON    | Reserved for future use.                                                                                  |
 | LEXBOR_BUILD_SHARED            |   ON    | Create a shared library.                                                                                  |
 | LEXBOR_BUILD_STATIC            |   ON    | Create a static library.                                                                                  |
-| LEXBOR_BUILD_SEPARATELY        |  OFF    | Build all modules separately. Each module will have its own library (shared and static).                   |
+| LEXBOR_BUILD_SEPARATELY        |  OFF    | Build all modules separately. Each module will have its own library (shared and static).                  |
 | LEXBOR_BUILD_EXAMPLES          |  OFF    | Build example programs.                                                                                   |
 | LEXBOR_BUILD_TESTS             |  OFF    | Build tests.                                                                                              |
 | LEXBOR_BUILD_TESTS_CPP         |   ON    | Build C++ tests to verify library operation in C++. Requires `LEXBOR_BUILD_TESTS`.                        |
+| LEXBOR_TEST_AMALGAMATION       |  OFF    | Build tests for the amalgamation file. Requires `LEXBOR_BUILD_TESTS`.                                     |
 | LEXBOR_BUILD_UTILS             |  OFF    | Build project utilities and helpers.                                                                      |
 | LEXBOR_BUILD_WITH_ASAN         |  OFF    | Enable Address Sanitizer if possible.                                                                     |
 | LEXBOR_INSTALL_HEADERS         |   ON    | Install library headers (`.h` files).                                                                     |
-| LEXBOR_PRINT_MODULE_DEPENDENCIES|  OFF    | Print module dependencies.                                                                                |
+| LEXBOR_PRINT_MODULE_DEPENDENCIES|  OFF    | Print module dependencies.                                                                               |
 
 ### Windows
 
