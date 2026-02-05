@@ -25,6 +25,7 @@ The HTML module provides a complete, specification-compliant HTML parser. Yes, i
 
 ## What's Inside
 
+- **[Quick Start](#quick-start)** — minimal working example to get started quickly
 - **[Parser](#parsing)** — high-level API combining tokenizer and tree builder
 - **[Fragment Parser](#parsing-html-fragment)** — parses HTML fragments with context element (innerHTML)
 - **[Serialization](#serialization)** — converts DOM tree back to HTML text with formatting options
@@ -1395,10 +1396,13 @@ accumulation_callback(lxb_html_tokenizer_t *tkz, lxb_html_token_t *token, void *
 void cleanup_tokens(lxb_html_tokenizer_t *tkz)
 {
     for (size_t i = 0; i < token_count; i++) {
-        lxb_html_token_destroy(tkz->dobj_token, stored_tokens[i]);
+        lxb_html_token_destroy(stored_tokens[i], tkz->dobj_token);
     }
     token_count = 0;
 }
+
+/* Or call lxb_html_tokenizer_destroy() which will clean up all tokens for you */
+lxb_html_tokenizer_destroy(tkz);
 ```
 
 **Result:** Each token is a separate object in memory. You can store and access all tokens, but this uses more memory.
@@ -1414,8 +1418,6 @@ This callback design gives you control over memory allocation:
 
 - **Always check for NULL**: If `lxb_html_token_create()` returns NULL, return NULL from your callback to signal an error
 - **Memory management**: If you accumulate tokens, you are responsible for destroying them with `lxb_html_token_destroy()`
-- **Don't mix strategies**: Choose one approach and stick with it throughout the tokenization
-- **Attributes are separate**: Token attributes have their own memory management and may need deep copying with `lxb_html_token_deep_copy()`
 
 ### Complete Accumulation Example
 
@@ -1425,8 +1427,10 @@ This callback design gives you control over memory allocation:
 typedef struct {
     lxb_html_token_t **tokens;
     size_t count;
-    size_t capacity;
-} token_storage_t;
+    size_t size;
+}
+token_storage_t;
+
 
 static lxb_html_token_t *
 store_callback(lxb_html_tokenizer_t *tkz, lxb_html_token_t *token, void *ctx)
@@ -1434,7 +1438,7 @@ store_callback(lxb_html_tokenizer_t *tkz, lxb_html_token_t *token, void *ctx)
     token_storage_t *storage = (token_storage_t *) ctx;
 
     /* Store current token */
-    if (storage->count < storage->capacity) {
+    if (storage->count < storage->size) {
         storage->tokens[storage->count++] = token;
     }
 
@@ -1453,8 +1457,8 @@ int main(void)
 
     /* Prepare storage */
     token_storage_t storage = {0};
-    storage.capacity = 100;
-    storage.tokens = malloc(storage.capacity * sizeof(lxb_html_token_t *));
+    storage.size = 100;
+    storage.tokens = malloc(storage.size * sizeof(lxb_html_token_t *));
 
     /* Create and setup tokenizer */
     lxb_html_tokenizer_t *tkz = lxb_html_tokenizer_create();
@@ -1474,9 +1478,15 @@ int main(void)
     }
 
     /* Clean up stored tokens */
+    /*
+     * In this case, it is not necessary; lxb_html_tokenizer_destroy() will
+     * clear all occupied memory.
+     *
     for (size_t i = 0; i < storage.count; i++) {
-        lxb_html_token_destroy(tkz->dobj_token, storage.tokens[i]);
+        lxb_html_token_destroy(storage.tokens[i], tkz->dobj_token);
     }
+     */
+
     free(storage.tokens);
 
     /* Clean up tokenizer */

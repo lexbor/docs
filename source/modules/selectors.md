@@ -16,11 +16,84 @@ For CSS selector parsing, use the [CSS module](css.md).
 
 ## What's Inside
 
-- **Selector Matching Engine** — efficiently matches elements against compiled selectors
-- **Attribute Selectors** — all 9 attribute matching modes with case sensitivity flags
-- **Nth Selectors** — :nth-child(), :nth-of-type() and their variants with An+B notation
-- **Pseudo-class Support** — 30+ pseudo-classes including :is(), :where(), :not(), :has()
-- **Combinators** — descendant (` `), child (`>`), adjacent sibling (`+`), general sibling (`~`), column (`||`)
+- [**Quick Start**](#quick-start) — minimal working example to get started quickly
+- [**Supported Selectors**](#supported-selectors) — complete list of supported CSS selectors
+- [**Advanced Examples**](#advanced-examples) — complex selector patterns and use cases
+- [**Search Options**](#search-options) — customize search behavior with options
+- [**Specificity**](#specificity) — how selector specificity is calculated and compared
+
+## Quick Start
+
+```c
+#include <lexbor/html/html.h>
+#include <lexbor/css/css.h>
+#include <lexbor/selectors/selectors.h>
+
+lxb_status_t
+find_callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *ctx)
+{
+    size_t text_len;
+    const lxb_char_t *text = lxb_dom_node_text_content(node, &text_len);
+    printf("%.*s\n", (int)text_len, text);
+
+    /*
+     * Here, there is no need to free the memory occupied by "text" because
+     * after the document is destroyed, all memory will be freed.
+     */
+
+    return LXB_STATUS_OK;
+}
+
+int main(int argc, const char *argv[])
+{
+    lxb_status_t status;
+    const lxb_char_t html[] = "<div class='container'><p>Hello</p><p>World</p></div>";
+    const lxb_char_t selector[] = "div.container > p";
+
+    /* Create HTML Document */
+    lxb_html_document_t *document = lxb_html_document_create();
+    status = lxb_html_document_parse(document, html, sizeof(html) - 1);
+    if (status != LXB_STATUS_OK) {
+        return EXIT_FAILURE;
+    }
+
+    /* Create CSS parser */
+    lxb_css_parser_t *parser = lxb_css_parser_create();
+    status = lxb_css_parser_init(parser, NULL);
+    if (status != LXB_STATUS_OK) {
+        return EXIT_FAILURE;
+    }
+
+    /* Create and initialize selectors */
+    lxb_selectors_t *selectors = lxb_selectors_create();
+    status = lxb_selectors_init(selectors);
+    if (status != LXB_STATUS_OK) {
+        return EXIT_FAILURE;
+    }
+
+    /* Parse selector */
+    lxb_css_selector_list_t *list = lxb_css_selectors_parse(parser, selector,
+                                                            sizeof(selector) - 1);
+    if (parser->status != LXB_STATUS_OK) {
+        return EXIT_FAILURE;
+    }
+
+    /* Find matching elements */
+    status = lxb_selectors_find(selectors, lxb_dom_interface_node(document),
+                                list, find_callback, NULL);
+    if (status != LXB_STATUS_OK) {
+        return EXIT_FAILURE;
+    }
+
+    /* Cleanup */
+    lxb_selectors_destroy(selectors, true);
+    lxb_css_parser_destroy(parser, true);
+    lxb_css_selector_list_destroy_memory(list);
+    lxb_html_document_destroy(document);
+
+    return EXIT_SUCCESS;
+}
+```
 
 ## Supported Selectors
 
@@ -81,13 +154,13 @@ You can use quotation marks (single or double) around the value, or omit them fo
 
 **Examples:**
 ```css
-input[type = "text"]        /* exact match */
-[class ~= "active"]         /* class contains "active" */
-[lang |= "en"]              /* language is en or en-* */
-a[href^="https"]            /* links starting with https */
-img[src$=".png"]            /* images ending with .png */
-[title*="hello"]            /* title contains "hello" */
-[data-value="Test" i]       /* case-insensitive */
+input[type = "text"]          /* exact match */
+[class ~= "active"]           /* class contains "active" */
+[lang |= "en"]                /* language is en or en-* */
+a[href ^= "https"]            /* links starting with https */
+img[src $= ".png"]            /* images ending with .png */
+[title *= "hello"]            /* title contains "hello" */
+[data-value = "Test" i]       /* case-insensitive */
 ```
 
 ### Pseudo-classes
@@ -96,17 +169,10 @@ img[src$=".png"]            /* images ending with .png */
 - `:hover` — element is being hovered
 - `:active` — element is being activated (e.g., mouse button pressed)
 - `:focus` — element has focus
-- `:focus-visible` — element has focus and should show focus indicator
-- `:focus-within` — element or any descendant has focus
 
 #### Location Pseudo-classes
 - `:link` — unvisited link
-- `:visited` — visited link
 - `:any-link` — matches both :link and :visited
-- `:local-link` — link to same page
-- `:target` — element targeted by fragment identifier (URL hash)
-- `:target-within` — element or descendant is targeted
-- `:scope` — reference point for relative selectors
 
 #### Input Pseudo-classes
 - `:enabled` — form control is enabled
@@ -114,18 +180,11 @@ img[src$=".png"]            /* images ending with .png */
 - `:read-only` — element is not editable
 - `:read-write` — element is editable
 - `:placeholder-shown` — input shows placeholder text
-- `:default` — default form control in a group
 - `:checked` — checkbox or radio button is checked
-- `:indeterminate` — checkbox is in indeterminate state
 
 #### Input Validation Pseudo-classes
-- `:valid` — form control passes validation
-- `:invalid` — form control fails validation
-- `:in-range` — value is within min/max range
-- `:out-of-range` — value is outside min/max range
 - `:required` — form control is required
 - `:optional` — form control is optional
-- `:user-invalid` — invalid after user interaction
 
 #### Tree-structural Pseudo-classes
 - `:root` — root element of document (usually `<html>`)
@@ -144,8 +203,6 @@ img[src$=".png"]            /* images ending with .png */
 - `:nth-last-child(An+B)` — selects nth child from end
 - `:nth-of-type(An+B)` — selects nth element of same type
 - `:nth-last-of-type(An+B)` — selects nth element of same type from end
-- `:nth-col(An+B)` — selects nth column
-- `:nth-last-col(An+B)` — selects nth column from end
 
 **An+B notation examples:**
 ```css
@@ -178,42 +235,14 @@ div:has(> p.important)             /* divs with direct child p.important */
 ```
 
 ##### Other Functional Pseudo-classes
-- `:lang(language)` — matches elements in specified language
-  - Example: `:lang(en)`, `:lang(fr)`
-- `:dir(ltr|rtl)` — matches by text direction
-  - `:dir(ltr)` — left-to-right
-  - `:dir(rtl)` — right-to-left
 - `:current(selector-list)` — time-dimensional pseudo-class for media
-
-#### Display State Pseudo-classes
-- `:fullscreen` — element is in fullscreen mode
 
 #### Other Pseudo-classes
 - `:blank` — input is blank
-- `:warning` — element has warning state
-- `:past` — time-dimensional, element represents past
-- `:future` — time-dimensional, element represents future
 
 #### Custom Lexbor Pseudo-class
 - `:-lexbor-contains(text)` — **non-standard**, matches elements containing specific text content
   - Useful for web scraping and testing
-
-### Pseudo-elements
-
-Pseudo-elements create abstraction about the document tree beyond those specified by the document language.
-
-- `::before` — generated content before element
-- `::after` — generated content after element
-- `::first-line` — first formatted line of element
-- `::first-letter` — first letter of first line
-- `::selection` — portion selected by user
-- `::inactive-selection` — selection when element is not active
-- `::placeholder` — placeholder text in input
-- `::marker` — list item marker
-- `::backdrop` — backdrop behind fullscreen element
-- `::spelling-error` — text with spelling error
-- `::grammar-error` — text with grammar error
-- `::target-text` — text targeted by scroll-to-text fragment
 
 ### Combinators
 
@@ -223,70 +252,7 @@ Combinators combine multiple selectors to create relationships:
 - **Child** (`>`) — `div > p` (direct child p of div)
 - **Next sibling** (`+`) — `h1 + p` (p immediately after h1)
 - **Subsequent sibling** (`~`) — `h1 ~ p` (any p after h1 at same level)
-- **Column** (`||`) — `col || td` (td in column represented by col)
-
-## Basic Usage
-
-```c
-#include <lexbor/html/html.h>
-#include <lexbor/selectors/selectors.h>
-
-/* Parse HTML */
-lxb_html_document_t *document = lxb_html_document_create();
-lxb_html_document_parse(document, html, html_len);
-
-/* Create selector */
-lxb_selectors_t *selectors = lxb_selectors_create();
-lxb_selectors_init(selectors);
-
-/* Compile selector */
-const lxb_char_t selector_str[] = "div.container > p:first-child";
-lxb_css_selector_list_t *list;
-list = lxb_selectors_parse(selectors, selector_str, sizeof(selector_str) - 1);
-
-if (list == NULL) {
-    /* Parsing error */
-    lxb_selectors_destroy(selectors, true);
-    lxb_html_document_destroy(document);
-    return EXIT_FAILURE;
-}
-
-/* Find matching elements */
-lxb_dom_collection_t *collection = lxb_dom_collection_make(&document->dom_document, 128);
-
-lxb_selectors_find(selectors,
-                   lxb_dom_interface_node(document->body),
-                   list,
-                   collection);
-
-/* Process results */
-for (size_t i = 0; i < lxb_dom_collection_length(collection); i++) {
-    lxb_dom_element_t *element = lxb_dom_collection_element(collection, i);
-    /* Process element */
-    const lxb_char_t *tag_name = lxb_dom_element_local_name(element, NULL);
-    printf("Found: %s\n", tag_name);
-}
-
-/* Cleanup */
-lxb_dom_collection_destroy(collection, true);
-lxb_selectors_destroy(selectors, true);
-lxb_html_document_destroy(document);
-```
-
-## Test Single Element
-
-Check if a specific element matches a selector:
-
-```c
-/* Check if element matches selector */
-bool matches = lxb_selectors_match(selectors,
-                                    lxb_dom_interface_node(element),
-                                    list);
-
-if (matches) {
-    printf("Element matches the selector\n");
-}
-```
+- **Column** (`||`) — `col || td` (td in column represented by col) (not supported yet)
 
 ## Advanced Examples
 
@@ -298,9 +264,6 @@ const lxb_char_t selector1[] = "form input[type='checkbox']:checked";
 
 /* Find all even rows in a table */
 const lxb_char_t selector2[] = "table tr:nth-child(even)";
-
-/* Find all invalid, required inputs */
-const lxb_char_t selector3[] = "input:required:invalid";
 
 /* Find first paragraph in each article */
 const lxb_char_t selector4[] = "article > p:first-of-type";
@@ -386,9 +349,6 @@ const lxb_char_t selector5[] = "div:nth-child(4n+1)";
 ### Combining Multiple Techniques
 
 ```c
-/* Find all required, invalid email inputs in an enabled form */
-const lxb_char_t selector1[] = "form:not(:disabled) input[type='email']:required:invalid";
-
 /* Find divs with specific class that contain images but not links */
 const lxb_char_t selector2[] = "div.gallery:has(img):not(:has(a))";
 
@@ -412,115 +372,204 @@ const lxb_char_t selector2[] = "p:-lexbor-contains('important')";
 const lxb_char_t selector3[] = ".content p:-lexbor-contains('TODO'):not(.done)";
 ```
 
-## Performance Considerations
+## Search Options
 
-### Selector Compilation
+You can customize the search behavior by setting options using `lxb_selectors_opt_set()`. This allows you to control how the selector engine processes nodes and handles matches.
 
-Selectors are compiled once and can be reused multiple times:
+### Available Options
+
+#### `LXB_SELECTORS_OPT_DEFAULT`
+Default behavior:
+- Root node does **not** participate in the search (only its children)
+- If a node matches multiple selectors, callback is triggered for **each match**
 
 ```c
-/* Compile once */
-lxb_css_selector_list_t *list = lxb_selectors_parse(selectors, selector_str, selector_len);
-
-/* Use multiple times */
-lxb_selectors_find(selectors, root1, list, collection1);
-lxb_selectors_find(selectors, root2, list, collection2);
-lxb_selectors_find(selectors, root3, list, collection3);
-
-/* Cleanup only once */
-lxb_css_selector_list_destroy_memory(list);
+lxb_selectors_opt_set(selectors, LXB_SELECTORS_OPT_DEFAULT);
 ```
 
-### Efficient Selector Strategies
+#### `LXB_SELECTORS_OPT_MATCH_ROOT`
+Include the root node in the search.
 
-**Fast selectors:**
-- ID selectors: `#id`
-- Class selectors: `.class`
-- Type selectors: `div`
-- Direct child: `parent > child`
+By default, when you call `lxb_selectors_find(selectors, root, list, callback, ctx)`, the `root` node itself is not checked against the selectors — only its descendants are searched.
 
-**Slower selectors:**
-- Descendant combinator: `ancestor descendant` (must traverse entire subtree)
-- `:has()` pseudo-class (requires searching descendants)
-- Attribute contains: `[attr*='value']`
-
-**Optimization tips:**
-1. Be as specific as possible on the rightmost part (key selector)
-2. Use child combinator (`>`) instead of descendant when possible
-3. Avoid overly complex `:has()` selectors
-4. Compile selectors once, reuse many times
-
-## Error Handling
+This option makes the root node participate in the search, which is useful when you want to check if the root node itself matches any selectors.
 
 ```c
-lxb_css_selector_list_t *list;
-list = lxb_selectors_parse(selectors, selector_str, selector_len);
+lxb_selectors_opt_set(selectors, LXB_SELECTORS_OPT_MATCH_ROOT);
+```
 
-if (list == NULL) {
-    /* Parse error - invalid selector syntax */
-    printf("Invalid selector syntax\n");
+#### `LXB_SELECTORS_OPT_MATCH_FIRST`
+Stop after the first match for each node.
 
-    /* You can get error information if needed */
-    lxb_selectors_destroy(selectors, true);
-    return EXIT_FAILURE;
+By default, if a node matches multiple selectors in the list, the callback is triggered once for **each matching selector**. This can result in duplicate callbacks for the same node.
+
+This option ensures the callback is called only **once per node**, even if it matches multiple selectors.
+
+```c
+lxb_selectors_opt_set(selectors, LXB_SELECTORS_OPT_MATCH_FIRST);
+```
+
+### Combining Options
+
+You can combine options using the bitwise OR operator (`|`):
+
+```c
+/* Include root node AND stop after first match */
+lxb_selectors_opt_set(selectors,
+                      LXB_SELECTORS_OPT_MATCH_ROOT | LXB_SELECTORS_OPT_MATCH_FIRST);
+```
+
+### Complete Example
+
+```c
+#include <lexbor/html/html.h>
+#include <lexbor/css/css.h>
+#include <lexbor/selectors/selectors.h>
+
+lxb_status_t
+callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *ctx)
+{
+    const lxb_char_t *name = lxb_dom_element_local_name(lxb_dom_interface_element(node), NULL);
+    printf("Found: %s\n", name);
+    return LXB_STATUS_OK;
 }
 
-/* Selector is valid, proceed with matching */
+int main(void)
+{
+    const lxb_char_t html[] = "<div id='main' class='container'><p>Text</p></div>";
+    /* Here, three selectors that match the div element are specifically
+     * indicated. In a typical case, the callback would be called three times
+     * with the same div element. But with the MATCH_FIRST option, the callback
+     * will be called only once.
+     */
+    const lxb_char_t selectors_str[] = "div, div.container, div#main";
+
+    /* Create and parse HTML */
+    lxb_html_document_t *document = lxb_html_document_create();
+    lxb_html_document_parse(document, html, sizeof(html) - 1);
+
+    /* Create CSS parser and selectors engine */
+    lxb_css_parser_t *parser = lxb_css_parser_create();
+    lxb_css_parser_init(parser, NULL);
+
+    lxb_selectors_t *selectors = lxb_selectors_create();
+    lxb_selectors_init(selectors);
+
+    /* Parse selectors */
+    lxb_css_selector_list_t *list = lxb_css_selectors_parse(parser,
+                                                            selectors_str,
+                                                            sizeof(selectors_str) - 1);
+
+    /* Set options: include root node, avoid duplicates */
+    lxb_selectors_opt_set(selectors,
+                          LXB_SELECTORS_OPT_MATCH_ROOT |
+                          LXB_SELECTORS_OPT_MATCH_FIRST);
+
+    /* Find matching elements */
+    lxb_dom_node_t *body = lxb_dom_interface_node(document->body);
+    lxb_selectors_find(selectors, body, list, callback, NULL);
+
+    /* Cleanup */
+    lxb_css_selector_list_destroy_memory(list);
+    lxb_selectors_destroy(selectors, true);
+    lxb_css_parser_destroy(parser, true);
+    lxb_html_document_destroy(document);
+
+    return 0;
+}
 ```
 
-## Examples in Repository
+Output:
+```
+Found: div
+```
 
-See the [examples/lexbor/selectors/](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/selectors) directory for complete working examples:
+## Specificity
 
-- Basic selector usage
-- Complex selectors
-- Pseudo-classes
-- Attribute matching
-- Performance testing
+Specificity is a weight that determines which CSS rule is applied when multiple selectors match the same element. The selector with the highest specificity wins.
 
-## Related Articles
+### How Specificity is Calculated
 
-- [CSS Selectors, the Easy Way](../articles/example-CSS-selectors-easy-way.md) — practical guide with examples
+Specificity is calculated as a three-component value `(A, B, C)`:
 
-## API Reference
+- **A** — number of ID selectors (`#id`)
+- **B** — number of class selectors (`.class`), attribute selectors (`[attr]`), and pseudo-classes (`:hover`)
+- **C** — number of type selectors (`div`) and pseudo-elements (`::before`)
 
-### Main Functions
+The universal selector (`*`), combinators (`>`, `+`, `~`, ` `), and negation pseudo-class (`:not()`) don't add to specificity.
+
+### Specificity Comparison
+
+Specificity is compared component by component from left to right. The selector with a higher value in the leftmost differing component wins:
+
+```
+(1, 0, 0) > (0, 5, 5)   // ID beats any number of classes
+(0, 2, 1) > (0, 1, 5)   // More classes beat more types
+(0, 1, 1) > (0, 1, 0)   // Same classes, more types wins
+```
+
+### Examples
+
+| Selector | A | B | C | Specificity |
+|----------|---|---|---|-------------|
+| `*` | 0 | 0 | 0 | (0, 0, 0) |
+| `div` | 0 | 0 | 1 | (0, 0, 1) |
+| `.container` | 0 | 1 | 0 | (0, 1, 0) |
+| `#header` | 1 | 0 | 0 | (1, 0, 0) |
+| `div.container` | 0 | 1 | 1 | (0, 1, 1) |
+| `div#main.container` | 1 | 1 | 1 | (1, 1, 1) |
+| `ul li a.link` | 0 | 1 | 3 | (0, 1, 3) |
+| `div > p:first-child` | 0 | 1 | 2 | (0, 1, 2) |
+| `[type="text"]` | 0 | 1 | 0 | (0, 1, 0) |
+| `a:hover` | 0 | 1 | 1 | (0, 1, 1) |
+| `::before` | 0 | 0 | 1 | (0, 0, 1) |
+
+### Special Cases
+
+#### `:is()` and `:has()`
+Take the specificity of the **most specific selector** in their argument list:
+```c
+/* Specificity of #header (1, 0, 0) */
+const lxb_char_t sel1[] = ":is(#header, .main, div)";
+
+#### `:where()`
+Always has **zero specificity** (0, 0, 0), regardless of its arguments:
+```c
+/* Specificity is (0, 0, 1) - only 'a' counts */
+const lxb_char_t sel[] = ":where(#header, .main) a";
+```
+
+#### `:not()`
+The negation itself adds nothing, but its argument counts:
+```c
+/* Specificity is (0, 1, 1) - .exclude + p */
+const lxb_char_t sel[] = "p:not(.exclude)";
+```
+
+### Getting Specificity in Code
+
+The `lxb_selectors_find` callback receives specificity for each matched element:
 
 ```c
-/* Create and initialize selector engine */
-lxb_selectors_t *lxb_selectors_create(void);
-lxb_status_t lxb_selectors_init(lxb_selectors_t *selectors);
-
-/* Parse selector string */
-lxb_css_selector_list_t *
-lxb_selectors_parse(lxb_selectors_t *selectors,
-                    const lxb_char_t *data, size_t length);
-
-/* Find all matching elements */
 lxb_status_t
-lxb_selectors_find(lxb_selectors_t *selectors, lxb_dom_node_t *root,
-                   lxb_css_selector_list_t *list,
-                   lxb_dom_collection_t *collection);
+find_callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *ctx)
+{
+    /* spec contains specificity components */
+    printf("Specificity: A=%u, B=%u, C=%u\n",
+           lxb_css_selector_sp_a(spec),
+           lxb_css_selector_sp_b(spec),
+           lxb_css_selector_sp_c(spec));
 
-/* Check if single element matches */
-bool
-lxb_selectors_match(lxb_selectors_t *selectors, lxb_dom_node_t *node,
-                    lxb_css_selector_list_t *list);
-
-/* Cleanup */
-void lxb_selectors_destroy(lxb_selectors_t *selectors, bool self_destroy);
-void lxb_css_selector_list_destroy_memory(lxb_css_selector_list_t *list);
+    return LXB_STATUS_OK;
+}
 ```
 
-## Specification Conformance
+For more information, see specification [Calculating a selector’s specificity](https://drafts.csswg.org/selectors-4/#specificity-rules).
 
-The Selectors module implements [CSS Selectors Level 4](https://drafts.csswg.org/selectors-4/) specification with the following status:
+### Practical Tips
 
-- All simple selectors
-- All combinators
-- All attribute selectors
-- All pseudo-classes
-- Specificity calculation
-- Selector list (`,` separator)
+1. **Avoid over-specific selectors** — they're harder to override later
+2. **Use `:where()` for reusable patterns** — zero specificity makes them easy to override
+3. **Use `:is()` when specificity matters** — inherits specificity from arguments
+4. **ID selectors are very specific** — (1,0,0) beats any combination of classes and types
 
-The module passes extensive test suites and is used in production by major projects like PHP, SerpApi, and various language bindings.
