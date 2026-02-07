@@ -38,7 +38,7 @@ The module provides comprehensive support for 40+ character encodings used acros
 
 ```C
 #include <lexbor/encoding/encoding.h>
-#include <lexbor/core/core.h> /* For lexbor_str() */
+#include <lexbor/core/core.h> /* For lexbor_str_t and lexbor_str() */
 
 int main(void)
 {
@@ -110,7 +110,7 @@ Decoding Windows-1251 to Unicode codepoints:
 
 ```C
 #include <lexbor/encoding/encoding.h>
-#include <lexbor/core/core.h> /* For lexbor_str() */
+#include <lexbor/core/core.h> /* For lexbor_str_t and lexbor_str() */
 
 int main(void)
 {
@@ -260,14 +260,14 @@ The simplest way to decode data when you have the entire input in memory.
 - **Pointer Updates**: Input and output pointers are advanced automatically
 - **No Null Termination**: Output is not null-terminated automatically
 
-#### Error Handling
+#### Buffer-Pass Error Handling
 
 - `LXB_STATUS_OK` — is returned on successful decoding.
 - `LXB_STATUS_CONTINUE` — not enough data for decoding, more data is needed. You need to run the same decoding function with the continuation of the data.
 - `LXB_STATUS_SMALL_BUFFER` — not enough buffer size to write decoded data.
 - `LXB_STATUS_ERROR` — is returned for decoding errors; is returned only if no replacement character was set by user (the lxb_encoding_encode_replace_set() function).
 
-#### Error Handling
+#### Streaming Error Handling
 
 The streaming decoder returns a codepoint or an error, i.e., a value greater than the maximum possible Unicode codepoint (cp > LXB_ENCODING_DECODE_MAX_CODEPOINT).
 

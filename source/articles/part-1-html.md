@@ -1,5 +1,7 @@
 # Part one: HTML
 
+**Note:** This article was written during the early development of the Lexbor HTML parser. Some code examples and internal values (such as token type flags) may differ from the current implementation. For up-to-date API reference, see the [HTML module documentation](../modules/html.md).
+
 Hello, everyone!
 
 In this article, I will explain how to create a superfast HTML parser that
@@ -60,6 +62,8 @@ browser engine (21 in total): UTF-8, ISO-8859-2, ISO-8859-7, ISO-8859-8,
 windows-874, windows-1250, windows-1251, windows-1252, windows-1254,
 windows-1255, windows-1256, windows-1257, windows-1258, gb18030, Big5,
 ISO-2022-JP, Shift_JIS, EUC-KR, UTF-16BE, UTF-16LE, and x-user-defined.
+
+For details on Lexbor's encoding support, see the [Encoding module documentation](../modules/encoding.md).
 
 ## Preprocessing
 
@@ -446,7 +450,7 @@ be the corresponding ID from the enumeration.
 
 Example:
 
-```c
+```C
 typedef enum {
     LXB_TAG__UNDEF       = 0x0000,
     LXB_TAG__END_OF_FILE = 0x0001,
@@ -469,7 +473,7 @@ the DOM (Document Object Model) will include a `Tag ID`. This approach avoids
 the need for two comparisons: one for the node type and one for the element.
 Instead, a single check can be performed:
 
-```c
+```C
 if (node->tag_id == LXB_TAG_DIV) {
     /* Optimal code */
 }
@@ -477,7 +481,7 @@ if (node->tag_id == LXB_TAG_DIV) {
 
 Alternatively, you could use:
 
-```c
+```C
 if (node->type == LXB_DOM_NODE_TYPE_ELEMENT && node->tag_id == LXB_TAG_DIV) {
     /* Oh my code */
 }
@@ -534,7 +538,7 @@ tree. This is achieved using the Flags bitmap field.
 
 The field can contain the following values:
 
-```c
+```C
 enum {
     LXB_HTML_TOKEN_TYPE_OPEN         = 0x0000,
     LXB_HTML_TOKEN_TYPE_CLOSE        = 0x0001,
@@ -548,6 +552,9 @@ enum {
     LXB_HTML_TOKEN_TYPE_DONE         = 0x0100
 };
 ```
+
+**Note:** This enum reflects an earlier version of the codebase. In the current implementation (see `source/lexbor/html/token.h`), the `TEXT`, `DATA`, `RCDATA`, `CDATA`, and `NULL` token types have been removed, and the remaining values have been renumbered.
+
 Besides the opening/closing token type, there are additional values for the data
 converter. Only the tokenizer knows how to correctly convert data, and it marks
 the token to indicate how the data should be processed.
@@ -675,7 +682,7 @@ tree_build_in_body_character(token) {
 ```
 
 In Lexbor HTML:
-```c
+```C
 tree_build_in_body_character(token) {
     lexbor_str_t str = {0};
     lxb_html_parser_char_t pc = {0};
@@ -698,7 +705,7 @@ As illustrated by the example, we have removed all character-based conditions
 and created a common function for text processing. This function takes an
 argument with data transformation settings:
 
-```c
+```C
 pc.replace_null /* Replace each '\0' with REPLACEMENT CHARACTER (U+FFFD) */
 pc.drop_null    /* Delete all '\0's */
 pc.is_attribute /* If data is an attribute value, we need smarter parsing */

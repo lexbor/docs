@@ -9,7 +9,7 @@
 ## Overview
 
 The Selectors module implements DOM node search by selectors. In other words, it combines three modules: DOM, HTML, and CSS selectors.
-This module, which forms the basis for `querySelector` and `querySelectorAll`.
+It forms the basis for `querySelector` and `querySelectorAll`.
 
 For parsing HTML documents, use the [HTML module](html.md).
 For CSS selector parsing, use the [CSS module](css.md).
@@ -24,7 +24,7 @@ For CSS selector parsing, use the [CSS module](css.md).
 
 ## Quick Start
 
-```c
+```C
 #include <lexbor/html/html.h>
 #include <lexbor/css/css.h>
 #include <lexbor/selectors/selectors.h>
@@ -44,7 +44,7 @@ find_callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *c
     return LXB_STATUS_OK;
 }
 
-int main(int argc, const char *argv[])
+int main(void)
 {
     lxb_status_t status;
     const lxb_char_t html[] = "<div class='container'><p>Hello</p><p>World</p></div>";
@@ -96,6 +96,11 @@ int main(int argc, const char *argv[])
 ```
 
 ## Supported Selectors
+
+### Location
+
+Selector parsing functions are declared in `source/lexbor/css/selectors.h`.
+The selectors engine is declared in `source/lexbor/selectors/selectors.h`.
 
 ### Basic Selectors
 
@@ -258,7 +263,7 @@ Combinators combine multiple selectors to create relationships:
 
 ### Complex Selectors with Pseudo-classes
 
-```c
+```C
 /* Find all checked checkboxes in a form */
 const lxb_char_t selector1[] = "form input[type='checkbox']:checked";
 
@@ -271,7 +276,7 @@ const lxb_char_t selector4[] = "article > p:first-of-type";
 
 ### Using :is() and :where() for Grouping
 
-```c
+```C
 /* Match any heading */
 const lxb_char_t selector1[] = ":is(h1, h2, h3, h4, h5, h6)";
 
@@ -284,7 +289,7 @@ const lxb_char_t selector3[] = "input:is([type='text'], [type='email'], [type='p
 
 ### Using :not() for Exclusion
 
-```c
+```C
 /* All paragraphs except those with class 'exclude' */
 const lxb_char_t selector1[] = "p:not(.exclude)";
 
@@ -300,7 +305,7 @@ const lxb_char_t selector4[] = "a:not([href^='http'])";
 
 ### Using :has() for Parent Selection
 
-```c
+```C
 /* Find articles that contain an image */
 const lxb_char_t selector1[] = "article:has(img)";
 
@@ -316,7 +321,7 @@ const lxb_char_t selector4[] = "li:not(:has(a))";
 
 ### Attribute Selectors with Case Sensitivity
 
-```c
+```C
 /* Case-insensitive attribute match */
 const lxb_char_t selector1[] = "[title*='hello' i]";
 
@@ -329,7 +334,7 @@ const lxb_char_t selector3[] = "[class*='test' i]";
 
 ### Complex nth-child Patterns
 
-```c
+```C
 /* Every 3rd element starting from the 2nd: 2, 5, 8, 11... */
 const lxb_char_t selector1[] = "li:nth-child(3n+2)";
 
@@ -348,7 +353,7 @@ const lxb_char_t selector5[] = "div:nth-child(4n+1)";
 
 ### Combining Multiple Techniques
 
-```c
+```C
 /* Find divs with specific class that contain images but not links */
 const lxb_char_t selector2[] = "div.gallery:has(img):not(:has(a))";
 
@@ -361,7 +366,7 @@ const lxb_char_t selector4[] = "main :is(h1, h2, h3, h4, h5, h6):has(+ p)";
 
 ### Custom Lexbor Selector
 
-```c
+```C
 /* Find elements containing specific text (non-standard) */
 const lxb_char_t selector1[] = "div:-lexbor-contains('search text')";
 
@@ -376,6 +381,10 @@ const lxb_char_t selector3[] = ".content p:-lexbor-contains('TODO'):not(.done)";
 
 You can customize the search behavior by setting options using `lxb_selectors_opt_set()`. This allows you to control how the selector engine processes nodes and handles matches.
 
+### Location
+
+Search options and the `lxb_selectors_find` function are declared in `source/lexbor/selectors/selectors.h`.
+
 ### Available Options
 
 #### `LXB_SELECTORS_OPT_DEFAULT`
@@ -383,7 +392,7 @@ Default behavior:
 - Root node does **not** participate in the search (only its children)
 - If a node matches multiple selectors, callback is triggered for **each match**
 
-```c
+```C
 lxb_selectors_opt_set(selectors, LXB_SELECTORS_OPT_DEFAULT);
 ```
 
@@ -394,7 +403,7 @@ By default, when you call `lxb_selectors_find(selectors, root, list, callback, c
 
 This option makes the root node participate in the search, which is useful when you want to check if the root node itself matches any selectors.
 
-```c
+```C
 lxb_selectors_opt_set(selectors, LXB_SELECTORS_OPT_MATCH_ROOT);
 ```
 
@@ -405,7 +414,7 @@ By default, if a node matches multiple selectors in the list, the callback is tr
 
 This option ensures the callback is called only **once per node**, even if it matches multiple selectors.
 
-```c
+```C
 lxb_selectors_opt_set(selectors, LXB_SELECTORS_OPT_MATCH_FIRST);
 ```
 
@@ -413,7 +422,7 @@ lxb_selectors_opt_set(selectors, LXB_SELECTORS_OPT_MATCH_FIRST);
 
 You can combine options using the bitwise OR operator (`|`):
 
-```c
+```C
 /* Include root node AND stop after first match */
 lxb_selectors_opt_set(selectors,
                       LXB_SELECTORS_OPT_MATCH_ROOT | LXB_SELECTORS_OPT_MATCH_FIRST);
@@ -421,11 +430,12 @@ lxb_selectors_opt_set(selectors,
 
 ### Complete Example
 
-```c
+```C
 #include <lexbor/html/html.h>
 #include <lexbor/css/css.h>
 #include <lexbor/selectors/selectors.h>
 
+/* Callback type: lxb_selectors_cb_f */
 lxb_status_t
 callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *ctx)
 {
@@ -475,11 +485,11 @@ int main(void)
     lxb_css_parser_destroy(parser, true);
     lxb_html_document_destroy(document);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 ```
 
-Output:
+**Output:**
 ```
 Found: div
 ```
@@ -487,6 +497,10 @@ Found: div
 ## Specificity
 
 Specificity is a weight that determines which CSS rule is applied when multiple selectors match the same element. The selector with the highest specificity wins.
+
+### Location
+
+Specificity types and accessor macros are declared in `source/lexbor/css/selectors/selector.h`.
 
 ### How Specificity is Calculated
 
@@ -528,20 +542,21 @@ Specificity is compared component by component from left to right. The selector 
 
 #### `:is()` and `:has()`
 Take the specificity of the **most specific selector** in their argument list:
-```c
+```C
 /* Specificity of #header (1, 0, 0) */
 const lxb_char_t sel1[] = ":is(#header, .main, div)";
+```
 
 #### `:where()`
 Always has **zero specificity** (0, 0, 0), regardless of its arguments:
-```c
+```C
 /* Specificity is (0, 0, 1) - only 'a' counts */
 const lxb_char_t sel[] = ":where(#header, .main) a";
 ```
 
 #### `:not()`
 The negation itself adds nothing, but its argument counts:
-```c
+```C
 /* Specificity is (0, 1, 1) - .exclude + p */
 const lxb_char_t sel[] = "p:not(.exclude)";
 ```
@@ -550,7 +565,7 @@ const lxb_char_t sel[] = "p:not(.exclude)";
 
 The `lxb_selectors_find` callback receives specificity for each matched element:
 
-```c
+```C
 lxb_status_t
 find_callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *ctx)
 {

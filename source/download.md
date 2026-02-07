@@ -4,18 +4,19 @@
 
 The `lexbor` binaries are available for:
 
-* [CentOS](#centos) 6, 7, 8
+* [CentOS](#centos) 7
 
-* [Debian](#debian) 8, 9, 10, 11
+* [Debian](#debian) 11, 12
 
-* [Fedora](#fedora) 28, 29, 30, 31, 32, 33, 34, 36, 37
+* [Fedora](#fedora) 39, 40, 41
 
-* [RHEL](#rhel) 7, 8
+* [RHEL](#rhel) 8, 9
 
-* [Ubuntu](#ubuntu) 14.04, 16.04, 18.04, 18.10, 19.04, 19.10, 20.04, 20.10,
-  21.04, 22.04
+* [Ubuntu](#ubuntu) 20.04, 22.04, 24.04
 
 * [macOS](#macos)
+
+**Note:** Older distribution versions that have reached end-of-life are no longer listed. If you need packages for an older version, check the repository at `packages.lexbor.com` directly.
 
 
 ### CentOS
@@ -52,14 +53,14 @@ curl https://lexbor.com/keys/lexbor_signing.key | \
  ```
 
 2. To configure the `lexbor` repository, create the following file named
-   `/etc/apt/sources.list.d/lexbor.list`. For Debian 11:
+   `/etc/apt/sources.list.d/lexbor.list`. For Debian 12:
 
  ```ini
-deb-src [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/debian/ bullseye liblexbor
-deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/debian/ bullseye liblexbor
+deb-src [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/debian/ bookworm liblexbor
+deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/debian/ bookworm liblexbor
  ```
 
- Supported distros also include `buster` (10), `stretch` (9), and `jessie` (8).
+ Supported distros also include `bullseye` (11).
 
 3. Install the core `lexbor` package and any additional packages you need:
 
@@ -86,8 +87,8 @@ deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/debian/
 2. Install the core `lexbor` package and any additional packages you need:
 
  ```sh
- yum install liblexbor
- yum install liblexbor-dev
+ dnf install liblexbor
+ dnf install liblexbor-devel
  ```
 
 
@@ -108,7 +109,7 @@ deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/debian/
 
  ```sh
  yum install liblexbor
- yum install liblexbor-dev
+ yum install liblexbor-devel
  ```
 
 
@@ -125,16 +126,14 @@ curl https://lexbor.com/keys/lexbor_signing.key | \
  ```
 
 2. To configure the `lexbor` repository, create the following file named
-   `/etc/apt/sources.list.d/lexbor.list`. For Ubuntu 20.04:
+   `/etc/apt/sources.list.d/lexbor.list`. For Ubuntu 22.04:
 
  ```ini
-deb-src [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/ubuntu/ focal liblexbor
-deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/ubuntu/ focal liblexbor
+deb-src [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/ubuntu/ jammy liblexbor
+deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/ubuntu/ jammy liblexbor
  ```
 
- Supported distros also include `hirsute` (21.04), `groovy` (20.10), `focal`
- (20.04), `eoan` (19.10), `disco` (19.04), `cosmic` (18.10), `bionic` (18.04),
- `xenial` (16.04), and `trusty` (14.04).
+ Supported distros also include `noble` (24.04) and `focal` (20.04).
 
 3. Install the core `lexbor` package and any additional packages you need:
 
@@ -145,7 +144,7 @@ deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/ubuntu/
  ```
 
 
-## macOS
+### macOS
 
 ### Homebrew
 

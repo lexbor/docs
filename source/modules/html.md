@@ -159,7 +159,7 @@ int main(void) {
 
     /* Feed HTML chunks as they arrive */
     lxb_html_document_parse_chunk(doc, html_1, sizeof(html_1) - 1);
-    lxb_html_document_parse_chunk(doc, html_1, sizeof(html_2) - 1);
+    lxb_html_document_parse_chunk(doc, html_2, sizeof(html_2) - 1);
 
     /* Finalize parsing */
     lxb_html_document_parse_chunk_end(doc);
@@ -173,7 +173,7 @@ int main(void) {
 
 #### Fragment Parsing (innerHTML)
 
-Parse HTML fragments with a context element:
+Parse HTML fragments with a context element (see [Parsing HTML Fragment](#parsing-html-fragment) for the full API):
 
 ```C
 #include <lexbor/html/html.h>
@@ -542,10 +542,10 @@ The functions output valid HTML as required by the specification.
 |----------|-------------|
 | `lxb_html_serialize_str()` | Serialize single node to string (no children) |
 | `lxb_html_serialize_cb()` | Serialize single node via callback (no children) |
-| `lxb_html_serialize_tree_str()` | Serialize node with direct children to string |
-| `lxb_html_serialize_tree_cb()` | Serialize node with direct children via callback |
-| `lxb_html_serialize_deep_str()` | Serialize direct children (without node) to string |
-| `lxb_html_serialize_deep_cb()` | Serialize direct children (without node) via callback |
+| `lxb_html_serialize_tree_str()` | Serialize node and all descendants to string |
+| `lxb_html_serialize_tree_cb()` | Serialize node and all descendants via callback |
+| `lxb_html_serialize_deep_str()` | Serialize all descendants (without node itself) to string |
+| `lxb_html_serialize_deep_cb()` | Serialize all descendants (without node itself) via callback |
 
 #### Pretty Print Functions
 
@@ -555,10 +555,10 @@ The functions generate “pretty” HTML that is not valid; for easy to read and
 |----------|-------------|
 | `lxb_html_serialize_pretty_str()` | Pretty print single node to string |
 | `lxb_html_serialize_pretty_cb()` | Pretty print single node via callback |
-| `lxb_html_serialize_pretty_tree_str()` | Pretty print node with children to string |
-| `lxb_html_serialize_pretty_tree_cb()` | Pretty print node with children via callback |
-| `lxb_html_serialize_pretty_deep_str()` | Pretty print direct children (without node) to string |
-| `lxb_html_serialize_pretty_deep_cb()` | Pretty print direct children (without node) via callback |
+| `lxb_html_serialize_pretty_tree_str()` | Pretty print node and all descendants to string |
+| `lxb_html_serialize_pretty_tree_cb()` | Pretty print node and all descendants via callback |
+| `lxb_html_serialize_pretty_deep_str()` | Pretty print all descendants (without node itself) to string |
+| `lxb_html_serialize_pretty_deep_cb()` | Pretty print all descendants (without node itself) via callback |
 
 ### String vs Callback Output
 
@@ -777,7 +777,7 @@ if (status != LXB_STATUS_OK) {
 
 ## Element Interfaces
 
-The HTML module implements over 90 element interfaces (like `lxb_html_div_element_t`, `lxb_html_input_element_t`, etc.) that correspond to HTML elements. These interfaces use a "poor man's inheritance" pattern — a technique for simulating object-oriented inheritance in C through struct composition.
+The HTML module implements over 90 element interfaces (like `lxb_html_div_element_t`, `lxb_html_input_element_t`, etc.) that correspond to HTML elements. These interfaces use a "poor man's inheritance" pattern — a technique for simulating object-oriented inheritance in C through struct composition. For the underlying DOM node and element APIs, see the [DOM module](dom.md).
 
 ### Location
 
@@ -954,7 +954,7 @@ lxb_ns_id_enum_t;
 ```
 
 You can find all namespace IDs in `source/lexbor/ns/const.h`.
-For more details, see the Namespaces Modul (`ns`).
+For more details, see the Namespaces Module (`ns`).
 
 **Usage:**
 
@@ -981,7 +981,7 @@ typedef enum {
     /* ... HTML tags ... */
     LXB_TAG_DIV          = 0x0033,  // <div>
     LXB_TAG_INPUT        = 0x006a,  // <input>
-    LXB_TAG_SPAN         = 0x00c0,  // <span>
+    LXB_TAG_SPAN         = 0x00aa,  // <span>
     LXB_TAG_BODY         = 0x001f,  // <body>
     LXB_TAG_A            = 0x0006,  // <a>
     /* ... 90+ more tags ... */
@@ -1713,5 +1713,5 @@ lxb_html_encoding_t *lxb_html_encoding_destroy(lxb_html_encoding_t *em, bool sel
 
 1. **First Wins**: When multiple encoding declarations are found, only the first valid one should be used (though the detector returns all found declarations).
 2. **Not Full Parsing**: This is a lightweight scanner, not a full HTML parser. It's designed specifically for quick encoding detection.
-3. **BOM Not Handled**: This detector only searches for `<meta>` tag declarations. Byte Order Mark (BOM) detection should be handled separately if needed.
+3. **BOM Not Handled**: This detector only searches for `<meta>` tag declarations. Byte Order Mark (BOM) detection should be handled separately if needed. See the [Encoding module](encoding.md) for BOM handling and full encoding support.
 4. **Case Insensitive**: Tag names and attribute names are matched case-insensitively, following HTML parsing rules.

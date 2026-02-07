@@ -1,5 +1,7 @@
 # Examples: CSS selectors, the easy way
 
+For the full CSS and Selectors API reference, see the [CSS module](../modules/css.md) and [Selectors module](../modules/selectors.md) documentation.
+
 Let's start with an easy example of using `lexbor` for parsing and serializing
 CSS selectors. This example breaks down the major steps and elements, explaining
 the overall purpose, requirements, and assumptions at each step.
@@ -30,7 +32,7 @@ real-world example will be provided later.
 The code includes the necessary header files and defines a callback function
 (`callback`) that prints the parsed data.
 
-```c
+```C
 #include <lexbor/css/css.h>
 
 lxb_status_t callback(const lxb_char_t *data, size_t len, void *ctx)
@@ -45,7 +47,7 @@ lxb_status_t callback(const lxb_char_t *data, size_t len, void *ctx)
 The `main` function initializes the CSS parser, parses a CSS selector string,
 and then serializes the resulting selector list.
 
-```c
+```C
 int main(int argc, const char *argv[])
 {
     // ... (variable declarations)
@@ -81,7 +83,7 @@ int main(int argc, const char *argv[])
 The code defines a CSS selector string (`slctrs`) and initializes the CSS
 parser.
 
-```c
+```C
 static const lxb_char_t slctrs[] = ":has(div, :not(as, 1%, .class), #hash)";
 
 parser = lxb_css_parser_create();
@@ -94,7 +96,7 @@ status = lxb_css_parser_init(parser, NULL);
 The code parses the CSS selector string, checks for parsing errors, and prints
 the result.
 
-```c
+```C
 list = lxb_css_selectors_parse(parser, slctrs,
                                sizeof(slctrs) / sizeof(lxb_char_t) - 1);
 
@@ -109,7 +111,7 @@ if (parser->status != LXB_STATUS_OK) {
 
 The example serializes the parsed selector list and prints any parser logs.
 
-```c
+```C
 printf("Result: ");
 (void) lxb_css_selector_serialize_list(list, callback, NULL);
 printf("\n");
@@ -118,7 +120,7 @@ printf("\n");
 if (lxb_css_log_length(lxb_css_parser_log(parser)) != 0) {
     printf("Log:\n");
     // Serialize parser logs with proper indentation.
-    (void) lxb_css_log_serialize(parser->log, callback, NULL,
+    (void) lxb_css_log_serialize(lxb_css_parser_log(parser), callback, NULL,
                                  indent, indent_length);
     printf("\n");
 }
@@ -130,7 +132,7 @@ if (lxb_css_log_length(lxb_css_parser_log(parser)) != 0) {
 Finally, the code destroys resources for the parser and frees memory allocated
 for the selector list.
 
-```c
+```C
 (void) lxb_css_parser_destroy(parser, true);
 lxb_css_selector_list_destroy_memory(list);
 ```
