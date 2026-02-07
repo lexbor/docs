@@ -1,5 +1,7 @@
 # Part Two: CSS
 
+**Note:** This article was written during the early development of the Lexbor CSS parser. Some internal details may differ from the current implementation. For up-to-date API reference, see the [CSS module documentation](../modules/css.md). For current project status, see the [Roadmap](../roadmap.md).
+
 Hello, everyone!
 
 We continue our series on developing a browser engine. Better late than never!

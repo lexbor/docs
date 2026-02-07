@@ -1,5 +1,7 @@
 # Examples: CSS selectors, the easy way
 
+For the full CSS and Selectors API reference, see the [CSS module](../modules/css.md) and [Selectors module](../modules/selectors.md) documentation.
+
 Let's start with an easy example of using `lexbor` for parsing and serializing
 CSS selectors. This example breaks down the major steps and elements, explaining
 the overall purpose, requirements, and assumptions at each step.

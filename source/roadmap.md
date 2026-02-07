@@ -54,15 +54,15 @@ the order of their implementation.
 16. [Background](https://drafts.csswg.org/css-backgrounds-3/): ![In Progress][progress]
 17. [Content](https://drafts.csswg.org/css-content-3/)
 18. [Overflow](https://drafts.csswg.org/css-overflow-3/): ![In Progress][progress]
-19. [Media Queries](https://drafts.csswg.org/mediaqueries-4/)
+19. [Media Queries](https://drafts.csswg.org/mediaqueries-4/): ![In Progress][progress]
 20. [Page](https://drafts.csswg.org/css-page-3/)
 21. [Variables](https://drafts.csswg.org/css-variables-1/)
 
 
 ## Fonts, OpenType
 
-1. [Font/OpenType](https://docs.microsoft.com/ru-ru/typography/opentype/spec/)<br>
-   1.1. [Parsing OpenType font files](https://docs.microsoft.com/ru-ru/typography/opentype/spec/otff)<br>
+1. [Font/OpenType](https://learn.microsoft.com/en-us/typography/opentype/spec/)<br>
+   1.1. [Parsing OpenType font files](https://learn.microsoft.com/en-us/typography/opentype/spec/otff)<br>
    1.2. Calculating font metrics for glyphs in HTML layout: `baseline`,
         `ascender`, `descender`, `line-gap`, `x-height`, `cap-height`,
         `width`, `height`

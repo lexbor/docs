@@ -31,7 +31,7 @@ This architecture offers several practical benefits:
 All modules are located in the `source/lexbor/` directory of the project. Each module has:
 
 - A `base.h` file with version information and type definitions
-- A `config.cmake` file for build configuration
+- A `config.cmake` file for build configuration (most modules)
 - Implementation files (`.c`) and headers (`.h`)
 
 ## Available Modules
@@ -49,7 +49,7 @@ These modules are stable, fully tested, and ready for production use:
 | [Selectors](/modules/selectors/) | 0.5.0 | [CSS Selectors Level 4](https://drafts.csswg.org/selectors-4/) | CSS selectors engine |
 | [Encoding](/modules/encoding/) | 2.2.0 | [WHATWG Encoding](https://encoding.spec.whatwg.org/) | 40+ character encodings |
 | [URL](/modules/url/) | 0.4.0 | [WHATWG URL](https://url.spec.whatwg.org/) | URL parsing and manipulation |
-| [Unicode](/modules/unicode/) | 0.5.0 | [Unicode TR#15](https://www.unicode.org/reports/tr15/), [TR#46](https://unicode.org/reports/tr46/) | Normalization and IDNA |
+| [Unicode](/modules/unicode/) | 0.4.0 | [Unicode TR#15](https://www.unicode.org/reports/tr15/), [TR#46](https://unicode.org/reports/tr46/) | Normalization and IDNA |
 | Punycode | — | [RFC 3492](https://www.rfc-editor.org/rfc/rfc3492.html) | Punycode encoding/decoding |
 
 ### Supporting Modules
@@ -95,6 +95,3 @@ printf("Core version: %d.%d.%d\n",
        LEXBOR_VERSION_MINOR,
        LEXBOR_VERSION_PATCH);
 ```
-
-
-*(Documentation is currently being developed, details will be available here soon.)*

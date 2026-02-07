@@ -426,6 +426,7 @@ lxb_selectors_opt_set(selectors,
 #include <lexbor/css/css.h>
 #include <lexbor/selectors/selectors.h>
 
+/* Callback type: lxb_selectors_cb_f */
 lxb_status_t
 callback(lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *ctx)
 {
@@ -531,6 +532,7 @@ Take the specificity of the **most specific selector** in their argument list:
 ```c
 /* Specificity of #header (1, 0, 0) */
 const lxb_char_t sel1[] = ":is(#header, .main, div)";
+```
 
 #### `:where()`
 Always has **zero specificity** (0, 0, 0), regardless of its arguments:

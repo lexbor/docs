@@ -201,8 +201,8 @@ These functions:
 
 - Are defined in `/source/lexbor/core/lexbor.h` (in the [core](#core) module).
 
-- Are implemented in `/source/port/*/lexbor/core/memory.c` (in the `port`
-  module).
+- Are implemented in `/source/lexbor/ports/*/lexbor/core/memory.c` (in the
+  `ports` module).
 
 - Can be redefined if needed.
 
@@ -334,14 +334,14 @@ lexbor_avl_t *avl = lexbor_avl_create();
 lxb_status_t status = lexbor_avl_init(avl, 1024);
 
 if (status != LXB_STATUS_OK) {
-    lexbor_avl_node_destroy(avl, true);
+    lexbor_avl_destroy(avl, true);
 
     exit(EXIT_FAILURE);
 }
 
 /* Do something super useful */
 
-lexbor_avl_node_destroy(avl, true);
+lexbor_avl_destroy(avl, true);
 ```
 
 Now, with an object on the stack:
@@ -351,14 +351,14 @@ lexbor_avl_t avl = {0};
 lxb_status_t status = lexbor_avl_init(&avl, 1024);
 
 if (status != LXB_STATUS_OK) {
-    lexbor_avl_node_destroy(&avl, false);
+    lexbor_avl_destroy(&avl, false);
 
     exit(EXIT_FAILURE);
 }
 
 /* Do something even more useful */
 
-lexbor_avl_node_destroy(&avl, false);
+lexbor_avl_destroy(&avl, false);
 ```
 
 Note that this approach is not an absolute requirement, even though it is
@@ -398,7 +398,7 @@ as AVL and BST trees, arrays, and strings. It also handles memory management.
 The module is continuously evolving with new algorithms being added and existing
 ones optimized.
 
-Documentation for this module will be available later.
+See the [Core module documentation](modules/core) for API reference.
 
 
 ### DOM
@@ -406,7 +406,7 @@ Documentation for this module will be available later.
 This module implements the [DOM specification](https://dom.spec.whatwg.org/).
 Its functions manage the DOM tree, including its nodes, attributes, and events.
 
-Documentation for this module will be available later.
+See the [DOM module documentation](modules/dom) for API reference.
 
 
 ### HTML
@@ -417,8 +417,7 @@ specification](https://html.spec.whatwg.org/multipage/).
 Current implementations include: Tokenizer, Tree Builder, Parser, Fragment
 Parser, and Interfaces for HTML Elements.
 
-Documentation for this module will be available later. For guidance, refer to
-the
+See the [HTML module documentation](modules/html) for API reference. Also see the
 [HTML examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/html) in our repo
 or the corresponding [articles](articles/index).
 
@@ -440,9 +439,8 @@ windows-1255, windows-1256, windows-1257, windows-1258, windows-874,
 x-mac-cyrillic, x-user-defined
 ```
 
-Documentation for this module will be available later. For guidance, refer to
-the [Encoding
-examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/encoding)
+See the [Encoding module documentation](modules/encoding) for API reference. Also see the
+[Encoding examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/encoding)
 in our repo or the corresponding [articles](articles/index).
 
 
@@ -450,7 +448,6 @@ in our repo or the corresponding [articles](articles/index).
 
 This module implements the [CSS specification](https://drafts.csswg.org/).
 
-Documentation for this module will be available later. For guidance, refer to
-the [CSS
-examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/css) in
+See the [CSS module documentation](modules/css) for API reference. Also see the
+[CSS examples](https://github.com/lexbor/lexbor/tree/master/examples/lexbor/css) in
 our repo or the corresponding [articles](articles/index).

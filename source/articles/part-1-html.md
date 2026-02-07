@@ -1,5 +1,7 @@
 # Part one: HTML
 
+**Note:** This article was written during the early development of the Lexbor HTML parser. Some code examples and internal values (such as token type flags) may differ from the current implementation. For up-to-date API reference, see the [HTML module documentation](../modules/html.md).
+
 Hello, everyone!
 
 In this article, I will explain how to create a superfast HTML parser that
