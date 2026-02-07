@@ -88,7 +88,7 @@ deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/debian/
 
  ```sh
  dnf install liblexbor
- dnf install liblexbor-dev
+ dnf install liblexbor-devel
  ```
 
 
@@ -109,7 +109,7 @@ deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/debian/
 
  ```sh
  yum install liblexbor
- yum install liblexbor-dev
+ yum install liblexbor-devel
  ```
 
 
@@ -144,7 +144,7 @@ deb [signed-by=/etc/apt/keyrings/lexbor.gpg] https://packages.lexbor.com/ubuntu/
  ```
 
 
-## macOS
+### macOS
 
 ### Homebrew
 

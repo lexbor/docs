@@ -92,7 +92,7 @@ div {width: 10px !important}
 ```
 
 The tokenizer generates tokens:
-```html
+```
 "div"       — <ident-token>
 " "         — <whitespace-token>
 "{"         — <left-curly-bracket-token>
@@ -182,7 +182,7 @@ to these callbacks. It would look something like this:
 div {width: 10px !important}
 ```
 
-```html
+```
 "div"       — callback_qualified_rule_prelude(<ident-token>)
 " "         — callback_qualified_rule_prelude(<whitespace-token>)
             — callback_qualified_rule_prelude(<end-token>)
@@ -232,7 +232,7 @@ It might look something like this:
 div {width: 10px !important}
 ```
 
-```html
+```
 "div {"                    — Selectors parse
 "width: 10px !important}"  — Declarations parse
 ```
@@ -355,6 +355,8 @@ like `Qualified Rule`, `At-Rule`, etc., as well as different system phases.
 There is also a stack due to the recursive nature of CSS structures, which
 avoids recursion directly.
 
+**Note:** The `LXB_CSS_SYNTAX_TOKEN__TERMINATED` token and the `lxb_css_syntax_parser_token()` function described above reflect the internal parsing architecture. For the public API, see the [CSS module documentation](../modules/css.md).
+
 **Pros:**
 1. Complete control over the tokenizer.
 2. Speed, as everything happens on the fly.
@@ -374,7 +376,7 @@ is structured. Values in grammars can include combinators and multipliers.
 
 **Sequential Order**
 
-```html
+```
 <my> = a b c
 ```
 
@@ -382,7 +384,7 @@ is structured. Values in grammars can include combinators and multipliers.
 - `<my> = a b c`
 
 **One Value from the List**:
-```html
+```
 <my> = a | b | c
 ```
 
@@ -392,7 +394,7 @@ is structured. Values in grammars can include combinators and multipliers.
 - `<my> = c`
 
 **One or All Values from the List in Any Order**:
-```html
+```
 <my> = a || b || c
 ```
 
@@ -437,7 +439,7 @@ For those familiar with regular expressions, this concept will be immediately
 clear.
 
 **Zero or Infinite Number of Times**:
-```html
+```
 <my> = a*
 ```
 
@@ -447,7 +449,7 @@ clear.
 - `<my> = `
 
 **One or Infinite Number of Times**:
-```html
+```
 <my> = a+
 ```
 
@@ -456,7 +458,7 @@ clear.
 - `<my> = a a a a a a a a a a a a a`
 
 **May or May Not be Present**:
-```html
+```
 <my> = a?
 ```
 
@@ -465,7 +467,7 @@ clear.
 - `<my> = `
 
 **May be Present from `A` to `B` Times, Period**:
-```html
+```
 <my> = a{1,4}
 ```
 
@@ -476,7 +478,7 @@ clear.
 - `<my> = a a a a`
 
 **One or Infinite Number of Times Separated by Comma**:
-```html
+```
 <my> = a#
 ```
 
@@ -487,7 +489,7 @@ clear.
 - `<my> = a, a, a, a`
 
 **Exactly One Value Must be Present**:
-```html
+```
 <my> = [a? | b? | c?]!
 ```
 
@@ -497,7 +499,7 @@ error.
 
 **Multipliers can be Combined**:
 
-```html
+```
 <my> = a#{1,5}
 ```
 
@@ -547,7 +549,7 @@ The main problems I encountered:
 
 For example, consider this grammar:
 
-```html
+```
 <text-decoration-line> = none | [ underline || overline || line-through || blink ]
 <text-decoration-style> = solid | double | dotted | dashed | wavy
 <text-decoration-color> = <color>
@@ -563,7 +565,7 @@ To manage this, I implemented a limiter for group options using `/1`. This
 notation indicates how many options should be selected from the group. As a
 result, `<text-decoration>` was transformed into:
 
-```html
+```
 <text-decoration> = <text-decoration-line> || <text-decoration-style> || <text-decoration-color>/1
 ```
 
@@ -574,7 +576,7 @@ spaces between them. This approach is insufficient; we need to address this
 directly in the grammar. To handle this, the `^WS` modifier (Without Spaces) was
 introduced:
 
-```html
+```
 <frequency> = <number-token> <frequency-units>^WS
 <
 
@@ -597,7 +599,7 @@ For example:
 
 Tests would be generated as follows:
 
-```html
+```
 <x> = a b c
 <x> = a c b
 <x> = b a c

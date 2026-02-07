@@ -7,7 +7,7 @@ These steps show how to use `lexbor` in your code. They assume you are using Lin
 2. Let's parse some sample HTML markup.
    Save the following code as `myhtml.c`:
 
-   ```c
+   ```C
    #include <lexbor/html/parser.h>
    #include <lexbor/dom/interfaces/element.h>
 
@@ -82,7 +82,7 @@ Optional flags recognized by the `cmake` command:
 | LEXBOR_BUILD_SEPARATELY        |  OFF    | Build all modules separately. Each module will have its own library (shared and static).                  |
 | LEXBOR_BUILD_EXAMPLES          |  OFF    | Build example programs.                                                                                   |
 | LEXBOR_BUILD_TESTS             |  OFF    | Build tests.                                                                                              |
-| LEXBOR_BUILD_TESTS_CPP         |   ON    | Build C++ tests to verify library operation in C++. Requires `LEXBOR_BUILD_TESTS`.                        |
+| LEXBOR_BUILD_TESTS_CPP         |  OFF    | Build C++ tests to verify library operation in C++. Requires `LEXBOR_BUILD_TESTS`.                        |
 | LEXBOR_TEST_AMALGAMATION       |  OFF    | Build tests for the amalgamation file. Requires `LEXBOR_BUILD_TESTS`.                                     |
 | LEXBOR_BUILD_UTILS             |  OFF    | Build project utilities and helpers.                                                                      |
 | LEXBOR_BUILD_WITH_ASAN         |  OFF    | Enable Address Sanitizer if possible.                                                                     |
@@ -163,15 +163,15 @@ make
 
 We focus on minimal dependencies, custom algorithms, and platform-specific solutions:
 
-- The project is written in pure `C` without external prerequisites. We believe
-  in a "go hard or go home" approach.
+- The project is written in pure `C` without external prerequisites. We aim for
+  self-contained, minimal-dependency code.
 
 - While we're not reinventing every algorithm known to humankind, we handle
   object creation and memory management in our own way. Many classic algorithms
   used in `lexbor` are adapted to meet the specific needs of the project.
 
-- We're open to using third-party code, but it’s often simpler to start from
-  scratch than to add extra dependencies (looking at you, Node.js).
+- We're open to using third-party code, but it's often simpler to start from
+  scratch than to add extra dependencies.
 
 - Some functions are platform-dependent, such as threading, timers, I/O, and
   blocking primitives (spinlocks, mutexes). For these, we have a separate `port`
@@ -183,7 +183,7 @@ We focus on minimal dependencies, custom algorithms, and platform-specific solut
 
 There are four main dynamic memory functions:
 
-```c
+```C
 void *
 lexbor_malloc(size_t size);
 
@@ -199,9 +199,9 @@ lexbor_free(void *dst);
 
 These functions:
 
-- Are defined in `/source/lexbor/core/lexbor.h` (in the [core](#core) module).
+- Are defined in `source/lexbor/core/lexbor.h` (in the [core](#core) module).
 
-- Are implemented in `/source/lexbor/ports/*/lexbor/core/memory.c` (in the
+- Are implemented in `source/lexbor/ports/*/lexbor/core/memory.c` (in the
   `ports` module).
 
 - Can be redefined if needed.
@@ -212,7 +212,7 @@ As the names suggest, they serve as replacements for the standard `malloc`,
 function returns a `void *` that is always `NULL`. This simplifies the process
 of nullifying freed variables:
 
-```c
+```C
 if (object->table != NULL) {
     object->table = lexbor_free(object->table);
 }
@@ -220,7 +220,7 @@ if (object->table != NULL) {
 
 Without this, you'd need to explicitly nullify `object->table`:
 
-```c
+```C
 if (object->table != NULL) {
     lexbor_free(object->table);
     object->table = NULL;
@@ -243,8 +243,8 @@ If a function can fail, it should report the failure. We follow two main rules w
 
 
 Status codes are passed as `lxb_status_t`. This type is defined throughout the
-codebase in `/source/lexbor/core/types.h`, and all available status codes are
-listed in `/source/lexbor/core/base.h`.
+codebase in `source/lexbor/core/types.h`, and all available status codes are
+listed in `source/lexbor/core/base.h`.
 
 
 ## Function Naming
@@ -260,7 +260,7 @@ Most functions follow this naming pattern:
 </style>
 
 
-The exception is the [core](#core) module (`/source/lexbor/core/`), which uses a
+The exception is the [core](#core) module (`source/lexbor/core/`), which uses a
 different pattern:
 
 [naming2]: img/naming2.png
@@ -278,11 +278,11 @@ without exceptions.
 
 ## Header Locations
 
-All paths are relative to the `/source/` directory. For example, to include a
-header file from the [html](#html) module located in `/source/lexbor/html/`,
+All paths are relative to the `source/` directory. For example, to include a
+header file from the [html](#html) module located in `source/lexbor/html/`,
 use:
 
-```c
+```C
 #include "lexbor/html/tree.h"
 ```
 
@@ -291,7 +291,7 @@ use:
 Most structures and objects have an API for creating, initializing, cleaning,
 and deleting them. This follows the general pattern:
 
-```c
+```C
 <structure-name> *
 <function-prefix>_create(void);
 
@@ -315,7 +315,7 @@ void
   typically return `void`.
 
 - If `NULL` is passed as the first argument (the object) to the `*_init`
-  function, it returns `LXB_STATUS_ERROR_OBJECT_NULL`.
+  function, it returns `LXB_STATUS_ERROR_OBJECT_IS_NULL`.
 
 - When the `*_destroy` function is called with `self_destroy` set to `true`, the
   returned value is always `NULL`; otherwise, the object (`obj`) is returned.
@@ -329,9 +329,10 @@ void
 
 Typical usage:
 
-```c
+```C
 lexbor_avl_t *avl = lexbor_avl_create();
-lxb_status_t status = lexbor_avl_init(avl, 1024);
+lxb_status_t status = lexbor_avl_init(avl, 1024,
+                                      sizeof(lexbor_avl_node_t));
 
 if (status != LXB_STATUS_OK) {
     lexbor_avl_destroy(avl, true);
@@ -346,9 +347,10 @@ lexbor_avl_destroy(avl, true);
 
 Now, with an object on the stack:
 
-```c
+```C
 lexbor_avl_t avl = {0};
-lxb_status_t status = lexbor_avl_init(&avl, 1024);
+lxb_status_t status = lexbor_avl_init(&avl, 1024,
+                                       sizeof(lexbor_avl_node_t));
 
 if (status != LXB_STATUS_OK) {
     lexbor_avl_destroy(&avl, false);
@@ -371,23 +373,24 @@ The `lexbor` project is designed to be modular, allowing each module to be built
 separately if desired. Modules can depend on each other; for instance, all
 modules currently rely on the [core](#core) module.
 
-Each module is located in a subdirectory within the `/source/` directory of the
+Each module is located in a subdirectory within the `source/` directory of the
 project.
 
 
 ### Module Versioning
 
 Each module records its version in the `base.h` file located at the module root.
-For example, see `/source/lexbor/html/base.h`:
+For example, see `source/lexbor/html/base.h`:
 
-```c
+```C
 #define <MODULE-NAME>_VERSION_MAJOR 1
 #define <MODULE-NAME>_VERSION_MINOR 0
 #define <MODULE-NAME>_VERSION_PATCH 3
 
-#define <MODULE-NAME>_VERSION_STRING LXB_STR(<MODULE-NAME>_VERSION_MAJOR) LXB_STR(.) \
-                                     LXB_STR(<MODULE-NAME>_VERSION_MINOR) LXB_STR(.) \
-                                     LXB_STR(<MODULE-NAME>_VERSION_PATCH)
+#define <MODULE-NAME>_VERSION_STRING                                  \
+    LEXBOR_STRINGIZE(<MODULE-NAME>_VERSION_MAJOR) "."                  \
+    LEXBOR_STRINGIZE(<MODULE-NAME>_VERSION_MINOR) "."                  \
+    LEXBOR_STRINGIZE(<MODULE-NAME>_VERSION_PATCH)
 ```
 
 

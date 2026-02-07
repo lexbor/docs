@@ -47,10 +47,10 @@ These modules are stable, fully tested, and ready for production use:
 | [DOM](/modules/dom/) | 2.0.0 | [WHATWG DOM](https://dom.spec.whatwg.org/) | DOM tree manipulation |
 | [CSS](/modules/css/) | 1.4.0 | [CSS](https://www.w3.org/Style/CSS/) | CSS parser and CSS modules |
 | [Selectors](/modules/selectors/) | 0.5.0 | [CSS Selectors Level 4](https://drafts.csswg.org/selectors-4/) | CSS selectors engine |
-| [Encoding](/modules/encoding/) | 2.2.0 | [WHATWG Encoding](https://encoding.spec.whatwg.org/) | 40+ character encodings |
+| [Encoding](/modules/encoding/) | 2.2.0 | [WHATWG Encoding](https://encoding.spec.whatwg.org/) | 39 character encodings |
 | [URL](/modules/url/) | 0.4.0 | [WHATWG URL](https://url.spec.whatwg.org/) | URL parsing and manipulation |
 | [Unicode](/modules/unicode/) | 0.4.0 | [Unicode TR#15](https://www.unicode.org/reports/tr15/), [TR#46](https://unicode.org/reports/tr46/) | Normalization and IDNA |
-| Punycode | — | [RFC 3492](https://www.rfc-editor.org/rfc/rfc3492.html) | Punycode encoding/decoding |
+| Punycode | 1.1.0 | [RFC 3492](https://www.rfc-editor.org/rfc/rfc3492.html) | Punycode encoding/decoding |
 
 ### Supporting Modules
 
@@ -80,7 +80,7 @@ Each module maintains its own version number. Versions follow semantic versionin
 - **Minor** — new features, backward compatible
 - **Patch** — bug fixes, backward compatible
 
-```c
+```C
 #include <lexbor/html/base.h>
 
 printf("HTML module version: %s\n", LXB_HTML_VERSION_STRING);
@@ -89,7 +89,7 @@ printf("Core version: %s\n", LEXBOR_VERSION_STRING);
 
 Or:
 
-```c
+```C
 printf("Core version: %d.%d.%d\n",
        LEXBOR_VERSION_MAJOR,
        LEXBOR_VERSION_MINOR,

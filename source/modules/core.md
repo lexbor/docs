@@ -10,11 +10,97 @@
 
 The Core module is the foundation of lexbor. It implements essential data structures, memory management, and utilities used by all other modules. Written in pure C99 with zero external dependencies.
 
+## Key Features
+
+- **Zero Dependencies** — pure C99, no external libraries required
+- **Object Lifecycle** — all types follow the `create`/`init`/`clean`/`destroy` pattern
+- **Dual Function Variants** — performance-critical accessors have both inline and non-inline (`_noi`) versions for ABI stability
+- **Pool Allocation** — `lexbor_dobject_t` recycles fixed-size objects; `lexbor_mraw_t` provides general-purpose pooled allocation
+- **Platform Abstraction** — portable across operating systems via `source/lexbor/ports/`
+
+## What's Inside
+
+- **[Status Codes](#status-codes-lxb_status_t)** — error handling codes used by all modules
+- **[Action Type](#action-type-lexbor_action_t)** — callback return values for iteration control
+- **[Base Types](#base-types)** — common types used across all modules
+- **[Memory Allocator](#memory-allocator-lexbor_mraw_t)** — pooled memory allocator with caching
+- **[Dynamic Object Pool](#dynamic-object-pool-lexbor_dobject_t)** — fixed-size object pool allocator
+- **[Array](#array-lexbor_array_t)** — dynamic array of void pointers
+- **[Object Array](#object-array-lexbor_array_obj_t)** — dynamic array storing objects by value
+- **[String](#string-lexbor_str_t)** — dynamically resizable string
+- **[Hash Table](#hash-table-lexbor_hash_t)** — hash table with short string optimization
+- **[AVL Tree](#avl-tree-lexbor_avl_t)** — self-balancing AVL tree
+
+## Quick Start
+
+### Using Arrays and Strings
+
+```C
+#include <lexbor/core/core.h>
+
+int main(void)
+{
+    lxb_status_t status;
+
+    /* Create a memory allocator */
+    lexbor_mraw_t *mraw = lexbor_mraw_create();
+    status = lexbor_mraw_init(mraw, 256);
+    if (status != LXB_STATUS_OK) {
+        return EXIT_FAILURE;
+    }
+
+    /* Create and populate an array */
+    lexbor_array_t *array = lexbor_array_create();
+    status = lexbor_array_init(array, 4);
+    if (status != LXB_STATUS_OK) {
+        lexbor_mraw_destroy(mraw, true);
+        return EXIT_FAILURE;
+    }
+
+    /* Initialize a string */
+    lexbor_str_t str = {0};
+    lxb_char_t *data = lexbor_str_init(&str, mraw, 32);
+    if (data == NULL) {
+        lexbor_array_destroy(array, true);
+        lexbor_mraw_destroy(mraw, true);
+        return EXIT_FAILURE;
+    }
+
+    /* Append text to the string */
+    lexbor_str_append(&str, mraw,
+                      (const lxb_char_t *) "Hello, lexbor!", 14);
+
+    /* Store the string pointer in the array */
+    lexbor_array_push(array, &str);
+
+    printf("String: %.*s (length: %zu)\n",
+           (int) str.length, str.data, str.length);
+    printf("Array length: %zu\n", lexbor_array_length(array));
+
+    /* Cleanup */
+    lexbor_str_destroy(&str, mraw, false);
+    lexbor_array_destroy(array, true);
+    lexbor_mraw_destroy(mraw, true);
+
+    return EXIT_SUCCESS;
+}
+```
+
+**Output:**
+```
+String: Hello, lexbor! (length: 14)
+Array length: 1
+```
+
 ## Status Codes (`lxb_status_t`)
 
-All lexbor functions return `lxb_status_t` for error handling. Defined in `lexbor/core/base.h`.
+All lexbor functions return `lxb_status_t` for error handling. Defined in `source/lexbor/core/base.h`.
 
-```c
+### Location
+
+Status codes are defined in `source/lexbor/core/base.h`.
+
+```C
 typedef enum {
     LXB_STATUS_OK                      = 0x0000,
     LXB_STATUS_ERROR                   = 0x0001,
@@ -43,7 +129,11 @@ typedef enum {
 
 Used as callback return values to control iteration:
 
-```c
+### Location
+
+Defined in `source/lexbor/core/base.h`.
+
+```C
 typedef enum {
     LEXBOR_ACTION_OK   = 0x00,  /* continue */
     LEXBOR_ACTION_STOP = 0x01,  /* stop iteration */
@@ -54,7 +144,11 @@ typedef enum {
 
 ## Base Types
 
-Common types used across all modules (defined in `lexbor/core/base.h`):
+Common types used across all modules (defined in `source/lexbor/core/base.h`):
+
+### Location
+
+Defined in `source/lexbor/core/base.h`.
 
 - `lxb_char_t` — character type (`unsigned char`)
 - `lxb_codepoint_t` — Unicode code point
@@ -64,9 +158,13 @@ Common types used across all modules (defined in `lexbor/core/base.h`):
 
 ## Memory Allocator (`lexbor_mraw_t`)
 
-A pooled memory allocator with caching for reallocation. Used throughout lexbor for efficient allocation. Defined in `lexbor/core/mraw.h`.
+A pooled memory allocator with caching for reallocation. Used throughout lexbor for efficient allocation. Defined in `source/lexbor/core/mraw.h`.
 
-```c
+### Location
+
+Declared in `source/lexbor/core/mraw.h`.
+
+```C
 typedef struct {
     lexbor_mem_t  *mem;
     lexbor_bst_t  *cache;
@@ -76,7 +174,7 @@ typedef struct {
 
 ### Lifecycle
 
-```c
+```C
 lexbor_mraw_t *
 lexbor_mraw_create(void);
 
@@ -92,7 +190,7 @@ lexbor_mraw_destroy(lexbor_mraw_t *mraw, bool destroy_self);
 
 ### Allocation
 
-```c
+```C
 void *lexbor_mraw_alloc(lexbor_mraw_t *mraw, size_t size);
 void *lexbor_mraw_calloc(lexbor_mraw_t *mraw, size_t size);
 void *lexbor_mraw_realloc(lexbor_mraw_t *mraw, void *data, size_t new_size);
@@ -101,7 +199,7 @@ void  lexbor_mraw_free(lexbor_mraw_t *mraw, void *data);
 
 ### Utility
 
-```c
+```C
 /* Duplicate a memory block */
 void *lexbor_mraw_dup(lexbor_mraw_t *mraw, const void *src, size_t size);
 
@@ -115,9 +213,13 @@ size_t lexbor_mraw_reference_count(lexbor_mraw_t *mraw);
 
 ## Dynamic Object Pool (`lexbor_dobject_t`)
 
-A pool allocator for frequently created and destroyed fixed-size objects. Allocates objects from chunks and recycles freed objects via an internal cache. Defined in `lexbor/core/dobject.h`.
+A pool allocator for frequently created and destroyed fixed-size objects. Allocates objects from chunks and recycles freed objects via an internal cache. Defined in `source/lexbor/core/dobject.h`.
 
-```c
+### Location
+
+Declared in `source/lexbor/core/dobject.h`.
+
+```C
 typedef struct {
     lexbor_mem_t   *mem;
     lexbor_array_t *cache;
@@ -128,7 +230,7 @@ typedef struct {
 
 ### Lifecycle
 
-```c
+```C
 lexbor_dobject_t *
 lexbor_dobject_create(void);
 
@@ -144,7 +246,7 @@ lexbor_dobject_destroy(lexbor_dobject_t *dobject, bool destroy_self);
 
 ### Operations
 
-```c
+```C
 void *lexbor_dobject_alloc(lexbor_dobject_t *dobject);   /* allocate (uninitialized) */
 void *lexbor_dobject_calloc(lexbor_dobject_t *dobject);  /* allocate (zeroed) */
 void *lexbor_dobject_free(lexbor_dobject_t *dobject, void *data);  /* return to pool */
@@ -158,9 +260,13 @@ size_t lexbor_dobject_cache_length(lexbor_dobject_t *dobject);   /* cached (free
 
 ## Array (`lexbor_array_t`)
 
-A dynamic array of `void *` pointers. Defined in `lexbor/core/array.h`.
+A dynamic array of `void *` pointers. Defined in `source/lexbor/core/array.h`.
 
-```c
+### Location
+
+Declared in `source/lexbor/core/array.h`.
+
+```C
 typedef struct {
     void   **list;
     size_t size;      /* capacity */
@@ -170,7 +276,7 @@ typedef struct {
 
 ### Lifecycle
 
-```c
+```C
 lexbor_array_t *
 lexbor_array_create(void);
 
@@ -186,8 +292,8 @@ lexbor_array_destroy(lexbor_array_t *array, bool self_destroy);
 
 ### Operations
 
-```c
-lxb_status_t lexbor_array_expand(lexbor_array_t *array, size_t up_to);
+```C
+void **   lexbor_array_expand(lexbor_array_t *array, size_t up_to);
 lxb_status_t lexbor_array_push(lexbor_array_t *array, void *value);
 void *       lexbor_array_pop(lexbor_array_t *array);
 lxb_status_t lexbor_array_insert(lexbor_array_t *array, size_t idx, void *value);
@@ -202,9 +308,13 @@ size_t lexbor_array_size(lexbor_array_t *array);
 
 ## Object Array (`lexbor_array_obj_t`)
 
-A dynamic array that stores objects by value (not by pointer). Elements are stored in a contiguous byte buffer, accessed by index and struct size. Defined in `lexbor/core/array_obj.h`.
+A dynamic array that stores objects by value (not by pointer). Elements are stored in a contiguous byte buffer, accessed by index and struct size. Defined in `source/lexbor/core/array_obj.h`.
 
-```c
+### Location
+
+Declared in `source/lexbor/core/array_obj.h`.
+
+```C
 typedef struct {
     uint8_t *list;
     size_t  size;          /* capacity */
@@ -215,7 +325,7 @@ typedef struct {
 
 ### Lifecycle
 
-```c
+```C
 lexbor_array_obj_t *
 lexbor_array_obj_create(void);
 
@@ -231,7 +341,7 @@ lexbor_array_obj_destroy(lexbor_array_obj_t *array, bool self_destroy);
 
 ### Operations
 
-```c
+```C
 void *lexbor_array_obj_push(lexbor_array_obj_t *array);       /* allocate and zero at end */
 void *lexbor_array_obj_push_wo_cls(lexbor_array_obj_t *array); /* allocate without zeroing */
 void *lexbor_array_obj_push_n(lexbor_array_obj_t *array, size_t count); /* allocate N */
@@ -250,9 +360,13 @@ Note: `push()` returns a pointer to the newly allocated slot in the array. The c
 
 ## String (`lexbor_str_t`)
 
-Dynamically resizable string. Uses `lexbor_mraw_t` for memory allocation. Defined in `lexbor/core/str.h`.
+Dynamically resizable string. Uses `lexbor_mraw_t` for memory allocation. Defined in `source/lexbor/core/str.h`.
 
-```c
+### Location
+
+Declared in `source/lexbor/core/str.h`.
+
+```C
 typedef struct {
     lxb_char_t *data;
     size_t     length;
@@ -261,7 +375,7 @@ typedef struct {
 
 ### Lifecycle
 
-```c
+```C
 lexbor_str_t *
 lexbor_str_create(void);
 
@@ -284,7 +398,7 @@ lexbor_str_destroy(lexbor_str_t *str, lexbor_mraw_t *mraw, bool destroy_obj);
 
 ### Operations
 
-```c
+```C
 /* Resize */
 lxb_char_t *lexbor_str_realloc(lexbor_str_t *str, lexbor_mraw_t *mraw, size_t new_size);
 lxb_char_t *lexbor_str_check_size(lexbor_str_t *str, lexbor_mraw_t *mraw, size_t plus_len);
@@ -310,7 +424,7 @@ void lexbor_str_crop_whitespace_from_begin(lexbor_str_t *target);
 
 ### Accessors
 
-```c
+```C
 lxb_char_t *lexbor_str_data(lexbor_str_t *str);
 size_t      lexbor_str_length(lexbor_str_t *str);
 size_t      lexbor_str_size(lexbor_str_t *str);
@@ -318,36 +432,40 @@ size_t      lexbor_str_size(lexbor_str_t *str);
 
 ### Data Comparison Functions
 
-```c
+```C
 /* Exact match */
-const lxb_char_t *lexbor_str_data_ncmp(const lxb_char_t *first,
-                                        const lxb_char_t *sec, size_t size);
+bool lexbor_str_data_ncmp(const lxb_char_t *first,
+                           const lxb_char_t *sec, size_t size);
 bool lexbor_str_data_cmp(const lxb_char_t *first, const lxb_char_t *sec);
 
 /* Case-insensitive */
-const lxb_char_t *lexbor_str_data_ncasecmp(const lxb_char_t *first,
-                                            const lxb_char_t *sec, size_t size);
+bool lexbor_str_data_ncasecmp(const lxb_char_t *first,
+                               const lxb_char_t *sec, size_t size);
 bool lexbor_str_data_casecmp(const lxb_char_t *first, const lxb_char_t *sec);
 
 /* Substring search */
-const lxb_char_t *lexbor_str_data_ncmp_contain(const lxb_char_t *where, size_t where_size,
-                                                const lxb_char_t *what, size_t what_size);
-const lxb_char_t *lexbor_str_data_ncasecmp_contain(const lxb_char_t *where, size_t where_size,
-                                                    const lxb_char_t *what, size_t what_size);
+bool lexbor_str_data_ncmp_contain(const lxb_char_t *where, size_t where_size,
+                                   const lxb_char_t *what, size_t what_size);
+bool lexbor_str_data_ncasecmp_contain(const lxb_char_t *where, size_t where_size,
+                                       const lxb_char_t *what, size_t what_size);
 
 /* Case conversion */
-lxb_char_t *lexbor_str_data_to_lowercase(lxb_char_t *to, const lxb_char_t *from, size_t len);
-lxb_char_t *lexbor_str_data_to_uppercase(lxb_char_t *to, const lxb_char_t *from, size_t len);
+void lexbor_str_data_to_lowercase(lxb_char_t *to, const lxb_char_t *from, size_t len);
+void lexbor_str_data_to_uppercase(lxb_char_t *to, const lxb_char_t *from, size_t len);
 ```
 
 
 ## Hash Table (`lexbor_hash_t`)
 
-Hash table with configurable key handling, collision chaining, and short string optimization for keys. Defined in `lexbor/core/hash.h`.
+Hash table with configurable key handling, collision chaining, and short string optimization for keys. Defined in `source/lexbor/core/hash.h`.
+
+### Location
+
+Declared in `source/lexbor/core/hash.h`.
 
 ### Key Types
 
-```c
+```C
 typedef struct {
     lexbor_dobject_t    *entries;
     lexbor_mraw_t       *mraw;
@@ -370,7 +488,7 @@ Hash entries use short string optimization: keys up to 16 bytes are stored inlin
 
 ### Lifecycle
 
-```c
+```C
 lexbor_hash_t *
 lexbor_hash_create(void);
 
@@ -388,8 +506,8 @@ The `struct_size` parameter allows embedding custom data after the hash entry he
 
 ### Operations
 
-```c
-lexbor_hash_entry_t *
+```C
+void *
 lexbor_hash_insert(lexbor_hash_t *hash, const lexbor_hash_insert_t *insert,
                    const lxb_char_t *key, size_t length);
 
@@ -397,7 +515,7 @@ lexbor_hash_entry_t *
 lexbor_hash_search(lexbor_hash_t *hash, const lexbor_hash_search_t *search,
                    const lxb_char_t *key, size_t length);
 
-void *
+void
 lexbor_hash_remove(lexbor_hash_t *hash, const lexbor_hash_search_t *search,
                    const lxb_char_t *key, size_t length);
 ```
@@ -411,9 +529,13 @@ Pre-defined insert/search strategies:
 
 ## AVL Tree (`lexbor_avl_t`)
 
-Self-balancing AVL tree for ordered data. Defined in `lexbor/core/avl.h`.
+Self-balancing AVL tree for ordered data. Defined in `source/lexbor/core/avl.h`.
 
-```c
+### Location
+
+Declared in `source/lexbor/core/avl.h`.
+
+```C
 typedef struct {
     lexbor_dobject_t  *nodes;
     lexbor_avl_node_t *last_right;
@@ -431,16 +553,17 @@ typedef struct lexbor_avl_node {
 
 ### Lifecycle
 
-```c
+```C
 lexbor_avl_t *lexbor_avl_create(void);
-lxb_status_t  lexbor_avl_init(lexbor_avl_t *avl, size_t chunk_len, size_t struct_size);
+lxb_status_t  lexbor_avl_init(lexbor_avl_t *avl, size_t chunk_len,
+                              size_t struct_size);
 void          lexbor_avl_clean(lexbor_avl_t *avl);
 lexbor_avl_t *lexbor_avl_destroy(lexbor_avl_t *avl, bool self_destroy);
 ```
 
 ### Operations
 
-```c
+```C
 lexbor_avl_node_t *lexbor_avl_insert(lexbor_avl_t *avl, lexbor_avl_node_t **scope,
                                       size_t type, void *value);
 lexbor_avl_node_t *lexbor_avl_search(lexbor_avl_t *avl, lexbor_avl_node_t *scope,
@@ -455,10 +578,3 @@ lxb_status_t lexbor_avl_foreach(lexbor_avl_t *avl, lexbor_avl_node_t **scope,
 The `scope` parameter is a pointer to the root node pointer, allowing the tree to update the root during balancing.
 
 
-## Key Features
-
-- **Zero Dependencies** — pure C99, no external libraries required
-- **Object Lifecycle** — all types follow the `create`/`init`/`clean`/`destroy` pattern
-- **Dual Function Variants** — performance-critical accessors have both inline and non-inline (`_noi`) versions for ABI stability
-- **Pool Allocation** — `lexbor_dobject_t` recycles fixed-size objects; `lexbor_mraw_t` provides general-purpose pooled allocation
-- **Platform Abstraction** — portable across operating systems via `source/lexbor/ports/`

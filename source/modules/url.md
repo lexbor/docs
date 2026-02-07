@@ -10,26 +10,95 @@
 
 The URL module implements the [WHATWG URL Living Standard](https://url.spec.whatwg.org/) for parsing, manipulating, and serializing URLs. It provides full Unicode and internationalization support through IDNA (Internationalized Domain Names in Applications) and Punycode encoding via the [Unicode module](unicode.md).
 
-## Supported Features
+## Key Features
 
-- Complete URL parsing per WHATWG specification
-- Relative URL resolution against a base URL
-- URL API for modifying individual components (scheme, host, port, path, query, fragment, credentials)
-- Host parsing: domain names, opaque hosts, IPv4, IPv6
-- Special scheme handling: `http`, `https`, `ws`, `wss`, `ftp`, `file`
-- URLSearchParams for query string manipulation
-- Callback-based and component-level serialization
-- URL cloning
-- IDNA/Punycode for international domain names
+- **WHATWG Compliant** — complete URL parsing per specification
+- **Relative Resolution** — resolve relative URLs against a base URL
+- **URL API** — modify individual components (scheme, host, port, path, query, fragment, credentials)
+- **Host Parsing** — domain names, opaque hosts, IPv4, IPv6
+- **Special Schemes** — `http`, `https`, `ws`, `wss`, `ftp`, `file`
+- **URLSearchParams** — query string parsing and manipulation
+- **Serialization** — callback-based and component-level output
+- **IDNA/Punycode** — international domain name support via [Unicode module](unicode.md)
+
+## What's Inside
+
+- **[Quick Start](#quick-start)** — minimal working example to parse a URL
+- **[URL Parser](#url-parser-lxb_url_parser_t)** — parser lifecycle and memory management
+- **[URL Structure](#url-structure-lxb_url_t)** — parsed URL components and accessors
+- **[Scheme Types](#scheme-types)** — special scheme enumeration
+- **[Host Types](#host-types)** — host type enumeration and tagged union
+- **[URL API](#url-api-setters)** — functions for modifying URL components
+- **[Serialization](#serialization)** — callback-based URL serialization
+- **[URLSearchParams](#urlsearchparams-lxb_url_search_params_t)** — query parameter manipulation
+- **[Examples](#examples)** — complete working programs
+
+## Quick Start
+
+### Parsing a URL
+
+```C
+#include <lexbor/url/url.h>
+
+int main(void)
+{
+    lxb_status_t status;
+
+    static const lxb_char_t url_str[] = "https://example.com:8080/path?q=test#section";
+
+    /* Create and initialize parser */
+    lxb_url_parser_t *parser = lxb_url_parser_create();
+    status = lxb_url_parser_init(parser, NULL);
+    if (status != LXB_STATUS_OK) {
+        lxb_url_parser_destroy(parser, true);
+        return EXIT_FAILURE;
+    }
+
+    /* Parse URL */
+    lxb_url_t *url = lxb_url_parse(parser, NULL, url_str, sizeof(url_str) - 1);
+    if (url == NULL) {
+        lxb_url_parser_destroy(parser, true);
+        return EXIT_FAILURE;
+    }
+
+    /* Access components */
+    const lexbor_str_t *scheme = lxb_url_scheme(url);
+    printf("Scheme: %.*s\n", (int) scheme->length, scheme->data);
+
+    if (lxb_url_has_port(url)) {
+        printf("Port: %u\n", lxb_url_port(url));
+    }
+
+    const lexbor_str_t *path = lxb_url_path_str(url);
+    printf("Path: %.*s\n", (int) path->length, path->data);
+
+    /* Cleanup */
+    lxb_url_memory_destroy(url);
+    lxb_url_parser_destroy(parser, true);
+
+    return EXIT_SUCCESS;
+}
+```
+
+**Output:**
+```
+Scheme: https
+Port: 8080
+Path: /path
+```
 
 
 ## URL Parser (`lxb_url_parser_t`)
 
-The URL parser creates URL objects from string input. Defined in `lexbor/url/url.h`.
+The URL parser creates URL objects from string input. Defined in `source/lexbor/url/url.h`.
+
+### Location
+
+Declared in `source/lexbor/url/url.h`.
 
 ### Lifecycle
 
-```c
+```C
 lxb_url_parser_t *
 lxb_url_parser_create(void);
 
@@ -51,7 +120,7 @@ lxb_url_parser_destroy(lxb_url_parser_t *parser, bool destroy_self);
 
 The parser and URLs share a `lexbor_mraw_t` memory allocator. Understanding the ownership model is important:
 
-```c
+```C
 /* Destroy the parser's memory allocator and ALL associated URLs */
 void
 lxb_url_parser_memory_destroy(lxb_url_parser_t *parser);
@@ -78,7 +147,7 @@ lxb_url_mraw_set(lxb_url_parser_t *parser, lexbor_mraw_t *mraw);
 
 ### Parsing
 
-```c
+```C
 lxb_url_t *
 lxb_url_parse(lxb_url_parser_t *parser, const lxb_url_t *base_url,
               const lxb_char_t *data, size_t length);
@@ -96,9 +165,13 @@ lxb_url_parse_basic(lxb_url_parser_t *parser, lxb_url_t *url,
 
 ## URL Structure (`lxb_url_t`)
 
-A parsed URL. Defined in `lexbor/url/url.h`.
+A parsed URL. Defined in `source/lexbor/url/url.h`.
 
-```c
+### Location
+
+Defined in `source/lexbor/url/url.h`.
+
+```C
 typedef struct {
     lxb_url_scheme_t   scheme;
     lxb_url_host_t     host;
@@ -117,7 +190,7 @@ typedef struct {
 
 Inline functions for reading URL components:
 
-```c
+```C
 const lexbor_str_t *   lxb_url_scheme(const lxb_url_t *url);
 const lexbor_str_t *   lxb_url_username(const lxb_url_t *url);
 const lexbor_str_t *   lxb_url_password(const lxb_url_t *url);
@@ -134,7 +207,7 @@ String components (`lexbor_str_t`) have `data` and `length` fields. A component 
 
 ### Cloning
 
-```c
+```C
 lxb_url_t *
 lxb_url_clone(lexbor_mraw_t *mraw, const lxb_url_t *url);
 ```
@@ -144,7 +217,11 @@ Creates a deep copy of a URL. Use `url->mraw` to clone into the same memory pool
 
 ## Scheme Types
 
-```c
+### Location
+
+Defined in `source/lexbor/url/url.h`.
+
+```C
 typedef enum {
     LXB_URL_SCHEMEL_TYPE__UNDEF   = 0x00,
     LXB_URL_SCHEMEL_TYPE__UNKNOWN = 0x01,
@@ -162,7 +239,11 @@ The scheme is stored in `lxb_url_scheme_t` which contains both the string `name`
 
 ## Host Types
 
-```c
+### Location
+
+Defined in `source/lexbor/url/url.h`.
+
+```C
 typedef enum {
     LXB_URL_HOST_TYPE__UNDEF = 0x00,
     LXB_URL_HOST_TYPE_DOMAIN = 0x01,
@@ -175,7 +256,7 @@ typedef enum {
 
 The host is stored in `lxb_url_host_t` with a tagged union:
 
-```c
+```C
 typedef struct {
     lxb_url_host_type_t type;
     union {
@@ -194,7 +275,11 @@ Check `host->type` before accessing the union.
 
 Functions for modifying URL components per the [URL API specification](https://url.spec.whatwg.org/#api). The `parser` parameter is optional — pass it to collect parsing logs, or `NULL` to skip logging.
 
-```c
+### Location
+
+URL API functions are declared in `source/lexbor/url/url.h`.
+
+```C
 lxb_status_t lxb_url_api_href_set(lxb_url_t *url, lxb_url_parser_t *parser,
                                    const lxb_char_t *href, size_t length);
 
@@ -235,7 +320,11 @@ lxb_status_t lxb_url_api_hash_set(lxb_url_t *url, lxb_url_parser_t *parser,
 
 Callback-based serialization for the full URL or individual components. The callback may be invoked multiple times per call.
 
-```c
+### Location
+
+Serialization functions are declared in `source/lexbor/url/url.h`.
+
+```C
 lxb_status_t
 lxb_url_serialize(const lxb_url_t *url, lexbor_serialize_cb_f cb, void *ctx,
                   bool exclude_fragment);
@@ -245,7 +334,7 @@ Pass `exclude_fragment` as `true` to omit the fragment from output.
 
 ### Component Serialization
 
-```c
+```C
 lxb_status_t lxb_url_serialize_scheme(const lxb_url_t *url,
                                        lexbor_serialize_cb_f cb, void *ctx);
 lxb_status_t lxb_url_serialize_username(const lxb_url_t *url,
@@ -266,7 +355,7 @@ lxb_status_t lxb_url_serialize_fragment(const lxb_url_t *url,
 
 ### Host Serialization Variants
 
-```c
+```C
 lxb_status_t lxb_url_serialize_host_unicode(lxb_unicode_idna_t *idna,
                                              const lxb_url_host_t *host,
                                              lexbor_serialize_cb_f cb, void *ctx);
@@ -283,9 +372,13 @@ There is also `lxb_url_serialize_idna()` which serializes the full URL with Unic
 
 Implements the [URLSearchParams](https://url.spec.whatwg.org/#interface-urlsearchparams) interface for parsing and manipulating query parameters.
 
+### Location
+
+Declared in `source/lexbor/url/url.h`.
+
 ### Structure
 
-```c
+```C
 typedef struct lxb_url_search_entry {
     lexbor_str_t           name;
     lexbor_str_t           value;
@@ -305,7 +398,7 @@ Parameters are stored as a doubly-linked list of name/value entries.
 
 ### Lifecycle
 
-```c
+```C
 lxb_url_search_params_t *
 lxb_url_search_params_init(lexbor_mraw_t *mraw,
                            const lxb_char_t *params, size_t length);
@@ -318,7 +411,7 @@ lxb_url_search_params_destroy(lxb_url_search_params_t *search_params);
 
 ### Operations
 
-```c
+```C
 /* Append a name/value pair (duplicates allowed) */
 lxb_url_search_entry_t *
 lxb_url_search_params_append(lxb_url_search_params_t *sp,
@@ -376,7 +469,7 @@ lxb_url_search_params_serialize(lxb_url_search_params_t *sp,
 
 ### Iteration
 
-```c
+```C
 /* Find matching entry starting from a given position */
 lxb_url_search_entry_t *
 lxb_url_search_params_match_entry(lxb_url_search_params_t *sp,
@@ -394,7 +487,7 @@ lxb_url_search_params_match(lxb_url_search_params_t *sp,
 
 The callback type is:
 
-```c
+```C
 typedef lexbor_action_t
 (*lxb_url_search_params_match_f)(lxb_url_search_params_t *sp,
                                  lxb_url_search_entry_t *entry, void *ctx);
@@ -407,7 +500,7 @@ Return `LEXBOR_ACTION_OK` to continue iteration, `LEXBOR_ACTION_STOP` to stop.
 
 ### Parsing and Accessing Components
 
-```c
+```C
 #include <lexbor/url/url.h>
 
 int
@@ -469,7 +562,7 @@ main(void)
 
 ### Relative URL Resolution
 
-```c
+```C
 #include <lexbor/url/url.h>
 
 static lxb_status_t
@@ -528,7 +621,7 @@ main(void)
 
 ### URLSearchParams
 
-```c
+```C
 #include <lexbor/url/url.h>
 #include <lexbor/core/mraw.h>
 
