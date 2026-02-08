@@ -7,6 +7,7 @@
 /amalgamation
 /download
 /roadmap
+/tutorials/index
 /articles/index
 /support
 /license
