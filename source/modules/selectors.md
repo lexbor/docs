@@ -11,8 +11,8 @@
 The Selectors module implements DOM node search by selectors. In other words, it combines three modules: DOM, HTML, and CSS selectors.
 This module, which forms the basis for `querySelector` and `querySelectorAll`.
 
-For parsing HTML documents, use the [HTML module](html.md).
-For CSS selector parsing, use the [CSS module](css.md).
+For parsing HTML documents, use the [HTML module](/modules/html).
+For CSS selector parsing, use the [CSS module](/modules/css/selectors).
 
 ## What's Inside
 
@@ -531,6 +531,7 @@ Take the specificity of the **most specific selector** in their argument list:
 ```c
 /* Specificity of #header (1, 0, 0) */
 const lxb_char_t sel1[] = ":is(#header, .main, div)";
+```
 
 #### `:where()`
 Always has **zero specificity** (0, 0, 0), regardless of its arguments:

@@ -789,7 +789,7 @@ In lexbor, interfaces form an inheritance chain using struct embedding. Each spe
 
 **Inheritance Chain Example:**
 
-```C
+```
 lxb_dom_event_target_t (base)
     ↓ (first field in lxb_dom_node_t)
 lxb_dom_node_t

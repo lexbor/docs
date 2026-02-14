@@ -7,7 +7,7 @@
 /modules/core
 /modules/html
 /modules/dom
-/modules/css
+/modules/css/index
 /modules/selectors
 /modules/encoding
 /modules/url
@@ -40,17 +40,17 @@ All modules are located in the `source/lexbor/` directory of the project. Each m
 
 These modules are stable, fully tested, and ready for production use:
 
-| Module | Version | Specification | Description |
-|--------|---------|---------------|-------------|
-| [Core](/modules/core/) | 2.7.0 | — | Base algorithms and memory management |
-| [HTML](/modules/html/) | 2.8.0 | [WHATWG HTML](https://html.spec.whatwg.org/) | Full HTML parser |
-| [DOM](/modules/dom/) | 2.0.0 | [WHATWG DOM](https://dom.spec.whatwg.org/) | DOM tree manipulation |
-| [CSS](/modules/css/) | 1.4.0 | [CSS](https://www.w3.org/Style/CSS/) | CSS parser and CSS modules |
-| [Selectors](/modules/selectors/) | 0.5.0 | [CSS Selectors Level 4](https://drafts.csswg.org/selectors-4/) | CSS selectors engine |
-| [Encoding](/modules/encoding/) | 2.2.0 | [WHATWG Encoding](https://encoding.spec.whatwg.org/) | 40+ character encodings |
-| [URL](/modules/url/) | 0.4.0 | [WHATWG URL](https://url.spec.whatwg.org/) | URL parsing and manipulation |
-| [Unicode](/modules/unicode/) | 0.5.0 | [Unicode TR#15](https://www.unicode.org/reports/tr15/), [TR#46](https://unicode.org/reports/tr46/) | Normalization and IDNA |
-| Punycode | — | [RFC 3492](https://www.rfc-editor.org/rfc/rfc3492.html) | Punycode encoding/decoding |
+| Module  | Specification | Description |
+|---------|---------------|-------------|
+| [Core](/modules/core/) | — | Base algorithms and memory management |
+| [HTML](/modules/html/) | [WHATWG HTML](https://html.spec.whatwg.org/) | Full HTML parser |
+| [DOM](/modules/dom/) | [WHATWG DOM](https://dom.spec.whatwg.org/) | DOM tree manipulation |
+| [CSS](/modules/css/index) | [CSS](https://www.w3.org/Style/CSS/) | CSS parser and CSS modules |
+| [Selectors](/modules/selectors/) | [CSS Selectors Level 4](https://drafts.csswg.org/selectors-4/) | CSS selectors engine |
+| [Encoding](/modules/encoding/) | [WHATWG Encoding](https://encoding.spec.whatwg.org/) | 40+ character encodings |
+| [URL](/modules/url/) | [WHATWG URL](https://url.spec.whatwg.org/) | URL parsing and manipulation |
+| [Unicode](/modules/unicode/) | [Unicode TR#15](https://www.unicode.org/reports/tr15/), [TR#46](https://unicode.org/reports/tr46/) | Normalization and IDNA |
+| Punycode | [RFC 3492](https://www.rfc-editor.org/rfc/rfc3492.html) | Punycode encoding/decoding |
 
 ### Supporting Modules
 
