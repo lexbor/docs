@@ -33,6 +33,7 @@ The HTML module provides a complete, specification-compliant HTML parser. Yes, i
 - **[Tokenizer](#tokenizer)** — converts HTML text into tokens according to WHATWG spec
 - **[Tree Builder](#tree-builder)** — constructs a DOM tree from tokens with proper error handling
 - **[Encoding Detection](#encoding-detection)** — determines character encoding from byte stream
+- **[Testing and Compliance](#specification-compliance-and-testing)** — details on testing against HTML5 test suite and real-world pages
 
 ## Quick Start
 
@@ -1498,6 +1499,66 @@ int main(void)
 
 **Key takeaway:** Return the same token for efficiency, or return a new token to accumulate them. The choice is yours!
 
+### Tokenizer Options
+
+The tokenizer supports configuration options that control its behavior. Options are stored as a bitfield in the `opt` field of `lxb_html_tokenizer_t` and can be combined using bitwise OR.
+
+| Option | Description |
+|--------|-------------|
+| `LXB_HTML_TOKENIZER_OPT_UNDEF` | Default (no options) |
+| `LXB_HTML_TOKENIZER_OPT_VALIDATE_INPUT` | Enable input stream validation per WHATWG spec (default off) |
+| `LXB_HTML_TOKENIZER_OPT_ATTR_KEEP_DUPLICATE` | Keep duplicate attributes instead of removing them (default off) |
+
+#### LXB_HTML_TOKENIZER_OPT_VALIDATE_INPUT
+
+Enables validation of the input stream according to [WHATWG HTML spec §13.2.3.5](https://html.spec.whatwg.org/multipage/parsing.html#preprocessing-the-input-stream). By default, the tokenizer does **not** validate the input stream for performance reasons.
+
+Enabling this option only affects the collection of parse errors — it does **not** change how the tokenizer processes tokens or how the tree builder constructs the DOM tree. The errors are purely informational for the user.
+
+When enabled, the tokenizer performs a linear scan before processing each chunk and reports parse errors for:
+
+- **Control characters** (U+0001–U+0008, U+000B, U+000E–U+001F, U+007F) — error: `control-character-in-input-stream`
+- **C1 control characters** (U+0080–U+009F) — error: `control-character-in-input-stream`
+- **Surrogate characters** (U+D800–U+DFFF) — error: `surrogate-in-input-stream`
+- **Noncharacters** (U+FDD0–U+FDEF, U+xFFFE, U+xFFFF on every Unicode plane) — error: `noncharacter-in-input-stream`
+
+The validation correctly handles multi-byte UTF-8 sequences, including sequences split across chunk boundaries.
+
+Use the helper function to enable or disable:
+
+```C
+lxb_html_tokenizer_t *tkz = lxb_html_tokenizer_create();
+lxb_html_tokenizer_init(tkz);
+
+/* Enable input validation */
+lxb_html_tokenizer_input_validation_set(tkz, true);
+
+/* Disable input validation */
+lxb_html_tokenizer_input_validation_set(tkz, false);
+```
+
+#### LXB_HTML_TOKENIZER_OPT_ATTR_KEEP_DUPLICATE
+
+Controls how the tokenizer handles duplicate attributes on HTML elements. By default, the tokenizer **removes** duplicate attributes (keeping only the first occurrence), following the HTML specification behavior.
+
+When this option is enabled, duplicate attributes are preserved in the token's attribute list. This can be useful for tools that need to analyze or report the original HTML source as-is (linters, validators, code formatters).
+
+**Performance tip:** when parsing a full HTML document (tokenizer + tree builder), this option can be enabled for a speed boost. The tree builder removes duplicate attributes anyway during DOM construction, so the tokenizer can skip this check without affecting the final result.
+
+**Default behavior** (option NOT set): for `<div class="a" class="b">`, the second `class="b"` is removed at the tokenizer stage and a `duplicate-attribute` parse error is reported.
+
+**With option set**: for `<div class="a" class="b">`, both attributes are kept in the token's attribute list. If the tree builder is used, duplicates will still be removed during tree construction.
+
+```C
+lxb_html_tokenizer_t *tkz = lxb_html_tokenizer_create();
+lxb_html_tokenizer_init(tkz);
+
+/* Keep duplicate attributes */
+lxb_html_tokenizer_keep_duplicate_set(tkz, true);
+
+/* Restore default behavior (remove duplicates) */
+lxb_html_tokenizer_keep_duplicate_set(tkz, false);
+```
 
 ## Tree Builder
 
@@ -1715,3 +1776,63 @@ lxb_html_encoding_t *lxb_html_encoding_destroy(lxb_html_encoding_t *em, bool sel
 2. **Not Full Parsing**: This is a lightweight scanner, not a full HTML parser. It's designed specifically for quick encoding detection.
 3. **BOM Not Handled**: This detector only searches for `<meta>` tag declarations. Byte Order Mark (BOM) detection should be handled separately if needed.
 4. **Case Insensitive**: Tag names and attribute names are matched case-insensitively, following HTML parsing rules.
+
+## Specification compliance and testing
+
+"Is the tree structure the same as in the browser? How about compliance with the specifications?"
+
+A very common question that we will answer in detail right here.
+
+Lexbor complies with [the live HTML specification from WHATWG](https://html.spec.whatwg.org/multipage/), which is constantly being updated and developed.
+Why the living standard and not HTML5? Because HTML5 is an outdated version of the standard that does not reflect the current implementation and development of HTML. WHATWG supports the living standard, which is constantly being updated and developed, unlike the static version of HTML5, which was frozen in 2014. In short: lexbor processes HTML in exactly the same way as modern browsers because browsers and lexbor follow the same living standard from WHATWG.
+
+What [the specification says](https://html.spec.whatwg.org/multipage/introduction.html#is-this-html5?) about the abbreviation HTML5:
+```
+The term "HTML5" is widely used as a buzzword to refer to modern web technologies, many of which (though by no means all) are developed at the WHATWG.
+```
+
+We strive to maintain full compliance with this specification, which guarantees the correct processing of all aspects of HTML, including syntax, document structure, error handling, and much more.
+
+About the tests.
+
+Many HTML parser developers refer to the [html5lib_tests](https://github.com/html5lib/html5lib-tests) (which are also used by browser developers). These are excellent tests and a tremendous amount of work has gone into them.
+Lexbor passes these tests.
+
+Tokenizer tests:
+```
+Results: 6806 total, 0 failed, 6806 passed
+```
+
+Tree construction tests:
+```
+Results: 1782 total, 0 failed, 1782 passed
+```
+
+Encoding tests:
+```
+Results: 82 total, 0 failed, 82 passed
+```
+
+In fact, there are fewer tree-building tests in the original html5lib_tests than indicated above; we have forked them and are adding our own as needed, as the specifications change.
+Moreover, the current html5lib_tests do not comply with the specification and are outdated.
+Take, for example, the test:
+```
+#data
+<input><option>
+#errors
+#document-fragment
+select
+#document
+| <input>
+| <option>
+```
+The result should be:
+```
+#document
+| <option>
+```
+
+So it turns out that the tests don't keep up with the specifications.
+We monitor all of this and strive to comply with the live specification as much as possible.
+
+In addition, [fuzzing testing](https://lexbor.com/fuzzers/) and running through a million real HTML files with ASAN and MSAN are used.
