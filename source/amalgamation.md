@@ -44,6 +44,8 @@ perl single.pl --port=windows_nt html > lexbor_html_single.h
 | `--reverse-deps` | Print reverse dependencies (which modules depend on specified ones) |
 | `--size-info` | Print size information (lines of code, file counts) |
 | `--minimal-deps` | Show minimal set of dependencies |
+| `--module-deps` | Print dependencies for specified modules (space-separated, sorted) |
+| `--recursive` | With `--module-deps`: include recursive dependencies |
 | `--versions` | Print version information for modules |
 | `--version` | Print Lexbor version |
 

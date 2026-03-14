@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "lexbor"
-copyright = "2024, Alexander Borisov"
+copyright = "2024-2026, Alexander Borisov"
 author = "Alexander Borisov"
 html_title = "lexbor docs"
 
