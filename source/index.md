@@ -11,7 +11,6 @@
 /articles/index
 /support
 /license
-fuzzers <https://lexbor.com/fuzzers>
 GitHub <https://github.com/lexbor/lexbor>
 ```
 
