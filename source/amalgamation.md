@@ -18,8 +18,11 @@ perl single.pl html css > lexbor_html_css_single.h
 # Generate with exported symbols (for dynamic linking)
 perl single.pl --with-export-symbols html > lexbor_html_single.h
 
-# Use a different port (default: posix)
-perl single.pl --port=windows_nt html > lexbor_html_single.h
+# Use a specific port only
+perl single.pl --port=posix html > lexbor_html_single.h
+
+# Use multiple specific ports (comma-separated)
+perl single.pl --port=windows_nt,posix html > lexbor_html_single.h
 ```
 
 ## Available Options
@@ -30,7 +33,7 @@ perl single.pl --port=windows_nt html > lexbor_html_single.h
 |--------|-------------|
 | `--help` | Show help message |
 | `--all` | Include all modules if no modules specified |
-| `--port=<port>` | Specify platform port to use (default: `posix`) |
+| `--port=<port>` | Specify platform port to use (default: `all`). Accepts a single port name, comma-separated list, or `all` |
 | `--with-export-symbols` | Export symbols (for building shared libraries) |
 
 ### Information Options
@@ -64,6 +67,37 @@ perl single.pl --port=windows_nt html > lexbor_html_single.h
 | `--dot-graph` | Export dependency graph in DOT format (Graphviz) |
 | `--export-json` | Export dependency structure to JSON |
 | `--export-yaml` | Export dependency structure to YAML |
+
+## Ports
+
+Ports contain platform-specific code (e.g., `posix`, `windows_nt`). By default (`--port=all`), the script automatically discovers all available ports from `source/lexbor/ports/` and includes them all in the amalgamation.
+
+When multiple ports are included, their platform-specific code is wrapped in preprocessor conditionals (`#if`/`#elif`/`#else`), so the correct implementation is selected at compile time based on the target platform. For example:
+
+```C
+#if defined(_WIN32) /* Port: windows_nt */
+// ... Windows-specific code ...
+
+#else /* Port: posix (fallback) */
+// ... POSIX-specific code ...
+
+#endif
+```
+
+Each port has a `port.conf` file that defines its preprocessor condition. Ports without a condition (or with `fallback = true`) serve as the default fallback in the `#else` branch.
+
+This means you do not need to worry about selecting the right port — by default the generated file will work on all supported platforms. If you want to generate a file for a specific platform only, use the `--port` option:
+
+```bash
+# Only POSIX (no preprocessor conditionals for ports)
+perl single.pl --port=posix html > lexbor_html_single.h
+
+# Only Windows
+perl single.pl --port=windows_nt html > lexbor_html_single.h
+
+# Explicit multi-port (same as default --port=all)
+perl single.pl --port=windows_nt,posix html > lexbor_html_single.h
+```
 
 ## Usage Example
 
