@@ -1,6 +1,6 @@
 # DOM Module
 
-* **Version:** 2.0.0
+* **Version:** 2.1.0
 * **Path:** `source/lexbor/dom`
 * **Base Includes:** `lexbor/dom/dom.h`
 * **Examples:** not present
@@ -34,6 +34,7 @@ The DOM module is not used directly in most cases — you interact with it throu
 - **[Text Content](#text-content)** — reading and writing text content of nodes
 - **[Collections](#collections)** — working with query results
 - **[Memory Management](#memory-management)** — how DOM memory is organized
+- **[Document Options](#document-options)** — controlling document behavior (e.g., suppressing events)
 
 ## Node Types & Hierarchy
 
@@ -842,3 +843,55 @@ typedef struct {
 These callbacks are stored in `document->node_cb`. The `set_value` callback is only triggered for attribute value changes, while `insert`, `remove`, and `destroy` are called for all node types.
 
 **Note:** The `_wo_events` variants of tree manipulation functions bypass these callbacks entirely.
+
+## Document Options
+
+The Document has an `options` field (`lxb_dom_document_opt_t`) that controls its behavior. Options are bitmask flags — you can combine them with bitwise OR.
+
+### Available Options
+
+| Option | Description |
+|-------|-------------|
+| `LXB_DOM_DOCUMENT_OPT_UNDEF` | Default. All callbacks are active. |
+| `LXB_DOM_DOCUMENT_OPT_WO_EVENTS` | Without Events. Suppresses all mutation callbacks. |
+
+These are defined in `source/lexbor/dom/interfaces/document.h`.
+
+### LXB_DOM_DOCUMENT_OPT_WO_EVENTS
+
+When this option is set, the document suppresses **all** mutation callbacks — both node mutation and attribute mutation. This affects:
+
+**Node mutations (suppressed):**
+- `mutation->inserted` — not called on `lxb_dom_node_insert_child()`, `lxb_dom_node_insert_before()`, `lxb_dom_node_insert_after()`
+- `mutation->removed` — not called on `lxb_dom_node_remove()`
+
+**Attribute mutations (suppressed):**
+- `attr_mutation->append` — not called when a new attribute is added
+- `attr_mutation->change` — not called when an existing attribute value is changed
+- `attr_mutation->remove` — not called when an attribute is removed
+
+This is useful when you want to manipulate the DOM tree without triggering side effects. For example, the CSS module uses mutation callbacks to recalculate styles when nodes are inserted or attributes change. If you are building or modifying a tree in bulk and don't need incremental style updates, setting `WO_EVENTS` avoids unnecessary work.
+
+**Note:** This option does **not** affect the `_wo_events` low-level functions (like `lxb_dom_node_insert_child_wo_events()`). Those functions always skip callbacks regardless of the document option. The `WO_EVENTS` option affects the regular functions (`lxb_dom_node_insert_child()`, `lxb_dom_node_remove()`, etc.) that normally do fire callbacks.
+
+### Getting and Setting Options
+
+**Important:** Options should be set **before** parsing or modifying the document. The options affect parsing and all subsequent DOM operations — for example, with `LXB_DOM_DOCUMENT_OPT_WO_EVENTS` the parser will not trigger mutation callbacks as it builds the DOM tree.
+
+Options can be set at the DOM document level directly, or through the HTML module (see [DOM Options](html.md#dom-options) in the HTML module documentation for HTML-level convenience functions and parser-level propagation).
+
+**On the DOM document directly:**
+
+```C
+#include "lexbor/dom/interfaces/document.h"
+
+/* Set option */
+lxb_dom_document_opt_set(document, LXB_DOM_DOCUMENT_OPT_WO_EVENTS);
+
+/* Get current options */
+lxb_dom_document_opt_t opt = lxb_dom_document_opt(document);
+
+/* Reset to default */
+lxb_dom_document_opt_set(document, LXB_DOM_DOCUMENT_OPT_UNDEF);
+```
+

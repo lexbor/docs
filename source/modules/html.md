@@ -1,6 +1,6 @@
 # HTML Module
 
-* **Version:** 2.8.0
+* **Version:** 2.9.0
 * **Path:** `source/lexbor/html`
 * **Base Includes:** `lexbor/html/html.h`
 * **Examples:** `examples/lexbor/html`
@@ -33,6 +33,7 @@ The HTML module provides a complete, specification-compliant HTML parser. Yes, i
 - **[Tokenizer](#tokenizer)** — converts HTML text into tokens according to WHATWG spec
 - **[Tree Builder](#tree-builder)** — constructs a DOM tree from tokens with proper error handling
 - **[Encoding Detection](#encoding-detection)** — determines character encoding from byte stream
+- **[DOM Options](#dom-options)** — controlling DOM document behavior from the HTML level
 - **[Testing and Compliance](#specification-compliance-and-testing)** — details on testing against HTML5 test suite and real-world pages
 
 ## Quick Start
@@ -1777,6 +1778,54 @@ lxb_html_encoding_t *lxb_html_encoding_destroy(lxb_html_encoding_t *em, bool sel
 3. **BOM Not Handled**: This detector only searches for `<meta>` tag declarations. Byte Order Mark (BOM) detection should be handled separately if needed.
 4. **Case Insensitive**: Tag names and attribute names are matched case-insensitively, following HTML parsing rules.
 
+## DOM Options
+
+The HTML document wraps a [DOM document](dom.md#document-options) internally (`lxb_html_document_t` contains `lxb_dom_document_t`). DOM document options — such as suppressing mutation callbacks — can be set directly on the HTML document or on the parser.
+
+**Important:** Options must be set **before** parsing begins. The options affect the parsing process itself — for example, with `LXB_DOM_DOCUMENT_OPT_WO_EVENTS` the parser will not trigger mutation callbacks as it builds the DOM tree. Setting options after parsing has no effect on already-constructed nodes.
+
+For a full description of available options and what they control, see [Document Options](dom.md#document-options) in the DOM module documentation.
+
+### On the HTML Document
+
+```C
+#include "lexbor/html/interfaces/document.h"
+
+lxb_html_document_t *document = lxb_html_document_create();
+
+/* Set DOM options BEFORE parsing */
+lxb_html_document_dom_opt_set(document, LXB_DOM_DOCUMENT_OPT_WO_EVENTS);
+
+/* Now parse — mutation callbacks will NOT fire during tree construction */
+lxb_html_document_parse(document, html, html_len);
+
+/* Get current DOM options */
+lxb_dom_document_opt_t opt = lxb_html_document_dom_opt(document);
+
+/* Reset to default (e.g., before post-parse modifications that need events) */
+lxb_html_document_dom_opt_set(document, LXB_DOM_DOCUMENT_OPT_UNDEF);
+```
+
+### On the HTML Parser
+
+When using the [Parser](#parser-advanced-control) approach, you can set DOM options on the parser before parsing. All documents created by that parser will inherit the options:
+
+```C
+#include "lexbor/html/parser.h"
+
+lxb_html_parser_t *parser = lxb_html_parser_create();
+lxb_html_parser_init(parser);
+
+/* Set DOM options before parsing */
+lxb_html_parser_dom_opt_set(parser, LXB_DOM_DOCUMENT_OPT_WO_EVENTS);
+
+/* All documents created by this parser will have WO_EVENTS set */
+lxb_html_document_t *doc = lxb_html_parse(parser, html, html_len);
+
+/* Get current DOM options from parser */
+lxb_dom_document_opt_t opt = lxb_html_parser_dom_opt(parser);
+```
+
 ## Specification compliance and testing
 
 "Is the tree structure the same as in the browser? How about compliance with the specifications?"
@@ -1805,7 +1854,7 @@ Results: 6806 total, 0 failed, 6806 passed
 
 Tree construction tests:
 ```
-Results: 1782 total, 0 failed, 1782 passed
+Results: 1786 total, 0 failed, 1786 passed
 ```
 
 Encoding tests:
