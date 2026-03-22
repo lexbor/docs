@@ -29,6 +29,7 @@ The HTML module provides a complete, specification-compliant HTML parser. Yes, i
 - **[Parser](#parsing)** — high-level API combining tokenizer and tree builder
 - **[Fragment Parser](#parsing-html-fragment)** — parses HTML fragments with context element (innerHTML)
 - **[Serialization](#serialization)** — converts DOM tree back to HTML text with formatting options
+- **[Serialization Extended](#serialization-extended)** — advanced serialization with per-token callback control for custom output
 - **[HTML Interfaces](#element-interfaces)** — 90+ HTML element interfaces (HTMLDivElement, HTMLInputElement, etc.)
 - **[Tokenizer](#tokenizer)** — converts HTML text into tokens according to WHATWG spec
 - **[Tree Builder](#tree-builder)** — constructs a DOM tree from tokens with proper error handling
@@ -775,6 +776,110 @@ if (status != LXB_STATUS_OK) {
     fprintf(stderr, "Serialization failed with status: %d\n", status);
     return EXIT_FAILURE;
 }
+```
+
+## Serialization Extended
+
+The standard [Serialization](#serialization) API converts a DOM tree to HTML text as a single unit — the caller receives the final result but has no control over how individual parts of the output are produced. The Extended Serialization API solves this by providing fine-grained, per-token callbacks that let the application intercept and transform every piece of the serialized output: tag brackets, tag names, attribute names and values, text content, comments, indentation, and more.
+
+This is useful when you need to go beyond plain HTML text. For example: syntax highlighting (wrapping tag names in `<span>` elements with CSS classes), custom formatting, filtering or transforming specific attributes, or streaming output with per-token processing. The core serialization algorithm still follows the [WHATWG HTML Living Standard](https://html.spec.whatwg.org/multipage/parsing.html#serialising-html-fragments), so the output is spec-compliant by default — but you decide what happens with each token.
+
+### Location
+
+All functions and types are declared in `source/lexbor/html/serialize_ext.h` and implemented in `source/lexbor/html/serialize_ext.c`.
+
+### How It Works
+
+The API is built around a set of callback structures, one per DOM node type:
+
+| Structure | Controls |
+|-----------|----------|
+| `lxb_html_serialize_ext_node_t` | Element tags: brackets (`<`, `>`), namespace prefix, tag name |
+| `lxb_html_serialize_ext_attr_t` | Attributes: whitespace, namespace prefix, name, value with delimiters |
+| `lxb_html_serialize_ext_text_t` | Text nodes: indent, before/after hooks, text content |
+| `lxb_html_serialize_ext_comment_t` | Comment nodes: `<!--`, comment text, `-->` |
+| `lxb_html_serialize_ext_processing_instruction_t` | Processing instructions: `<?`, target, data, `>` |
+| `lxb_html_serialize_ext_document_type_t` | DOCTYPE: `<!DOCTYPE`, name, PUBLIC/SYSTEM identifiers, `>` |
+
+All of these are combined into the main structure `lxb_html_serialize_ext_t`, which is passed to the serialization functions.
+
+### Functions
+
+| Function | Description |
+|----------|-------------|
+| `lxb_html_serialize_ext_tree_cb()` | Serialize a DOM tree with user-defined callbacks |
+| `lxb_html_serialize_ext_tree_str()` | Serialize a DOM tree to string (convenience wrapper) |
+| `lxb_html_serialize_ext_node_cb()` | Serialize a single node with callbacks (no children) |
+| `lxb_html_serialize_ext_node_str()` | Serialize a single node to string (no children) |
+| `lxb_html_serialize_ext_element_cb()` | Serialize an element's opening tag with attributes via callbacks |
+| `lxb_html_serialize_ext_element_wo_attr_cb()` | Serialize an element tag without attributes via callbacks |
+| `lxb_html_serialize_ext_attribute_cb()` | Serialize a single attribute via callbacks |
+| `lxb_html_serialize_ext_text_cb()` | Serialize a text node via callbacks |
+| `lxb_html_serialize_ext_comment_cb()` | Serialize a comment node via callbacks |
+| `lxb_html_serialize_ext_processing_instruction_cb()` | Serialize a processing instruction via callbacks |
+| `lxb_html_serialize_ext_document_type_cb()` | Serialize DOCTYPE in short form via callbacks |
+| `lxb_html_serialize_ext_document_type_full_cb()` | Serialize DOCTYPE in full form via callbacks |
+
+### Options
+
+The `lxb_html_serialize_ext_opt_t` is a bitfield that controls serialization behavior. Options can be combined using bitwise OR (`|`):
+
+| Option | Description |
+|--------|-------------|
+| `LXB_HTML_SERIALIZE_EXT_OPT_UNDEF` | Default behavior, strict spec-compliant output |
+| `LXB_HTML_SERIALIZE_EXT_OPT_SKIP_WS_NODES` | Skip whitespace-only text nodes |
+| `LXB_HTML_SERIALIZE_EXT_OPT_SKIP_COMMENT` | Skip comment nodes |
+| `LXB_HTML_SERIALIZE_EXT_OPT_REPLACE_NEWLINE` | Replace newlines in text content with spaces |
+| `LXB_HTML_SERIALIZE_EXT_OPT_RAW` | Output raw text without HTML entity escaping |
+| `LXB_HTML_SERIALIZE_EXT_OPT_WITHOUT_CLOSING` | Omit closing tags |
+| `LXB_HTML_SERIALIZE_EXT_OPT_TAG_WITH_NS` | Include namespace prefix in tag names (e.g., `svg:rect`) |
+| `LXB_HTML_SERIALIZE_EXT_OPT_FULL_DOCTYPE` | Serialize full DOCTYPE with PUBLIC/SYSTEM identifiers |
+| `LXB_HTML_SERIALIZE_EXT_OPT_PRETTY` | Enable pretty-printing with indentation and newlines |
+
+**Note:** When any flag other than `LXB_HTML_SERIALIZE_EXT_OPT_UNDEF` is set, the output may differ from what the spec prescribes. For strict spec-compliant serialization, use `LXB_HTML_SERIALIZE_EXT_OPT_UNDEF`.
+
+### Callback Order
+
+Understanding the callback order helps when implementing custom handlers.
+
+**Element opening tag:**
+
+```
+indent -> before("<") -> ns("svg") -> name("rect") ->
+[for each attr: ws(" ") -> ns("xlink") -> name("href") ->
+ value_before("=\"") -> value("...") -> value_after("\"")] ->
+after(">")
+```
+
+**Text node:**
+
+```
+indent -> before -> text (may be called multiple times) -> after
+```
+
+**Comment node:**
+
+```
+indent -> begin("<!--") -> text -> end("-->")
+```
+
+**Processing instruction:**
+
+```
+indent -> begin("<?") -> target -> middle(" ") -> text -> end(">")
+```
+
+**DOCTYPE (short form):**
+
+```
+indent -> begin("<!DOCTYPE") -> ws(" ") -> name -> end(">")
+```
+
+**DOCTYPE (full form):**
+
+```
+indent -> begin("<!DOCTYPE") -> ws(" ") -> name ->
+[ws(" ") -> text_public] -> [ws(" ") -> text_system] -> end(">")
 ```
 
 ## Element Interfaces
