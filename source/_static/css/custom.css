@@ -1,0 +1,89 @@
+/* Lexbor Custom Styles - Simplified */
+
+/* Base Layout */
+body {
+    background: var(--color-background-primary);
+    padding-top: 43px !important;
+}
+
+/* Header styles */
+.head {
+    font-family: 'Open Sans', arial, sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+}
+
+.head a {
+    font-family: 'Open Sans', arial, sans-serif !important;
+    font-size: 14px !important;
+}
+
+.head a:hover {
+    border-bottom: 1px solid #fff !important;
+}
+
+.head-left a:hover {
+    border-bottom: 1px solid #afb8be !important;
+}
+
+/* Sidebar */
+.furo-sidebar a {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Search box fix */
+.furo-search-box input {
+    color: #ffffff !important;
+    background-color: #2d2d2d !important;
+}
+
+.furo-search-box input::placeholder {
+    color: #999999 !important;
+}
+
+/* Main content area */
+.furo-main-content {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.furo-main-content p {
+    font-size: 16px;
+}
+
+/* Code highlighting - from main site */
+.highlight .defftype { color: rgb(182, 240, 147); }
+.highlight .deffname { color: inherit; }
+.highlight .deftype { color: rgb(182, 240, 147); }
+.highlight .ffname { color: rgb(182, 240, 147); }
+.highlight .var { color: inherit; }
+.highlight .text { color: rgb(254, 126, 111); }
+.highlight .number { color: rgb(161, 160, 245); }
+.highlight .type { color: rgb(115, 202, 195); }
+.highlight .std-type { color: rgb(253, 123, 177); }
+.highlight .std { color: rgb(253, 123, 177); }
+.highlight .std-bn { color: rgb(253, 123, 177); }
+.highlight .std-macros { color: rgb(252, 159, 83); }
+.highlight .comment { color: rgb(127, 140, 147); }
+.highlight .mpath { color: rgb(182, 240, 147); }
+
+/* Additional Pygments classes */
+.highlight .c { color: rgb(127, 140, 147); } /* comment */
+.highlight .k { color: rgb(253, 123, 177); } /* keyword */
+.highlight .s { color: rgb(254, 126, 111); } /* string */
+.highlight .m { color: rgb(161, 160, 245); } /* number */
+.highlight .kt { color: rgb(115, 202, 195); } /* type */
+.highlight .nc { color: rgb(182, 240, 147); } /* class name */
+.highlight .nf { color: rgb(182, 240, 147); } /* function name */
+.highlight .n { color: inherit; } /* name */
+.highlight .o { color: inherit; } /* operator */
+.highlight .p { color: inherit; } /* punctuation */
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content {
+        width: 100%;
+        padding: 0 15px 50px;
+    }
+}
