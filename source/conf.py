@@ -52,6 +52,7 @@ html_theme_options = {
         "color-background-secondary": "#f1f1f1",
         "font-stack": "'Open Sans', arial, sans-serif",
         "font-stack--monospace": "'Source Code Pro', monospace",
+        "color-sidebar-link-text--top-level": "var(--color-foreground-secondary)",
     },
     "dark_css_variables": {
         "color-brand-primary": "#a84044",
@@ -63,5 +64,6 @@ html_theme_options = {
         "color-background-border": "#363b44",
         "font-stack": "'Open Sans', arial, sans-serif",
         "font-stack--monospace": "'Source Code Pro', monospace",
+        "color-sidebar-link-text--top-level": "var(--color-foreground-secondary)",
     },
 }

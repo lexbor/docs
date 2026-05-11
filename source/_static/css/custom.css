@@ -32,6 +32,12 @@ body {
     cursor: pointer;
 }
 
+/* Highlight active sidebar item with brand color */
+.sidebar-tree .current > .reference {
+    color: var(--color-brand-primary) !important;
+    font-weight: 600;
+}
+
 /* Search box fix */
 .furo-search-box input {
     color: #ffffff !important;
