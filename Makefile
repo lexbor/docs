@@ -84,6 +84,11 @@ backup:
 	# Sync remote to local deploy directory
 	rsync -rctv $(HOST):$(REMOTEDIR) $(DEPLOYDIR)/
 
+# Run visual tests against the built docs
+.PHONY: test
+test: html
+	$(call venv_exec, python -m playwright install chromium --with-deps && python -m pytest tests/ -v)
+
 # Clean docs, backup, and then upload merged updates to the remote server
 .PHONY: upload
 upload: clean-doc backup deploy

@@ -4,3 +4,5 @@ pyspelling
 myst-parser
 sphinx-autobuild
 sphinx-copybutton
+pytest
+pytest-playwright
