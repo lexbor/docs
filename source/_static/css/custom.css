@@ -38,14 +38,23 @@ body {
     font-weight: 600;
 }
 
-/* Search box fix */
-.furo-search-box input {
+/* Search box — dark theme */
+body[data-theme="dark"] .furo-search-box input,
+body[data-theme="auto"] .furo-search-box input {
     color: #ffffff !important;
     background-color: #2d2d2d !important;
 }
 
-.furo-search-box input::placeholder {
+body[data-theme="dark"] .furo-search-box input::placeholder,
+body[data-theme="auto"] .furo-search-box input::placeholder {
     color: #999999 !important;
+}
+
+@media (prefers-color-scheme: light) {
+    body[data-theme="auto"] .furo-search-box input {
+        color: inherit !important;
+        background-color: inherit !important;
+    }
 }
 
 /* Main content area */
@@ -85,6 +94,25 @@ body {
 .highlight .n { color: inherit; } /* name */
 .highlight .o { color: inherit; } /* operator */
 .highlight .p { color: inherit; } /* punctuation */
+
+/* Fix #8: copy button from sphinx_copybutton */
+button.copybtn {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 3px !important;
+    opacity: 0 !important;
+    transition: opacity 0.15s ease, background 0.15s ease !important;
+}
+
+.highlight:hover button.copybtn,
+button.copybtn:focus {
+    opacity: 1 !important;
+}
+
+button.copybtn:hover {
+    background: var(--color-brand-primary) !important;
+    border-color: var(--color-brand-primary) !important;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
