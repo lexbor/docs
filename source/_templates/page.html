@@ -1,0 +1,24 @@
+{% extends "!page.html" %}
+
+{%- block content %}
+<!-- Lexbor Custom Header -->
+<div class="head" style="background-color: #323841 !important; font-size: 14px !important; color: #fff !important; position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 9999; font-family: 'Open Sans', arial, sans-serif !important;">
+    <div class="head-content" style="display: flow-root;">
+        <div class="head-left" style="float: left; color: #afb8be; width: 115px; height: 100%; background-color: #292e36; text-align: center;">
+            <a href="https://lexbor.com/" style="color: #afb8be !important; line-height: 43px; text-decoration: none !important;">lexbor</a>
+        </div>
+        <div class="head-right" style="float: left;">
+            <ul style="padding: 0 0 0 35px; line-height: 43px; margin: 0; list-style: none;">
+                <li style="padding: 0 30px 0 0; float: left; list-style: none; margin: 0;"><a href="https://lexbor.com/download/" style="color: #fff !important; text-decoration: none !important;">Download</a></li>
+                <li style="padding: 0 30px 0 0; float: left; list-style: none; margin: 0;"><a href="https://lexbor.com/documentation/" style="color: #fff !important; text-decoration: none !important;">Documentation</a></li>
+                <li style="padding: 0 30px 0 0; float: left; list-style: none; margin: 0;"><a href="https://lexbor.com/support/" style="color: #fff !important; text-decoration: none !important;">Support</a></li>
+                <li style="padding: 0 30px 0 0; float: left; list-style: none; margin: 0;"><a href="https://lexbor.com/license/" style="color: #fff !important; text-decoration: none !important;">License</a></li>
+                <li style="padding: 0 30px 0 0; float: left; list-style: none; margin: 0;"><a href="https://lexbor.com/developers/" style="color: #fff !important; text-decoration: none !important;">Developers</a></li>
+                <li style="padding: 0 30px 0 0; float: left; list-style: none; margin: 0;"><a href="https://github.com/lexbor/lexbor" style="color: #fff !important; text-decoration: none !important;">GitHub</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{{ super() }}
+{%- endblock %}
